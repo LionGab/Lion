@@ -119,9 +119,15 @@ outputs/
     └── final-analysis.md         # Synthesized results
 ```
 
-## 📋 Example Queries
+## 📋 Example Output
 
-Claude adapts to any type of research:
+See the `examples/` directory for a complete research output on Austin's 5-year outlook, demonstrating:
+- Claude choosing to use 6 research assistants
+- Specialized roles for each assistant
+- ~11,500 total words of research
+- Professional synthesis with executive summary
+
+Quick examples of queries Claude handles well:
 
 - **Scientific**: "How do mRNA vaccines work?"
 - **Business**: "Analyze the electric vehicle market"

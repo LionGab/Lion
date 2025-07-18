@@ -15,32 +15,6 @@ NC='\033[0m' # No Color
 # Configuration
 MAX_ASSISTANTS=8
 
-# Helper function to generate folder-friendly names
-generate_folder_name() {
-    local query="$1"
-    local max_length=50
-    
-    # Convert to lowercase and replace special chars with spaces
-    local clean=$(echo "$query" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9 ]/ /g')
-    
-    # Remove common words
-    local stopwords="the is are was were been being have has had do does did will would could should may might must shall can a an and or but for of to in on at by with from up about into through during before after above below between under over"
-    
-    for word in $stopwords; do
-        clean=$(echo "$clean" | sed "s/\b$word\b//g")
-    done
-    
-    # Remove extra spaces and replace with hyphens
-    clean=$(echo "$clean" | sed 's/  */ /g' | sed 's/^ *//;s/ *$//' | tr ' ' '-')
-    
-    # Truncate if still too long
-    if [ ${#clean} -gt $max_length ]; then
-        clean="${clean:0:$max_length}"
-    fi
-    
-    echo "$clean"
-}
-
 # Interactive mode function
 interactive_mode() {
     echo -e "${CYAN}"
@@ -111,12 +85,11 @@ else
     fi
 fi
 
-# Create output directory with date and smart naming
-FOLDER_NAME=$(generate_folder_name "$QUERY")
+# Create output directory with date prefix only
 DATE=$(date +%Y-%m-%d)
-OUTPUT_DIR="./outputs/${DATE}-${FOLDER_NAME}"
-mkdir -p "$OUTPUT_DIR"
-mkdir -p "$OUTPUT_DIR/assistants"
+TEMP_OUTPUT_DIR="./outputs/${DATE}-research-$$"
+mkdir -p "$TEMP_OUTPUT_DIR"
+mkdir -p "$TEMP_OUTPUT_DIR/assistants"
 
 # Banner
 echo -e "${CYAN}"
@@ -125,7 +98,7 @@ echo "║   Claude Code Heavy Research System    ║"
 echo "╚════════════════════════════════════════╝"
 echo -e "${NC}"
 echo -e "${YELLOW}Query:${NC} $QUERY"
-echo -e "${YELLOW}Output:${NC} $OUTPUT_DIR"
+echo -e "${YELLOW}Temp Output:${NC} $TEMP_OUTPUT_DIR"
 echo
 
 # Pre-create all worktrees
@@ -150,7 +123,7 @@ echo -e "${CYAN}All workspaces ready! Claude will decide how many to use.${NC}"
 
 # Create the orchestration prompt
 if [ "$OUTPUT_FORMAT" = "markdown" ]; then
-    PROMPT_FILE="$OUTPUT_DIR/orchestration-prompt.md"
+    PROMPT_FILE="$TEMP_OUTPUT_DIR/orchestration-prompt.md"
     EXT="md"
     cat > "$PROMPT_FILE" << EOF
 # Claude Code Heavy - Research Orchestration
@@ -160,11 +133,31 @@ You are orchestrating a comprehensive parallel research system. You have full co
 ## Research Query
 **$QUERY**
 
+## Your First Task: Choose Output Folder Name
+
+Create a descriptive folder name for this research. It should be:
+- Descriptive but concise (max 50 chars)
+- Use hyphens instead of spaces
+- Capture the essence of the research
+- Example: "austin-5-year-outlook" or "quantum-computing-advances"
+
+Save your chosen name to: \`$TEMP_OUTPUT_DIR/folder-name.txt\`
+
+Then create the final output directory:
+\`\`\`bash
+FOLDER_NAME=\$(cat $TEMP_OUTPUT_DIR/folder-name.txt)
+FINAL_OUTPUT_DIR="./outputs/$DATE-\$FOLDER_NAME"
+mkdir -p "\$FINAL_OUTPUT_DIR/assistants"
+\`\`\`
+
+Use this final output directory for all subsequent files.
+
 ## Your Capabilities
 
 1. **Research Workspaces**: You have 8 pre-created workspaces at \`worktrees/ra-1\` through \`worktrees/ra-8\`
 
 2. **Your Tasks**:
+   - Choose a descriptive folder name
    - Analyze the query and determine optimal research approach
    - Decide how many research assistants to use (2-6 recommended)
    - Create specific, focused research questions for each assistant
@@ -173,23 +166,27 @@ You are orchestrating a comprehensive parallel research system. You have full co
 
 ## Research Process
 
-1. **Planning Phase**:
+1. **Setup Phase**:
+   - Choose and save folder name to \`$TEMP_OUTPUT_DIR/folder-name.txt\`
+   - Create final output directory as shown above
+
+2. **Planning Phase**:
    - Analyze: "$QUERY"
    - Determine the number of assistants needed
    - Create research questions that cover all important angles
-   - Save your plan to \`$OUTPUT_DIR/research-plan.md\`
+   - Save your plan to \`\$FINAL_OUTPUT_DIR/research-plan.md\`
 
-2. **Research Phase**:
+3. **Research Phase**:
    - Visit each assistant's workspace: \`cd worktrees/ra-N\`
    - Have each assistant research their specific question
    - Use \`web_search\` and other tools extensively
    - **Execute searches in parallel** when possible
-   - Save each assistant's findings to \`$OUTPUT_DIR/assistants/ra-N-findings.md\`
+   - Save each assistant's findings to \`\$FINAL_OUTPUT_DIR/assistants/ra-N-findings.md\`
 
-3. **Synthesis Phase**:
+4. **Synthesis Phase**:
    - Review all findings
    - Create comprehensive analysis
-   - Save to \`$OUTPUT_DIR/final-analysis.md\`
+   - Save to \`\$FINAL_OUTPUT_DIR/final-analysis.md\`
 
 ## Guidelines
 
@@ -203,36 +200,52 @@ You are orchestrating a comprehensive parallel research system. You have full co
 
 ## Output Structure
 
-1. \`research-plan.md\` - Your initial plan
-2. \`assistants/ra-N-findings.md\` - Each assistant's research
-3. \`final-analysis.md\` - Synthesized comprehensive analysis
+1. \`folder-name.txt\` - Your chosen folder name
+2. \`research-plan.md\` - Your initial plan
+3. \`assistants/ra-N-findings.md\` - Each assistant's research
+4. \`final-analysis.md\` - Synthesized comprehensive analysis
 
-Begin by analyzing the query and creating your research plan!
+Begin by choosing a folder name and creating your research plan!
 EOF
 else
     # Text format
-    PROMPT_FILE="$OUTPUT_DIR/orchestration-prompt.txt"
+    PROMPT_FILE="$TEMP_OUTPUT_DIR/orchestration-prompt.txt"
     EXT="txt"
     cat > "$PROMPT_FILE" << EOF
 Claude Code Heavy - Research Orchestration
 
 Research Query: $QUERY
 
-You have 8 pre-created workspaces: worktrees/ra-1 through worktrees/ra-8
+FIRST: Choose a folder name for this research
+- Descriptive but concise (max 50 chars)
+- Example: "austin-5-year-outlook"
+- Save to: $TEMP_OUTPUT_DIR/folder-name.txt
+
+Then create final output directory:
+FOLDER_NAME=\$(cat $TEMP_OUTPUT_DIR/folder-name.txt)
+FINAL_OUTPUT_DIR="./outputs/$DATE-\$FOLDER_NAME"
+mkdir -p "\$FINAL_OUTPUT_DIR/assistants"
+
+You have 8 workspaces: worktrees/ra-1 through worktrees/ra-8
 
 YOUR TASKS:
-1. Analyze the query
-2. Decide how many assistants (2-6 recommended)  
-3. Create focused research questions
-4. Assign roles to each assistant
+1. Choose folder name
+2. Analyze the query
+3. Decide how many assistants (2-6 recommended)  
+4. Create focused research questions
 5. Coordinate parallel research
 6. Synthesize findings
 
 PROCESS:
-1. Save plan to: $OUTPUT_DIR/research-plan.md
-2. Research using web_search (parallel when possible)
-3. Save findings: $OUTPUT_DIR/assistants/ra-N-findings.md
-4. Final synthesis: $OUTPUT_DIR/final-analysis.md
+1. Save folder name
+2. Create final output directory
+3. Save plan to: \$FINAL_OUTPUT_DIR/research-plan.md
+4. Research using web_search (parallel when possible)
+5. Save findings: \$FINAL_OUTPUT_DIR/assistants/ra-N-findings.md
+6. Final synthesis: \$FINAL_OUTPUT_DIR/final-analysis.md
+
+Begin by choosing a folder name!
+EOF
 
 Begin by analyzing the query and creating your research plan!
 EOF
@@ -297,4 +310,4 @@ fi
 
 echo
 echo -e "${GREEN}Research will complete in ~15-20 minutes${NC}"
-echo -e "${YELLOW}All outputs saved to: $OUTPUT_DIR/${NC}"
+echo -e "${YELLOW}Outputs will be saved to: ./outputs/$DATE-[chosen-name]/${NC}"
