@@ -40,7 +40,7 @@ We use an interactive approach rather than headless execution for several import
 
 4. **Browser Access**: Interactive mode gives Claude access to web search and browser tools that aren't available in headless API mode.
 
-5. **One-Click Execution**: While not fully automated, we've made it as simple as possible - the script pre-fills the entire coordination prompt, so you just press Enter to start.
+5. **One-Click Execution**: While not fully automated, we've made it as simple as possible - the script pre-fills the entire coordination prompt and Claude starts the research automatically.
 
 ## 📖 How It Works
 
@@ -193,8 +193,8 @@ For 4-assistant queries, uses specialized perspectives:
 When you choose to auto-launch Claude Code:
 1. Script generates complete coordination prompt
 2. Launches Claude with prompt pre-filled
-3. You just press Enter to start research
-4. No copy-paste needed!
+3. Research begins automatically
+4. No copy-paste or additional input needed!
 
 ## 🏗️ Architecture Details
 

@@ -55,9 +55,9 @@ suggest_assistant_count() {
 # Interactive mode function
 interactive_mode() {
     echo -e "${CYAN}"
-    echo "╔═══════════════════════════════════════╗"
+    echo "╔════════════════════════════════════════╗"
     echo "║   Claude Code Heavy - Interactive Mode ║"
-    echo "╚═══════════════════════════════════════╝"
+    echo "╚════════════════════════════════════════╝"
     echo -e "${NC}"
     
     # Get research question
@@ -142,9 +142,9 @@ mkdir -p "$OUTPUT_DIR/assistants"
 
 # Banner
 echo -e "${CYAN}"
-echo "╔═══════════════════════════════════════╗"
-echo "║   Claude Code Heavy Research System   ║"
-echo "╚═══════════════════════════════════════╝"
+echo "╔════════════════════════════════════════╗"
+echo "║   Claude Code Heavy Research System    ║"
+echo "╚════════════════════════════════════════╝"
 echo -e "${NC}"
 echo -e "${YELLOW}Query:${NC} $QUERY"
 echo -e "${YELLOW}Research Assistants:${NC} $ASSISTANT_COUNT"
@@ -298,7 +298,7 @@ read -r -p "> " launch
 # Default to yes if empty or starts with y/Y
 if [[ -z "$launch" || "$launch" =~ ^[Yy] ]]; then
     echo -e "${YELLOW}Launching Claude Code...${NC}"
-    echo -e "${GREEN}Just press Enter in Claude to start the research!${NC}"
+    echo -e "${GREEN}Research will begin automatically!${NC}"
     
     # Launch Claude with the prompt pre-filled
     # Try different Claude command variations

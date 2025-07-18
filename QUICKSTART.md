@@ -23,9 +23,9 @@ The easiest way to use Claude Code Heavy:
 
 You'll see:
 ```
-╔═══════════════════════════════════════╗
+╔════════════════════════════════════════╗
 ║   Claude Code Heavy - Interactive Mode ║
-╚═══════════════════════════════════════╝
+╚════════════════════════════════════════╝
 
 What would you like to research?
 > How can cities reduce traffic congestion?
@@ -54,10 +54,10 @@ Would you like to launch Claude Code with the prompt? (Y/n)
 > [Enter]
 
 Launching Claude Code...
-Just press Enter in Claude to start the research!
+Research will begin automatically!
 ```
 
-Claude Code opens with the prompt pre-filled. Just press Enter!
+Claude Code opens with the prompt pre-filled and starts executing immediately!
 
 ## 📝 Command Line Mode
 
