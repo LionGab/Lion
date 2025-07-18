@@ -16,7 +16,7 @@ Instead of trying to automate Claude Code, we use an **orchestrated interactive 
 
 ```bash
 # Generate the research structure
-./heavy-interactive.sh "Who is Pietro Schirano?"
+./heavy-interactive.sh "What would a city designed entirely by AI optimize for?"
 
 # This creates:
 # - Research plan

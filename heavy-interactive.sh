@@ -23,7 +23,7 @@ OUTPUT_DIR="./outputs/$(date +%Y%m%d_%H%M%S)"
 if [ -z "$QUERY" ]; then
     echo -e "${RED}Error: No query provided${NC}"
     echo "Usage: $0 \"Your research question\" [number_of_assistants]"
-    echo "Example: $0 \"Who is Pietro Schirano?\" 4"
+    echo "Example: $0 \"What would a city designed entirely by AI optimize for?\" 4"
     exit 1
 fi
 

@@ -14,7 +14,7 @@ git clone https://github.com/gtrusler/claude-code-heavy
 cd claude-code-heavy
 
 # Run the interactive orchestrator
-./heavy-interactive.sh "Who is Pietro Schirano?"
+./heavy-interactive.sh "What would a city designed entirely by AI optimize for?"
 ```
 
 This creates:

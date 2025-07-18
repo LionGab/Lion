@@ -22,7 +22,7 @@ cd claude-code-heavy
 chmod +x heavy.sh
 
 # Run a heavy analysis
-./heavy.sh "Who is Pietro Schirano?"
+./heavy.sh "What would a city designed entirely by AI optimize for?"
 ```
 
 ## 📖 How It Works
@@ -92,16 +92,16 @@ For simpler queries:
 ## 📋 Example Outputs
 
 <details>
-<summary>Example: "Who is Pietro Schirano?"</summary>
+<summary>Example: "What would a city designed entirely by AI optimize for?"</summary>
 
 **Generated Questions:**
-1. VP1: Research Pietro Schirano's professional background and career
-2. VP2: Analyze contributions and impact on technology/AI
-3. VP3: Alternative perspectives and criticisms
-4. VP4: Verify current role and recent activities
+1. VP1: Current real-world examples of AI in urban planning
+2. VP2: What metrics would AI optimize for vs human priorities
+3. VP3: Human needs that AI might miss or ignore
+4. VP4: Verify claims about smart cities and human satisfaction
 
 **Synthesized Result:**
-Comprehensive analysis combining all perspectives...
+AI would create a 98% efficient city with zero traffic jams but potentially zero human joy...
 </details>
 
 ## 🔧 Configuration
