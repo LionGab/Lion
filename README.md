@@ -4,12 +4,12 @@ A powerful multi-agent research system using Claude Code to deliver comprehensiv
 
 ## 🚀 What is Claude Code Heavy?
 
-Claude Code Heavy orchestrates multiple Claude instances in parallel to:
+Claude Code Heavy orchestrates multiple research assistants in parallel to:
 - 🧠 **Deep Analysis**: Generate specialized research questions automatically
-- 🔀 **Parallel Research**: Deploy 4+ agents simultaneously for comprehensive coverage  
+- 🔀 **Parallel Research**: Deploy 2-6 agents simultaneously for comprehensive coverage  
 - 🎯 **Multi-Perspective**: Each agent approaches from a unique angle
 - 🔄 **Intelligent Synthesis**: Combine all findings into unified insights
-- 📊 **Real-Time Progress**: Visual feedback during execution
+- 🚙 **Interactive Mode**: User-friendly prompts for easy operation
 
 ## 🎯 Quick Start
 
@@ -21,54 +21,65 @@ cd claude-code-heavy
 # Make script executable
 chmod +x heavy.sh
 
-# Run your research
+# Run interactively (recommended)
+./heavy.sh
+
+# Or run with command line args
 ./heavy.sh "How do we solve the global water supply issue?"
 ```
 
-This creates:
-- 4 Research Assistants (RA1-RA4) with specialized questions
-- Git worktrees for parallel execution
-- Markdown output by default (use `./heavy.sh "query" 4 text` for text format)
-- Organized output in `./outputs/2025-07-18-Your-Query/`
+## 🤔 Why Interactive Mode?
+
+We use an interactive approach rather than headless execution for several important reasons:
+
+1. **No API Costs**: Running in headless mode requires API keys and incurs per-token costs. Interactive mode lets you use Claude Code's full capabilities without any additional charges.
+
+2. **Full Context Window**: API calls are limited by token constraints, while interactive Claude Code sessions have access to the full 200k token context window.
+
+3. **Real-time Oversight**: You can monitor the research progress, see what each assistant is finding, and intervene if needed.
+
+4. **Browser Access**: Interactive mode gives Claude access to web search and browser tools that aren't available in headless API mode.
+
+5. **One-Click Execution**: While not fully automated, we've made it as simple as possible - the script pre-fills the entire coordination prompt, so you just press Enter to start.
 
 ## 📖 How It Works
 
 ```mermaid
 graph TD
-    A[User Query] --> B[Generate Research Questions]
-    B --> C[Create 4 Specialized Questions]
-    C --> D[Claude Code Coordinates]
-    D --> E[RA1: Technology Research]
-    D --> F[RA2: Impact Analysis]
-    D --> G[RA3: Critical Review]
-    D --> H[RA4: Fact Checking]
-    E --> I[Synthesis]
-    F --> I
-    G --> I
-    H --> I
-    I --> J[Comprehensive Analysis]
+    A[Run ./heavy.sh] --> B[Interactive Setup]
+    B --> C[Choose Query & Settings]
+    C --> D[Generate Research Plan]
+    D --> E[Create Git Worktrees]
+    E --> F[Launch Claude Code]
+    F --> G[Press Enter to Start]
+    G --> H[RA1: Research]
+    G --> I[RA2: Research]
+    G --> J[RA3: Research]
+    G --> K[RA4: Research]
+    H --> L[Synthesis]
+    I --> L
+    J --> L
+    K --> L
+    L --> M[Final Analysis]
 ```
 
 ### Research Process
 
-1. **Query Input**: You provide a research question
-2. **Question Generation**: System creates specialized angles
-3. **Parallel Research**: Claude Code coordinates Research Assistants
-4. **Synthesis**: Findings combined into comprehensive analysis
+1. **Interactive Setup**: Run `./heavy.sh` for guided setup or provide command line args
+2. **Smart Suggestions**: System suggests optimal number of assistants based on query
+3. **Automated Launch**: Option to launch Claude Code with pre-filled prompt
+4. **Parallel Research**: Claude coordinates multiple research assistants
+5. **Comprehensive Output**: All findings saved to organized folders
 
 ## 🛠️ Installation
 
 ### Prerequisites
 - Claude Desktop installed
-- Claude Code (`npm install -g @anthropic-ai/claude-code`)
-- Git with worktree support
+- Git with worktree support (git 2.7+)
 - Unix-like environment (Mac/Linux/WSL)
 
 ### Setup
 ```bash
-# Install Claude Code if you haven't
-npm install -g @anthropic-ai/claude-code
-
 # Clone and setup
 git clone https://github.com/yourusername/claude-code-heavy
 cd claude-code-heavy
@@ -77,32 +88,46 @@ cd claude-code-heavy
 
 ## 🎮 Usage
 
-### Default Mode (4 Research Assistants)
+### Interactive Mode (Recommended)
 ```bash
+./heavy.sh
+# Follow the prompts:
+# - Enter your research question
+# - Accept or modify suggested assistant count
+# - Choose output format
+# - Confirm to proceed
+# - Optionally auto-launch Claude Code
+```
+
+### Command Line Mode
+```bash
+# Default: 4 assistants, markdown output
 ./heavy.sh "Analyze the impact of AI on software development"
-```
 
-### Custom Assistant Count
-```bash
+# Custom assistant count
 ./heavy.sh "Complex quantum computing question" 6
-```
 
-### Text Output Format
-```bash
+# Text output format
 ./heavy.sh "What is Python?" 2 text
 ```
+
+### Smart Folder Naming
+Queries are converted to readable folder names:
+- "How do we solve the global water crisis?" → `2025-07-18-solve-global-water-crisis`
+- "What is the future of AI?" → `2025-07-18-future-ai`
+- "Analyze renewable energy trends" → `2025-07-18-analyze-renewable-energy-trends`
 
 ### Output Structure
 ```
 outputs/
-└── 2025-07-18-Your-Query/
-    ├── coordination-prompt.md
+└── 2025-07-18-solve-global-water-crisis/
+    ├── coordination-prompt.md     # The prompt to paste/auto-load
     ├── assistants/
-    │   ├── ra-1-findings.md
-    │   ├── ra-2-findings.md
-    │   ├── ra-3-findings.md
-    │   └── ra-4-findings.md
-    └── final-analysis.md
+    │   ├── ra-1-findings.md      # RA1's research
+    │   ├── ra-2-findings.md      # RA2's research
+    │   ├── ra-3-findings.md      # RA3's research
+    │   └── ra-4-findings.md      # RA4's research
+    └── final-analysis.md         # Synthesized results
 ```
 
 ## 📋 Example Output
@@ -122,16 +147,18 @@ AI would create a 98% efficient city with zero traffic jams but potentially zero
 
 ## 🔧 Configuration
 
-Edit `config.sh` to customize:
+The script intelligently suggests settings based on your query:
+- Simple queries: 2 assistants
+- Analytical queries: 3 assistants  
+- Comprehensive queries: 4 assistants
+
+Edit `config.sh` for defaults:
 ```bash
 # Number of parallel agents
 DEFAULT_AGENTS=4
 
 # Output directory
 OUTPUT_DIR="./outputs"
-
-# Synthesis style
-SYNTHESIS_STYLE="comprehensive"  # or "concise", "academic"
 ```
 
 ## 🤝 Comparison with make-it-heavy
@@ -140,75 +167,60 @@ SYNTHESIS_STYLE="comprehensive"  # or "concise", "academic"
 |---------|---------------|-------------------|
 | Parallel Agents | ✅ Python threads | ✅ Git worktrees |
 | Question Generation | ✅ AI-powered | ✅ Pre-configured |
-| Tool Access | ✅ Custom tools | ✅ Native + MCP |
-| API Required | ✅ OpenRouter | ❌ No API needed |
+| Tool Access | ✅ Custom tools | ✅ Native + web search |
+| API Required | ✅ OpenRouter ($$$) | ❌ No API needed |
 | Setup Time | ~5 minutes | ~30 seconds |
 | Context Window | ⚠️ Model dependent | ✅ 200k tokens |
-| Real Browser | ❌ | ✅ Full access |
+| Launch Method | Command line | Interactive + Auto-launch |
+| Cost | Per-token charges | Free (using Claude Code) |
 
 ## 🚀 Advanced Features
 
-### Custom Research Patterns
-Create your own research templates in `patterns/`:
-```yaml
-# patterns/academic.yaml
-name: "Academic Research"
-agents: 6
-questions:
-  - "Literature review and citations"
-  - "Methodology analysis"
-  - "Counter-arguments"
-  - "Future research directions"
-  - "Practical applications"
-  - "Peer review simulation"
-```
+### Smart Assistant Count
+The system analyzes your query to suggest optimal assistant count:
+- Keywords like "comprehensive", "detailed" → 4 assistants
+- Complex analytical queries → 3 assistants
+- Simple lookups → 2 assistants
 
-### MCP Tool Integration
-Automatically uses available MCP tools:
-- Web search
-- GitHub integration
-- Google Drive access
-- Custom tools
+### Pre-defined Research Patterns
+For 4-assistant queries, uses specialized perspectives:
+1. Technology & Implementation
+2. Impact & Economics
+3. Critical Analysis
+4. Verification & History
 
-### Persistent Context
-Unlike make-it-heavy, maintains context across sessions:
-```bash
-./heavy.sh --continue "Follow up on previous analysis"
-```
+### One-Click Launch
+When you choose to auto-launch Claude Code:
+1. Script generates complete coordination prompt
+2. Launches Claude with prompt pre-filled
+3. You just press Enter to start research
+4. No copy-paste needed!
 
 ## 🏗️ Architecture Details
 
-### File Structure
-```
-claude-code-heavy/
-├── heavy.sh           # Main orchestrator
-├── setup.sh          # Setup script
-├── config.sh         # Configuration
-├── patterns/         # Research patterns
-├── outputs/          # Analysis outputs
-├── worktrees/        # Agent workspaces
-└── templates/        # Prompt templates
-```
+### Why Git Worktrees?
+- Each assistant gets isolated workspace
+- Parallel execution without conflicts
+- Easy context switching for Claude
+- Git tracks all research history
 
-### How Agents Communicate
-1. CEO creates research plan in `research-plan.md`
-2. Each VP reads plan and works independently
-3. VPs write findings to `vp-N-findings.md`
-4. CEO synthesizes all findings
+### Interactive Benefits
+- See research progress in real-time
+- Claude can use web search effectively
+- No token limits or API restrictions
+- Full browser automation if needed
 
 ## 🎯 Best Practices
 
-1. **Query Clarity**: More specific queries yield better results
-2. **Agent Count**: 4 agents optimal for most queries, 6-8 for complex topics
-3. **Time Management**: Expect 2-5 minutes for full analysis
-4. **Context Preservation**: Save important outputs for future reference
+1. **Use Interactive Mode**: Just run `./heavy.sh` for the best experience
+2. **Trust the Suggestions**: Assistant count suggestions are based on query analysis
+3. **Let it Auto-Launch**: Choose 'y' when asked to launch Claude automatically
+4. **Save Important Results**: Final analysis saved in timestamped folders
 
 ## 🐛 Troubleshooting
 
 ### "Command not found: claude"
-```bash
-npm install -g @anthropic-ai/claude-code
-```
+Make sure Claude Desktop is installed and in your PATH
 
 ### "Git worktree error"
 ```bash
@@ -217,14 +229,8 @@ brew upgrade git  # Mac
 sudo apt-get update && sudo apt-get upgrade git  # Linux
 ```
 
-### Agents seem stuck
-```bash
-# Check agent status
-./heavy.sh --status
-
-# Force cleanup
-./heavy.sh --cleanup
-```
+### Claude Code doesn't launch
+Ensure Claude Desktop is running before using auto-launch
 
 ## 🤝 Contributing
 
@@ -240,5 +246,5 @@ MIT - Inspired by make-it-heavy's approach but implemented entirely with Claude 
 ## 🙏 Acknowledgments
 
 - Inspired by [make-it-heavy](https://github.com/Doriandarko/make-it-heavy) by Pietro Schirano
-- Built on [Claude Code](https://docs.anthropic.com/claude-code) by Anthropic
-- Uses concepts from [CCCEO](https://github.com/gtrusler/CCCEO) methodology
+- Built on Claude Code by Anthropic
+- Smart folder naming and interactive features for better UX

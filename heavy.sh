@@ -12,23 +12,127 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
-# Configuration
-DEFAULT_ASSISTANTS=4
-QUERY="$1"
-ASSISTANT_COUNT="${2:-$DEFAULT_ASSISTANTS}"
-OUTPUT_FORMAT="${3:-markdown}"  # markdown or text
+# Helper function to generate folder-friendly names
+generate_folder_name() {
+    local query="$1"
+    local max_length=50
+    
+    # Convert to lowercase and replace special chars with spaces
+    local clean=$(echo "$query" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9 ]/ /g')
+    
+    # Remove common words
+    local stopwords="the is are was were been being have has had do does did will would could should may might must shall can a an and or but for of to in on at by with from up about into through during before after above below between under over"
+    
+    for word in $stopwords; do
+        clean=$(echo "$clean" | sed "s/\b$word\b//g")
+    done
+    
+    # Remove extra spaces and replace with hyphens
+    clean=$(echo "$clean" | sed 's/  */ /g' | sed 's/^ *//;s/ *$//' | tr ' ' '-')
+    
+    # Truncate if still too long
+    if [ ${#clean} -gt $max_length ]; then
+        clean="${clean:0:$max_length}"
+    fi
+    
+    echo "$clean"
+}
 
-# Validate input
-if [ -z "$QUERY" ]; then
-    echo -e "${RED}Error: No query provided${NC}"
-    echo "Usage: $0 \"Your research question\" [assistants] [format]"
-    echo "Example: $0 \"How do we solve the global water supply issue?\" 4 markdown"
-    exit 1
+# Helper function to suggest number of assistants
+suggest_assistant_count() {
+    local query="$1"
+    local word_count=$(echo "$query" | wc -w)
+    
+    if echo "$query" | grep -iE "(comprehensive|detailed|thorough|complete|all)" > /dev/null; then
+        echo 4
+    elif [ $word_count -gt 10 ] || echo "$query" | grep -iE "(compare|analyze|evaluate)" > /dev/null; then
+        echo 3
+    else
+        echo 2
+    fi
+}
+
+# Interactive mode function
+interactive_mode() {
+    echo -e "${CYAN}"
+    echo "╔═══════════════════════════════════════╗"
+    echo "║   Claude Code Heavy - Interactive Mode ║"
+    echo "╚═══════════════════════════════════════╝"
+    echo -e "${NC}"
+    
+    # Get research question
+    echo -e "${GREEN}What would you like to research?${NC}"
+    read -r -p "> " query
+    
+    # Suggest number of assistants
+    suggested=$(suggest_assistant_count "$query")
+    echo -e "\n${YELLOW}Based on your query, I suggest using $suggested research assistants.${NC}"
+    echo -e "How many would you like to use? (2-6, or press Enter for $suggested)"
+    read -r -p "> " num_assistants
+    
+    # Use suggestion if empty
+    if [ -z "$num_assistants" ]; then
+        num_assistants=$suggested
+    fi
+    
+    # Validate input
+    if ! [[ "$num_assistants" =~ ^[2-6]$ ]]; then
+        echo -e "${RED}Invalid number. Using $suggested assistants.${NC}"
+        num_assistants=$suggested
+    fi
+    
+    # Get output format
+    echo -e "\n${GREEN}Output format?${NC} (markdown/text, or press Enter for markdown)"
+    read -r -p "> " format
+    
+    if [ -z "$format" ]; then
+        format="markdown"
+    fi
+    
+    # Confirm settings
+    echo -e "\n${BLUE}Ready to start research with:${NC}"
+    echo -e "  📝 Query: $query"
+    echo -e "  👥 Assistants: $num_assistants"
+    echo -e "  📄 Format: $format"
+    echo -e "\n${GREEN}Proceed? (y/n)${NC}"
+    read -r -p "> " confirm
+    
+    if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+        echo -e "${YELLOW}Cancelled.${NC}"
+        exit 0
+    fi
+    
+    # Set globals for main execution
+    QUERY="$query"
+    NUM_ASSISTANTS="$num_assistants"
+    OUTPUT_FORMAT="$format"
+}
+
+# Main script starts here
+if [ $# -eq 0 ]; then
+    # No arguments - run interactive mode
+    interactive_mode
+else
+    # Command line mode
+    QUERY="$1"
+    NUM_ASSISTANTS="${2:-4}"
+    OUTPUT_FORMAT="${3:-markdown}"
+    
+    # Validate assistants
+    if ! [[ "$NUM_ASSISTANTS" =~ ^[2-6]$ ]]; then
+        echo -e "${RED}Error: Number of assistants must be between 2 and 6${NC}"
+        exit 1
+    fi
 fi
 
-# Create output directory with date and shortened query
-SAFE_QUERY=$(echo "$QUERY" | cut -c1-30 | sed 's/[^a-zA-Z0-9 ]//g' | sed 's/ /-/g')
-OUTPUT_DIR="./outputs/$(date +%Y-%m-%d)-${SAFE_QUERY}"
+# Configuration
+DEFAULT_ASSISTANTS=4
+ASSISTANT_COUNT="$NUM_ASSISTANTS"
+
+# Create output directory with date and smart naming
+FOLDER_NAME=$(generate_folder_name "$QUERY")
+DATE=$(date +%Y-%m-%d)
+OUTPUT_DIR="./outputs/${DATE}-${FOLDER_NAME}"
 mkdir -p "$OUTPUT_DIR"
 mkdir -p "$OUTPUT_DIR/assistants"
 
@@ -102,6 +206,7 @@ done
 # Create the coordination prompt
 if [ "$OUTPUT_FORMAT" = "markdown" ]; then
     PROMPT_FILE="$OUTPUT_DIR/coordination-prompt.md"
+    EXT="md"
     cat > "$PROMPT_FILE" << EOF
 # Research Coordination: $QUERY
 
@@ -145,6 +250,7 @@ EOF
 else
     # Text format
     PROMPT_FILE="$OUTPUT_DIR/coordination-prompt.txt"
+    EXT="txt"
     cat > "$PROMPT_FILE" << EOF
 Research Coordination: $QUERY
 
@@ -178,26 +284,39 @@ Start the research!
 EOF
 fi
 
-# Display launch instructions
+# Display completion and offer to launch
 echo
-echo -e "${CYAN}══ Ready to Launch ══${NC}"
+echo -e "${GREEN}✅ Setup complete!${NC}"
 echo
-echo -e "${YELLOW}To start:${NC}"
-echo
-echo "1. Run: ${GREEN}claude --no-conversation-file${NC}"
-echo
-echo "2. Paste the coordination prompt from:"
-echo "   ${BLUE}$PROMPT_FILE${NC}"
-echo
-if [ "$OUTPUT_FORMAT" = "markdown" ]; then
-    echo "Preview:"
-    echo "────────────────────────────────"
-    head -20 "$PROMPT_FILE"
-    echo "..."
-    echo "────────────────────────────────"
+echo -e "${BLUE}Would you like to launch Claude Code with the prompt? (y/n)${NC}"
+read -r -p "> " launch
+
+if [[ "$launch" =~ ^[Yy]$ ]]; then
+    echo -e "${YELLOW}Launching Claude Code...${NC}"
+    echo -e "${GREEN}Just press Enter in Claude to start the research!${NC}"
+    
+    # Launch Claude with the prompt pre-filled
+    claude --no-conversation-file --chat "$(cat "$PROMPT_FILE")"
 else
-    cat "$PROMPT_FILE"
+    echo
+    echo -e "${CYAN}══ Manual Launch Instructions ══${NC}"
+    echo
+    echo -e "${YELLOW}To start:${NC}"
+    echo
+    echo "1. Run: ${GREEN}claude --no-conversation-file${NC}"
+    echo
+    echo "2. Paste the coordination prompt from:"
+    echo "   ${BLUE}$PROMPT_FILE${NC}"
+    echo
+    if [ "$OUTPUT_FORMAT" = "markdown" ]; then
+        echo "Preview:"
+        echo "────────────────────────────────"
+        head -20 "$PROMPT_FILE"
+        echo "..."
+        echo "────────────────────────────────"
+    fi
 fi
+
 echo
 echo -e "${GREEN}Research will complete in ~15-20 minutes${NC}"
 echo -e "${YELLOW}All outputs saved to: $OUTPUT_DIR/${NC}"

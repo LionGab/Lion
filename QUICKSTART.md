@@ -1,92 +1,162 @@
 # Quick Start Guide
 
-## Installation (30 seconds)
+Get up and running with Claude Code Heavy in under 2 minutes!
+
+## 🚀 Installation (30 seconds)
 
 ```bash
-# Prerequisites (if not installed)
-npm install -g @anthropic-ai/claude-code
-
-# Clone and setup
+# Clone the repository
 git clone https://github.com/yourusername/claude-code-heavy
 cd claude-code-heavy
+
+# Run setup
 ./setup.sh
 ```
 
-## Your First Heavy Analysis
+## 🎯 Your First Research (Interactive Mode)
+
+The easiest way to use Claude Code Heavy:
 
 ```bash
-./heavy.sh "What is the future of AI?"
+./heavy.sh
 ```
 
-This will:
-1. Create a research plan with 4 Research Assistants
-2. Generate specialized questions for each RA
-3. Set up git worktrees for parallel work
-4. Output a coordination prompt
-5. You run `claude --no-conversation-file` and paste the prompt
-6. Claude Code coordinates all RAs in parallel
-7. Results saved to `outputs/2025-07-18-What-is-the-future-of-AI/`
+You'll see:
+```
+╔═══════════════════════════════════════╗
+║   Claude Code Heavy - Interactive Mode ║
+╚═══════════════════════════════════════╝
 
-## Example Queries
+What would you like to research?
+> How can cities reduce traffic congestion?
 
-### Technology Analysis
+Based on your query, I suggest using 3 research assistants.
+How many would you like to use? (2-6, or press Enter for 3)
+> [Enter]
+
+Output format? (markdown/text, or press Enter for markdown)
+> [Enter]
+
+Ready to start research with:
+  📝 Query: How can cities reduce traffic congestion?
+  👥 Assistants: 3
+  📄 Format: markdown
+
+Proceed? (y/n)
+> y
+```
+
+Then choose to auto-launch Claude:
+```
+✅ Setup complete!
+
+Would you like to launch Claude Code with the prompt? (y/n)
+> y
+
+Launching Claude Code...
+Just press Enter in Claude to start the research!
+```
+
+Claude Code opens with the prompt pre-filled. Just press Enter!
+
+## 📝 Command Line Mode
+
+For automation or specific settings:
+
 ```bash
-./heavy.sh "Compare React, Vue, and Angular for enterprise applications"
+# Basic usage
+./heavy.sh "What are the latest advances in quantum computing?"
+
+# With 6 assistants for complex topics
+./heavy.sh "Analyze global economic impacts of climate change" 6
+
+# Text format output
+./heavy.sh "Explain Docker containers" 2 text
 ```
 
-### Person Research  
+## 📊 Example Research Questions
+
+Try these to see the system in action:
+
+1. **Technology**: "How do neural networks actually work?"
+2. **Analysis**: "Compare renewable energy sources for homes"
+3. **Complex**: "What would happen if we eliminated all mosquitoes?"
+4. **Current Events**: "Analyze the impact of remote work on cities"
+
+## 📁 Understanding Your Output
+
+After ~15-20 minutes, check your results:
+
 ```bash
-./heavy.sh "Who is Sam Altman and what is his impact on AI?"
+# List all research outputs
+ls -la outputs/
+
+# View the final analysis
+cat outputs/2025-07-18-reduce-traffic-congestion/final-analysis.md
 ```
 
-### Complex Topics
+Output structure:
+```
+outputs/2025-07-18-reduce-traffic-congestion/
+├── coordination-prompt.md    # The prompt used
+├── assistants/
+│   ├── ra-1-findings.md     # Technology research
+│   ├── ra-2-findings.md     # Impact analysis
+│   └── ra-3-findings.md     # Critical review
+└── final-analysis.md        # Synthesized insights
+```
+
+## 💡 Pro Tips
+
+1. **Let the system guide you**: Interactive mode suggests optimal settings
+2. **Use auto-launch**: Much easier than copy-pasting prompts
+3. **Start simple**: Try a basic query first to see how it works
+4. **Watch the progress**: Claude shows what each assistant is researching
+5. **Save good prompts**: The coordination prompts can be reused
+
+## 🔍 Monitoring Progress
+
+While Claude Code runs, you'll see:
+- Which assistant is currently researching
+- What sources they're finding
+- Progress through the research phases
+- Real-time synthesis as it happens
+
+## ❓ Common Questions
+
+**Q: Why not fully automated?**
+A: Interactive mode gives you full Claude Code features without API costs, larger context windows, and real-time monitoring.
+
+**Q: How long does research take?**
+A: Typically 15-20 minutes for 4 assistants, depending on query complexity.
+
+**Q: Can I stop and resume?**
+A: Yes, all work is saved in git worktrees. You can stop and continue later.
+
+**Q: What if Claude Code closes?**
+A: Just re-run with the same query - worktrees persist the state.
+
+## 🚨 Troubleshooting
+
+### Claude Code doesn't open
+Make sure Claude Desktop is running first.
+
+### "Permission denied"
 ```bash
-./heavy.sh "Analyze the implications of quantum computing on cryptography" 6
-# Uses 6 assistants for deeper analysis
+chmod +x heavy.sh setup.sh
 ```
 
-### Business Analysis
+### Git errors
+Ensure you have git 2.7+ with worktree support:
 ```bash
-./heavy.sh "What are the key success factors for AI startups in 2024?"
+git --version
 ```
 
-## Understanding the Output
+## 🎉 Next Steps
 
-Your analysis will include:
-- **Executive Summary**: High-level integration of all findings
-- **Detailed Findings**: Organized by theme, not by agent
-- **Key Insights**: Most important discoveries
-- **Areas of Agreement**: What all agents confirmed
-- **Contradictions**: Where perspectives differed
-- **Conclusion**: Unified final perspective
+1. Try different query types to see various research patterns
+2. Experiment with different assistant counts (2-6)
+3. Check out `patterns/` for specialized research templates
+4. Read `ADVANCED.md` for power user features
 
-## Tips for Best Results
-
-1. **Be Specific**: "Impact of AI on healthcare diagnostics" > "AI in healthcare"
-2. **Add Context**: Include timeframes, locations, or specific aspects
-3. **Adjust Agent Count**: Simple = 2-3, Standard = 4, Complex = 6-8
-4. **Save Important Results**: Copy final analysis for future reference
-
-## Monitoring Progress
-
-Watch the real-time progress indicators:
-- ⠋ ⠙ ⠹ ⠸ = Agent working
-- ✓ = Agent complete
-
-## Troubleshooting
-
-**Agents seem slow?**
-- Normal: Each agent does thorough research
-- Complex queries take 3-5 minutes
-- Check logs in `outputs/[timestamp]/agent-N.log`
-
-**Git worktree errors?**
-```bash
-# Clean up and retry
-rm -rf worktrees/
-./heavy.sh "Your query"
-```
-
-**Need to stop?**
-- Press Ctrl+C to cancel
-- Partial results saved in outputs folder
+Happy researching! 🔬
