@@ -175,7 +175,7 @@ The script is intentionally minimal. Claude handles:
 ### Smart Folder Naming
 - Queries converted to readable folder names automatically
 - Date prefixing for easy chronological sorting
-- Example: "What's the outlook for Austin?" → `2025-07-18-what-s-the-outlook-for-austin`
+- Example: "How will AI impact health care?" → `2025-07-18-how-will-ai-impact-health-care`
 
 ## 🏗️ Architecture
 
