@@ -1,0 +1,12 @@
+name: "Historical Analysis"
+agents: 4
+questions:
+  - "What are the primary sources, timeline, and key events related to this topic?"
+  - "What were the social, economic, and political contexts that shaped these events?"
+  - "How have interpretations and narratives about this topic evolved over time?"
+  - "What parallels, patterns, and lessons can we draw for contemporary issues?"
+roles:
+  - "Sources & Timeline"
+  - "Historical Context"
+  - "Evolving Narratives"
+  - "Modern Relevance"

@@ -74,6 +74,34 @@ For automation or specific settings:
 ./ccheavy.sh "Explain Docker containers" 2 text
 ```
 
+## 🎯 Pattern Examples
+
+The system automatically detects and applies specialized patterns:
+
+### Scientific Research (5 assistants)
+```bash
+./ccheavy.sh "How do mRNA vaccines work?"
+# Activates: Current Science, Methods, Controversies, Applications, Critical Analysis
+```
+
+### Policy Analysis (5 assistants)
+```bash
+./ccheavy.sh "Analyze universal basic income policy proposals"
+# Activates: Policy Landscape, Cost-Benefit, Case Studies, Implementation, Evidence
+```
+
+### Historical Analysis (4 assistants)
+```bash
+./ccheavy.sh "What led to the fall of the Roman Empire?"
+# Activates: Sources & Timeline, Context, Narratives, Modern Relevance
+```
+
+### Product/Market Analysis (5 assistants)
+```bash
+./ccheavy.sh "Analyze the electric vehicle market"
+# Activates: Market Analysis, User Research, Technical, Business Strategy, Risks
+```
+
 ## 📊 Example Research Questions
 
 Try these to see the system in action:

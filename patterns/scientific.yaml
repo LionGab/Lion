@@ -1,0 +1,14 @@
+name: "Scientific Research"
+agents: 5
+questions:
+  - "What is the current scientific understanding and recent breakthroughs in this area?"
+  - "What are the experimental methods, data, and evidence supporting current theories?"
+  - "What are the competing hypotheses, controversies, and gaps in knowledge?"
+  - "What are the practical applications and future research directions?"
+  - "What are the limitations, assumptions, and potential biases in current research?"
+roles:
+  - "Current Science & Breakthroughs"
+  - "Methods & Evidence"
+  - "Controversies & Gaps"
+  - "Applications & Future"
+  - "Critical Analysis"

@@ -93,9 +93,12 @@ cd claude-code-heavy
 ./ccheavy.sh
 # Follow the prompts:
 # - Enter your research question
+# - System detects pattern type (scientific, policy, etc.)
 # - Accept or modify suggested assistant count
 # - Choose output format
+# - Decide on dangerous mode (default: N)
 # - Confirm to proceed (default: Y)
+# - Review and optionally edit research questions
 # - Optionally auto-launch Claude Code (default: Y)
 ```
 
@@ -176,18 +179,30 @@ OUTPUT_DIR="./outputs"
 
 ## 🚀 Advanced Features
 
-### Smart Assistant Count
-The system analyzes your query to suggest optimal assistant count:
-- Keywords like "comprehensive", "detailed" → 4 assistants
-- Complex analytical queries → 3 assistants
-- Simple lookups → 2 assistants
+### Smart Pattern Detection
+The system automatically detects the type of research and applies specialized patterns:
+- **Scientific**: 5 assistants for research papers, experiments, theories
+- **Policy**: 5 assistants for legislation, regulations, government analysis  
+- **Historical**: 4 assistants for timeline, context, and modern relevance
+- **Product/Market**: 5 assistants for business, competition, user research
+- **Default**: 4 assistants for general comprehensive analysis
 
-### Pre-defined Research Patterns
-For 4-assistant queries, uses specialized perspectives:
-1. Technology & Implementation
-2. Impact & Economics
-3. Critical Analysis
-4. Verification & History
+### Customizable Research Questions
+In interactive mode:
+- Preview all research questions before starting
+- Edit any question to better fit your needs
+- Add up to 2 additional assistants (max 8 total)
+- Define custom roles for new assistants
+
+### Security Options
+- Option to use `--dangerously-skip-permissions` flag
+- Default is secure mode (recommended)
+- Only enable for trusted research tasks
+
+### Parallel Execution
+- Prompts explicitly request parallel tool calls
+- Multiple web searches execute simultaneously
+- Faster research completion
 
 ### One-Click Launch
 When you choose to auto-launch Claude Code:
