@@ -6,12 +6,14 @@ Get up and running with Claude Code Heavy in under 2 minutes!
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/claude-code-heavy
+git clone https://github.com/gtrusler/claude-code-heavy
 cd claude-code-heavy
 
 # Run setup
 ./setup.sh
 ```
+
+**Note**: You'll need Claude Code installed (`npm install -g @anthropic-ai/claude-code`) and a Claude Pro or Teams subscription is strongly recommended for best performance.
 
 ## 🎯 Your First Research (Interactive Mode)
 
@@ -75,7 +77,7 @@ For automation or specific settings:
 # With text format output
 ./ccheavy.sh "Explain Docker containers" text
 
-# With dangerous permissions (use carefully!)
+# YOLO mode
 ./ccheavy.sh "Analyze my private codebase" markdown --dangerous
 ```
 
@@ -147,12 +149,12 @@ A: No - this is Claude's decision based on optimal research strategy.
 A: Make your query more specific to guide Claude's approach.
 
 **Q: How long does research take?**
-A: Typically 15-20 minutes, depending on complexity.
+A: Typically 5-10 minutes, depending on complexity. Very complex queries might take up to 15-20 minutes.
 
 ## 🚨 Troubleshooting
 
 ### Claude Code doesn't open
-Make sure Claude Desktop is running first.
+Make sure Claude Code is installed: `npm install -g @anthropic-ai/claude-code`
 
 ### "Permission denied"
 ```bash

@@ -40,7 +40,7 @@ Claude coordinates:
 # Text format output
 ./ccheavy.sh "Compare React vs Vue frameworks" text
 
-# With dangerous permissions (for local file access)
+# YOLO mode
 ./ccheavy.sh "Analyze my project codebase" markdown --dangerous
 ```
 

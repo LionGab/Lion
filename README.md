@@ -50,9 +50,16 @@ graph TD
     C --> D[Creates Research Plan]
     D --> E[Decides Assistant Count]
     E --> F[Generates Questions]
-    F --> G[Parallel Research]
-    G --> H[Synthesis]
-    H --> I[Final Analysis]
+    F --> G[Parallel Research Phase]
+    G --> H1[RA-1 Research]
+    G --> H2[RA-2 Research]
+    G --> H3[RA-3 Research]
+    G --> H4[... RA-N Research]
+    H1 --> I[Synthesis]
+    H2 --> I
+    H3 --> I
+    H4 --> I
+    I --> J[Final Analysis]
 ```
 
 ### Process Flow
@@ -69,14 +76,15 @@ graph TD
 ## 🛠️ Installation
 
 ### Prerequisites
-- Claude Desktop installed
+- Claude Code installed (`npm install -g @anthropic-ai/claude-code`)
+- Claude Pro or Teams subscription (strongly recommended for best performance)
 - Git with worktree support (git 2.7+)
 - Unix-like environment (Mac/Linux/WSL)
 
 ### Setup
 ```bash
 # Clone and setup
-git clone https://github.com/yourusername/claude-code-heavy
+git clone https://github.com/gtrusler/claude-code-heavy
 cd claude-code-heavy
 ./setup.sh
 ```
@@ -102,7 +110,7 @@ cd claude-code-heavy
 # With text output
 ./ccheavy.sh "Explain Docker containers" text
 
-# With dangerous permissions
+# YOLO mode
 ./ccheavy.sh "Analyze my codebase" markdown --dangerous
 ```
 
@@ -119,13 +127,21 @@ outputs/
     └── final-analysis.md         # Synthesized results
 ```
 
-## 📋 Example Output
+## 📋 Example Outputs
 
-See the `examples/` directory for a complete research output on Austin's 5-year outlook, demonstrating:
-- Claude choosing to use 6 research assistants
-- Specialized roles for each assistant
-- ~11,500 total words of research
-- Professional synthesis with executive summary
+See the `examples/` directory for complete research outputs:
+
+### 1. Austin's 5-Year Outlook
+- **Query**: "What does the outlook for the next 5 years look like for Austin, TX?"
+- **Assistants**: 6 (Claude's decision based on complexity)
+- **Total Output**: ~11,500 words
+- **Key Insights**: Economic growth, tech hub evolution, infrastructure challenges
+
+### 2. AI's Impact on Healthcare  
+- **Query**: "How will AI impact healthcare?"
+- **Assistants**: 5 (covering different healthcare domains)
+- **Focus Areas**: Diagnostics, drug discovery, patient care, ethics, implementation
+- **Comprehensive analysis** of transformation across the industry
 
 Quick examples of queries Claude handles well:
 
@@ -175,17 +191,10 @@ The script is intentionally minimal. Claude handles:
 - Dynamic adaptation beats static patterns
 - Optimal resource allocation
 
-## 🎯 Best Practices
-
-1. **Trust Claude's Judgment**: It will analyze and adapt to your query
-2. **Be Specific**: More detailed queries get better research plans
-3. **Use Interactive Mode**: Easier than command line
-4. **Save Important Results**: All outputs timestamped and organized
-
 ## 🐛 Troubleshooting
 
 ### "Command not found: claude"
-Make sure Claude Desktop is installed and in your PATH
+Make sure Claude Code is installed: `npm install -g @anthropic-ai/claude-code`
 
 ### "Git worktree error"
 ```bash
@@ -195,21 +204,9 @@ sudo apt-get update && sudo apt-get upgrade git  # Linux
 ```
 
 ### Research seems slow
-- Normal research takes 15-20 minutes
-- Complex queries may take longer
+- Normal research takes 5-10 minutes
+- Complex queries may take up to 15-20 minutes
 - Check if web searches are working
-
-## 🤝 Comparison with make-it-heavy
-
-| Feature | make-it-heavy | claude-code-heavy |
-|---------|---------------|-------------------|
-| Intelligence | Pre-defined patterns | Claude decides everything |
-| Agents | Fixed Python threads | Dynamic git worktrees |
-| Questions | Template-based | Query-specific generation |
-| Tool Access | Custom tools | Native Claude + web search |
-| API Required | Yes ($$$) | No (free with Claude) |
-| Setup Time | ~5 minutes | ~30 seconds |
-| Adaptability | Limited | Fully dynamic |
 
 ## 🤝 Contributing
 
@@ -220,10 +217,14 @@ sudo apt-get update && sudo apt-get upgrade git  # Linux
 
 ## 📄 License
 
-MIT - Inspired by make-it-heavy's approach but reimagined with Claude's intelligence at the core.
+MIT License with Commercial Attribution Requirement
+
+**For products with 100K+ users**: Please include attribution to Graydon Trusler and mention the "Claude Code Heavy" framework in your documentation or credits.
+
+See [LICENSE](LICENSE) file for full details.
 
 ## 🙏 Acknowledgments
 
 - Inspired by [make-it-heavy](https://github.com/Doriandarko/make-it-heavy) by Pietro Schirano
+- Inspired by Grok Heavy mode
 - Built on Claude Code by Anthropic
-- Simplified to let AI handle the complexity
