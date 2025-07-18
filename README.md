@@ -2,8 +2,6 @@
 
 A powerful multi-agent research system using Claude Code to deliver comprehensive, multi-perspective analysis through intelligent orchestration. Inspired by Grok's heavy mode and make-it-heavy.
 
-**⚠️ IMPORTANT: Read [WHICH-SCRIPT.md](WHICH-SCRIPT.md) to understand which script to use!**
-
 ## 🚀 What is Claude Code Heavy?
 
 Claude Code Heavy orchestrates multiple Claude instances in parallel to:
@@ -15,48 +13,48 @@ Claude Code Heavy orchestrates multiple Claude instances in parallel to:
 
 ## 🎯 Quick Start
 
-**⚠️ IMPORTANT: Use `heavy-interactive.sh` for standard Claude Code!**
-
 ```bash
 # Clone the repo
 git clone https://github.com/yourusername/claude-code-heavy
 cd claude-code-heavy
 
-# Make scripts executable
-chmod +x heavy-interactive.sh
+# Make script executable
+chmod +x heavy.sh
 
-# Run the INTERACTIVE version (works with standard Claude Code)
-./heavy-interactive.sh "What would a city designed entirely by AI optimize for?"
+# Run your research
+./heavy.sh "How do we solve the global water supply issue?"
 ```
 
-**Note on Scripts:**
-- ✅ `heavy-interactive.sh` - Works with standard Claude Code installation
-- ❌ `heavy.sh` - Requires API key setup (see API Mode section below)
+This creates:
+- 4 Research Assistants (RA1-RA4) with specialized questions
+- Git worktrees for parallel execution
+- Markdown output by default (use `./heavy.sh "query" 4 text` for text format)
+- Organized output in `./outputs/2025-07-18-Your-Query/`
 
 ## 📖 How It Works
 
 ```mermaid
 graph TD
-    A[User Query] --> B[CEO: Question Generation]
-    B --> C[Generate 4 Specialized Questions]
-    C --> D[President: Coordinate Agents]
-    D --> E[VP1: Research]
-    D --> F[VP2: Analysis]
-    D --> G[VP3: Alternatives]
-    D --> H[VP4: Verification]
-    E --> I[CEO: Synthesis]
+    A[User Query] --> B[Generate Research Questions]
+    B --> C[Create 4 Specialized Questions]
+    C --> D[Claude Code Coordinates]
+    D --> E[RA1: Technology Research]
+    D --> F[RA2: Impact Analysis]
+    D --> G[RA3: Critical Review]
+    D --> H[RA4: Fact Checking]
+    E --> I[Synthesis]
     F --> I
     G --> I
     H --> I
-    I --> J[Comprehensive Answer]
+    I --> J[Comprehensive Analysis]
 ```
 
-### Architecture
+### Research Process
 
-- **Chairman**: You (provides the query)
-- **CEO**: Claude Desktop (generates questions, synthesizes results)
-- **President**: Claude Code (coordinates VPs)
-- **VPs**: Sub-agents (parallel research)
+1. **Query Input**: You provide a research question
+2. **Question Generation**: System creates specialized angles
+3. **Parallel Research**: Claude Code coordinates Research Assistants
+4. **Synthesis**: Findings combined into comprehensive analysis
 
 ## 🛠️ Installation
 
@@ -77,57 +75,49 @@ cd claude-code-heavy
 ./setup.sh
 ```
 
-## 🎮 Usage Modes
+## 🎮 Usage
 
-### Interactive Mode (Recommended)
-Full parallel multi-agent analysis with human orchestration:
+### Default Mode (4 Research Assistants)
 ```bash
-./heavy-interactive.sh "Analyze the impact of AI on software development"
+./heavy.sh "Analyze the impact of AI on software development"
 ```
 
 ### Custom Assistant Count
-Run with more assistants for deeper analysis:
 ```bash
-./heavy-interactive.sh "Complex quantum computing question" 6
+./heavy.sh "Complex quantum computing question" 6
 ```
 
-### Minimal Mode
-For simpler queries with fewer assistants:
+### Text Output Format
 ```bash
-./heavy-interactive.sh "What is Python?" 2
+./heavy.sh "What is Python?" 2 text
 ```
 
-## 🔑 API Mode (Advanced Users Only)
-
-If you have an Anthropic API key and want fully automated operation:
-
-1. Set up your API key:
-```bash
-export ANTHROPIC_API_KEY="your-key-here"
+### Output Structure
+```
+outputs/
+└── 2025-07-18-Your-Query/
+    ├── coordination-prompt.md
+    ├── assistants/
+    │   ├── ra-1-findings.md
+    │   ├── ra-2-findings.md
+    │   ├── ra-3-findings.md
+    │   └── ra-4-findings.md
+    └── final-analysis.md
 ```
 
-2. Configure Claude Code for API access (see Anthropic docs)
-
-3. Use the automated script:
-```bash
-./heavy.sh "Your question" 4  # Requires API setup!
-```
-
-**Note**: Most users should use `heavy-interactive.sh` instead.
-
-## 📋 Example Outputs
+## 📋 Example Output
 
 <details>
 <summary>Example: "What would a city designed entirely by AI optimize for?"</summary>
 
-**Generated Questions:**
-1. VP1: Current real-world examples of AI in urban planning
-2. VP2: What metrics would AI optimize for vs human priorities
-3. VP3: Human needs that AI might miss or ignore
-4. VP4: Verify claims about smart cities and human satisfaction
+**Research Questions:**
+- RA1: Current real-world examples of AI in urban planning
+- RA2: What metrics would AI optimize for vs human priorities
+- RA3: Human needs that AI might miss or ignore
+- RA4: Verify claims about smart cities and human satisfaction
 
 **Synthesized Result:**
-AI would create a 98% efficient city with zero traffic jams but potentially zero human joy...
+AI would create a 98% efficient city with zero traffic jams but potentially zero human joy. While Singapore shows 15% traffic reduction with AI, residents of "perfect" cities like Brasília flee to chaotic neighborhoods for actual life...
 </details>
 
 ## 🔧 Configuration
@@ -146,15 +136,15 @@ SYNTHESIS_STYLE="comprehensive"  # or "concise", "academic"
 
 ## 🤝 Comparison with make-it-heavy
 
-| Feature | make-it-heavy | claude-code-heavy (interactive) | claude-code-heavy (API) |
-|---------|---------------|--------------------------------|-------------------------|
-| Parallel Agents | ✅ Python threads | ✅ Manual orchestration | ✅ Git worktrees |
-| Question Generation | ✅ AI-powered | ✅ AI-powered | ✅ AI-powered |
-| Tool Access | ✅ Custom tools | ✅ Native + MCP | ✅ Native + MCP |
-| API Required | ✅ OpenRouter | ❌ No API needed | ✅ Anthropic API |
-| Setup Time | ~5 minutes | ~30 seconds | ~10 minutes |
-| Human Involvement | Minimal | Active orchestrator | Watch it run |
-| Works Out of Box | ❌ Need API key | ✅ Yes! | ❌ Need API key |
+| Feature | make-it-heavy | claude-code-heavy |
+|---------|---------------|-------------------|
+| Parallel Agents | ✅ Python threads | ✅ Git worktrees |
+| Question Generation | ✅ AI-powered | ✅ Pre-configured |
+| Tool Access | ✅ Custom tools | ✅ Native + MCP |
+| API Required | ✅ OpenRouter | ❌ No API needed |
+| Setup Time | ~5 minutes | ~30 seconds |
+| Context Window | ⚠️ Model dependent | ✅ 200k tokens |
+| Real Browser | ❌ | ✅ Full access |
 
 ## 🚀 Advanced Features
 

@@ -1,12 +1,6 @@
 #!/bin/bash
-# heavy.sh - AUTOMATED Claude Code Heavy orchestrator
-# ⚠️  REQUIRES API KEY CONFIGURATION - Won't work with standard Claude Code!
-# 
-# This script attempts to use 'claude -p' (programmatic mode) which requires:
-# 1. Anthropic API key set up
-# 2. Claude Code configured for API access
-#
-# For most users: Use heavy-interactive.sh instead!
+# heavy.sh - Claude Code Heavy Research System
+# Parallel research orchestration using git worktrees
 
 set -euo pipefail
 
@@ -15,77 +9,85 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-MAGENTA='\033[0;35m'
 CYAN='\033[0;36m'
 NC='\033[0m' # No Color
 
 # Configuration
-DEFAULT_AGENTS=4
+DEFAULT_ASSISTANTS=4
 QUERY="$1"
-AGENT_COUNT="${2:-$DEFAULT_AGENTS}"
-OUTPUT_DIR="./outputs/$(date +%Y%m%d_%H%M%S)"
-TEMPLATES_DIR="./templates"
+ASSISTANT_COUNT="${2:-$DEFAULT_ASSISTANTS}"
+OUTPUT_FORMAT="${3:-markdown}"  # markdown or text
 
 # Validate input
 if [ -z "$QUERY" ]; then
     echo -e "${RED}Error: No query provided${NC}"
-    echo "Usage: $0 \"Your research question\" [number_of_agents]"
-    echo "Example: $0 \"What would a city designed entirely by AI optimize for?\" 4"
+    echo "Usage: $0 \"Your research question\" [assistants] [format]"
+    echo "Example: $0 \"How do we solve the global water supply issue?\" 4 markdown"
     exit 1
 fi
 
-# Create output directory
+# Create output directory with date and shortened query
+SAFE_QUERY=$(echo "$QUERY" | cut -c1-30 | sed 's/[^a-zA-Z0-9 ]//g' | sed 's/ /-/g')
+OUTPUT_DIR="./outputs/$(date +%Y-%m-%d)-${SAFE_QUERY}"
 mkdir -p "$OUTPUT_DIR"
-mkdir -p "$TEMPLATES_DIR"
+mkdir -p "$OUTPUT_DIR/assistants"
 
 # Banner
 echo -e "${CYAN}"
 echo "╔═══════════════════════════════════════╗"
-echo "║      Claude Code Heavy Analysis       ║"
+echo "║   Claude Code Heavy Research System   ║"
 echo "╚═══════════════════════════════════════╝"
 echo -e "${NC}"
 echo -e "${YELLOW}Query:${NC} $QUERY"
-echo -e "${YELLOW}Agents:${NC} $AGENT_COUNT"
+echo -e "${YELLOW}Research Assistants:${NC} $ASSISTANT_COUNT"
 echo -e "${YELLOW}Output:${NC} $OUTPUT_DIR"
 echo
 
-# Phase 1: Question Generation
-echo -e "${BLUE}══ Phase 1: Question Generation ══${NC}"
-echo "CEO generating specialized research questions..."
-
-cat > "$OUTPUT_DIR/generate-questions.txt" << EOF
-For the query: "$QUERY"
-
-Generate exactly $AGENT_COUNT specialized research questions that together provide comprehensive coverage.
-Each question should approach from a different angle:
-
-1. Factual/Research - Direct information gathering
-2. Analytical/Metrics - Data, measurements, impact analysis  
-3. Critical/Alternative - Contrarian views, limitations, criticisms
-4. Verification/Cross-check - Fact-checking, source validation
-5. Historical/Context - Background, evolution, timeline
-6. Future/Implications - Predictions, potential developments
-
-Output in this exact format:
-QUESTION_1: [question]
-QUESTION_2: [question]
-...
-EOF
-
-# Use Claude to generate questions
-claude -p "$(cat $OUTPUT_DIR/generate-questions.txt)" > "$OUTPUT_DIR/questions.txt" 2>&1
-
-echo -e "${GREEN}✓ Questions generated${NC}"
+# Generate research questions
+echo -e "${BLUE}══ Generating Research Questions ══${NC}"
 echo
-cat "$OUTPUT_DIR/questions.txt"
-echo
-# Phase 2: Setup Agent Worktrees
-echo -e "${BLUE}══ Phase 2: Setting Up Agent Workspaces ══${NC}"
 
-# Create worktrees for agents
-for i in $(seq 1 "$AGENT_COUNT"); do
-    BRANCH="heavy-agent-$i"
-    WORKTREE="worktrees/agent-$i"
+# Pre-defined questions for 4-assistant pattern
+case "$ASSISTANT_COUNT" in
+    4)
+        QUESTIONS=(
+            "What are the current technologies, methods, and real-world implementations addressing this issue?"
+            "What is the scale, impact, and cost-benefit analysis of different solutions?"
+            "What are the failures, barriers, and unintended consequences of proposed solutions?"
+            "Which claims need fact-checking, and what historical precedents can guide us?"
+        )
+        ROLES=(
+            "Technology & Implementation"
+            "Impact & Economics"
+            "Critical Analysis"
+            "Verification & History"
+        )
+        ;;
+    *)
+        # Generic pattern for any number
+        QUESTIONS=()
+        ROLES=()
+        for i in $(seq 1 "$ASSISTANT_COUNT"); do
+            QUESTIONS+=("Research aspect $i of: $QUERY")
+            ROLES+=("Research Focus $i")
+        done
+        ;;
+esac
+
+# Display the research plan
+echo -e "${GREEN}Research Plan Created!${NC}"
+echo
+for i in $(seq 0 $((ASSISTANT_COUNT - 1))); do
+    echo -e "${CYAN}RA$((i+1)) - ${ROLES[$i]}${NC}"
+    echo "Question: ${QUESTIONS[$i]}"
+    echo
+done
+
+# Create worktrees
+echo -e "${BLUE}══ Setting Up Workspaces ══${NC}"
+for i in $(seq 1 "$ASSISTANT_COUNT"); do
+    BRANCH="ra-$i-$(date +%s)"
+    WORKTREE="worktrees/ra-$i"
     
     # Clean up if exists
     if git worktree list | grep -q "$WORKTREE"; then
@@ -93,179 +95,109 @@ for i in $(seq 1 "$AGENT_COUNT"); do
     fi
     
     # Create new worktree
-    git worktree add -b "$BRANCH" "$WORKTREE" 2>/dev/null || git worktree add "$WORKTREE" "$BRANCH"
-    echo -e "${GREEN}✓ Created workspace for Agent $i${NC}"
+    git worktree add -b "$BRANCH" "$WORKTREE" >/dev/null 2>&1
+    echo -e "${GREEN}✓ Created workspace for RA$i${NC}"
 done
 
-# Phase 3: Create Agent Instructions
-echo -e "${BLUE}══ Phase 3: Creating Agent Instructions ══${NC}"
+# Create the coordination prompt
+if [ "$OUTPUT_FORMAT" = "markdown" ]; then
+    PROMPT_FILE="$OUTPUT_DIR/coordination-prompt.md"
+    cat > "$PROMPT_FILE" << EOF
+# Research Coordination: $QUERY
 
-# Extract questions
-QUESTIONS=()
-while IFS= read -r line; do
-    if [[ $line =~ QUESTION_[0-9]+:\ (.+) ]]; then
-        QUESTIONS+=("${BASH_REMATCH[1]}")
-    fi
-done < "$OUTPUT_DIR/questions.txt"
+You are coordinating a parallel research team.
 
-# Create instruction for each agent
-for i in $(seq 1 "$AGENT_COUNT"); do
-    QUESTION="${QUESTIONS[$((i-1))]:-Research question $i}"
-    
-    cat > "$OUTPUT_DIR/agent-$i-prompt.txt" << EOF
-You are Research Agent VP-$i conducting specialized research.
+## Research Assistants (RA1-$ASSISTANT_COUNT)
+Each has their own workspace in \`worktrees/ra-N\`
 
-Your research question: $QUESTION
-
-Instructions:
-1. Use web_search extensively to gather information
-2. Verify sources and cross-reference claims
-3. Look for specific examples and evidence
-4. Consider multiple perspectives
-5. Document your findings in detail
-
-Output your complete findings to: $OUTPUT_DIR/vp-$i-findings.md
-
-Format your output as:
-# VP-$i Research Findings
-
-## Research Question
-$QUESTION
-
-## Key Findings
-[Your detailed findings]
-
-## Sources
-[List all sources used]
-
-## Summary
-[Concise summary of discoveries]
+## Research Questions
 EOF
-    echo -e "${GREEN}✓ Created instructions for Agent $i${NC}"
-done
-# Phase 4: Launch Parallel Agents
-echo -e "${BLUE}══ Phase 4: Launching Parallel Research ══${NC}"
-echo "Starting $AGENT_COUNT agents in parallel..."
-echo
 
-# Function to show progress
-show_progress() {
-    local pid=$1
-    local agent=$2
-    local spinner=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
-    local spin_i=0
-    
-    while kill -0 $pid 2>/dev/null; do
-        printf "\r${CYAN}Agent $agent: ${spinner[$spin_i]} Working...${NC}"
-        spin_i=$(( (spin_i + 1) % 10 ))
-        sleep 0.1
+    # Add specific questions
+    for i in $(seq 0 $((ASSISTANT_COUNT - 1))); do
+        cat >> "$PROMPT_FILE" << EOF
+
+### RA$((i+1)) - ${ROLES[$i]}
+- **Question**: ${QUESTIONS[$i]}
+- **Workspace**: \`worktrees/ra-$((i+1))\`
+- **Output**: \`$OUTPUT_DIR/assistants/ra-$((i+1))-findings.md\`
+EOF
     done
-    
-    printf "\r${GREEN}Agent $agent: ✓ Complete    ${NC}\n"
-}
 
-# Launch agents
-PIDS=()
-for i in $(seq 1 "$AGENT_COUNT"); do
-    (
-        cd "worktrees/agent-$i"
-        claude --no-conversation-file -p "$(cat $OUTPUT_DIR/agent-$i-prompt.txt)" > "$OUTPUT_DIR/agent-$i.log" 2>&1
-    ) &
-    
-    PID=$!
-    PIDS+=($PID)
-    show_progress $PID $i &
-done
+    # Add instructions
+    cat >> "$PROMPT_FILE" << EOF
 
-# Wait for all agents
-echo
-echo "Waiting for all agents to complete..."
-for pid in "${PIDS[@]}"; do
-    wait $pid
-done
+## Coordination Instructions
+1. Visit each RA workspace using \`cd worktrees/ra-N\`
+2. Have them research their question using \`web_search\`
+3. Save findings to their output file
+4. After all complete, synthesize into \`$OUTPUT_DIR/final-analysis.md\`
 
-echo
-echo -e "${GREEN}✓ All agents completed${NC}"
+## Research Guidelines
+- Use web_search extensively
+- Focus on recent, credible sources
+- Document all sources
+- Stay focused on assigned angle
+- Work in parallel (switch between RAs frequently)
 
-# Phase 5: Synthesis
-echo
-echo -e "${BLUE}══ Phase 5: Synthesis ══${NC}"
-echo "CEO synthesizing all findings..."
+Start the research!
+EOF
+else
+    # Text format
+    PROMPT_FILE="$OUTPUT_DIR/coordination-prompt.txt"
+    cat > "$PROMPT_FILE" << EOF
+Research Coordination: $QUERY
 
-# Create synthesis prompt
-cat > "$OUTPUT_DIR/synthesis-prompt.txt" << EOF
-You are the CEO synthesizing research from $AGENT_COUNT specialized agents.
+You are coordinating a parallel research team.
 
-Read all agent findings and create a comprehensive "Grok Heavy" style analysis that:
-1. Integrates all perspectives
-2. Highlights agreements and contradictions
-3. Provides nuanced, multi-faceted understanding
-4. Maintains high information density
-5. Includes all important details from each agent
+RESEARCH ASSISTANTS (RA1-$ASSISTANT_COUNT):
+Each has their own workspace in worktrees/ra-N
 
-Agent findings files:
+RESEARCH QUESTIONS:
 EOF
 
-# Add all findings files
-for i in $(seq 1 "$AGENT_COUNT"); do
-    echo "- $OUTPUT_DIR/vp-$i-findings.md" >> "$OUTPUT_DIR/synthesis-prompt.txt"
-done
+    for i in $(seq 0 $((ASSISTANT_COUNT - 1))); do
+        cat >> "$PROMPT_FILE" << EOF
 
-cat >> "$OUTPUT_DIR/synthesis-prompt.txt" << EOF
-
-Create a comprehensive synthesis and save to: $OUTPUT_DIR/final-analysis.md
-
-Format as:
-# Comprehensive Analysis: $QUERY
-
-## Executive Summary
-[High-level overview integrating all perspectives]
-
-## Detailed Findings
-[Synthesized findings organized by theme, not by agent]
-
-## Key Insights
-[Most important discoveries across all agents]
-
-## Areas of Agreement
-[What all agents confirmed]
-
-## Contradictions & Nuances
-[Where agents found different information]
-
-## Conclusion
-[Final unified perspective]
+RA$((i+1)) - ${ROLES[$i]}:
+Question: ${QUESTIONS[$i]}
+Workspace: worktrees/ra-$((i+1))
+Output: $OUTPUT_DIR/assistants/ra-$((i+1))-findings.md
 EOF
+    done
 
-# Run synthesis
-claude -p "$(cat $OUTPUT_DIR/synthesis-prompt.txt)" > "$OUTPUT_DIR/synthesis.log" 2>&1
+    cat >> "$PROMPT_FILE" << EOF
 
-echo -e "${GREEN}✓ Synthesis complete${NC}"
+COORDINATION INSTRUCTIONS:
+1. Visit each RA workspace
+2. Have them research using web_search
+3. Save findings to output files
+4. Synthesize into $OUTPUT_DIR/final-analysis.md
 
-# Phase 6: Display Results
-echo
-echo -e "${CYAN}══ Analysis Complete ══${NC}"
-echo
-echo -e "${YELLOW}Final analysis saved to:${NC}"
-echo "$OUTPUT_DIR/final-analysis.md"
-echo
-echo -e "${YELLOW}All outputs available in:${NC}"
-echo "$OUTPUT_DIR/"
-echo
-
-# Show final analysis
-if [ -f "$OUTPUT_DIR/final-analysis.md" ]; then
-    echo -e "${BLUE}══ Final Analysis Preview ══${NC}"
-    head -20 "$OUTPUT_DIR/final-analysis.md"
-    echo
-    echo -e "${CYAN}[... see full analysis in output file ...]${NC}"
+Start the research!
+EOF
 fi
 
-# Cleanup
+# Display launch instructions
 echo
-echo -e "${YELLOW}Cleaning up worktrees...${NC}"
-for i in $(seq 1 "$AGENT_COUNT"); do
-    git worktree remove "worktrees/agent-$i" --force 2>/dev/null || true
-done
-
-echo -e "${GREEN}✓ Done!${NC}"
+echo -e "${CYAN}══ Ready to Launch ══${NC}"
+echo
+echo -e "${YELLOW}To start:${NC}"
+echo
+echo "1. Run: ${GREEN}claude --no-conversation-file${NC}"
+echo
+echo "2. Paste the coordination prompt from:"
+echo "   ${BLUE}$PROMPT_FILE${NC}"
+echo
+if [ "$OUTPUT_FORMAT" = "markdown" ]; then
+    echo "Preview:"
+    echo "────────────────────────────────"
+    head -20 "$PROMPT_FILE"
+    echo "..."
+    echo "────────────────────────────────"
+else
+    cat "$PROMPT_FILE"
+fi
+echo
+echo -e "${GREEN}Research will complete in ~15-20 minutes${NC}"
+echo -e "${YELLOW}All outputs saved to: $OUTPUT_DIR/${NC}"

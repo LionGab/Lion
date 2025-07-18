@@ -110,7 +110,7 @@ The best questions for this system:
 
 Try one with:
 ```bash
-./heavy-interactive.sh "Your fascinating question here"
+./heavy.sh "Your fascinating question here"
 ```
 
 Then watch as your Research Assistants explore different angles while you synthesize their findings into comprehensive understanding!
