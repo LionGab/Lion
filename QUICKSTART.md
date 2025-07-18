@@ -30,34 +30,39 @@ You'll see:
 What would you like to research?
 > How can cities reduce traffic congestion?
 
-Based on your query, I suggest using 3 research assistants.
-How many would you like to use? (2-6, or press Enter for 3)
+Output format? (markdown/text, or press Enter for markdown)
 > [Enter]
 
-Output format? (markdown/text, or press Enter for markdown)
+Use --dangerously-skip-permissions flag?
+Warning: This bypasses security checks. Only use if you trust the research.
+Enable dangerous mode? (y/N)
 > [Enter]
 
 Ready to start research with:
   📝 Query: How can cities reduce traffic congestion?
-  👥 Assistants: 3
   📄 Format: markdown
+  ⚠️  Dangerous mode: false
 
 Proceed? (Y/n)
 > [Enter]
 ```
 
-Then choose to auto-launch Claude:
+Then:
 ```
-✅ Setup complete!
+Setting Up Research Environment
+Pre-creating 8 research workspaces...
+✓ Created workspace for RA1
+✓ Created workspace for RA2
+...
+✓ Created workspace for RA8
+All workspaces ready! Claude will decide how many to use.
 
 Would you like to launch Claude Code with the prompt? (Y/n)
 > [Enter]
 
 Launching Claude Code...
-Research will begin automatically!
+Claude will analyze your query and orchestrate the research!
 ```
-
-Claude Code opens with the prompt pre-filled and starts executing immediately!
 
 ## 📝 Command Line Mode
 
@@ -67,49 +72,38 @@ For automation or specific settings:
 # Basic usage
 ./ccheavy.sh "What are the latest advances in quantum computing?"
 
-# With 6 assistants for complex topics
-./ccheavy.sh "Analyze global economic impacts of climate change" 6
+# With text format output
+./ccheavy.sh "Explain Docker containers" text
 
-# Text format output
-./ccheavy.sh "Explain Docker containers" 2 text
+# With dangerous permissions (use carefully!)
+./ccheavy.sh "Analyze my private codebase" markdown --dangerous
 ```
 
-## 🎯 Pattern Examples
+## 🧠 What Claude Does
 
-The system automatically detects and applies specialized patterns:
+Once launched, Claude will:
 
-### Scientific Research (5 assistants)
-```bash
-./ccheavy.sh "How do mRNA vaccines work?"
-# Activates: Current Science, Methods, Controversies, Applications, Critical Analysis
-```
+1. **Analyze Your Query**: Understand scope and complexity
+2. **Create Research Plan**: Decide how many assistants (2-8) and their questions
+3. **Execute Research**: Run parallel searches and analysis
+4. **Synthesize Results**: Combine all findings into comprehensive output
 
-### Policy Analysis (5 assistants)
-```bash
-./ccheavy.sh "Analyze universal basic income policy proposals"
-# Activates: Policy Landscape, Cost-Benefit, Case Studies, Implementation, Evidence
-```
+## 📊 Example Research Process
 
-### Historical Analysis (4 assistants)
-```bash
-./ccheavy.sh "What led to the fall of the Roman Empire?"
-# Activates: Sources & Timeline, Context, Narratives, Modern Relevance
-```
+For "How can cities reduce traffic congestion?", Claude might:
 
-### Product/Market Analysis (5 assistants)
-```bash
-./ccheavy.sh "Analyze the electric vehicle market"
-# Activates: Market Analysis, User Research, Technical, Business Strategy, Risks
-```
+1. **Decide on 4 assistants**:
+   - RA1: Current solutions and technologies
+   - RA2: Economic and policy approaches
+   - RA3: Urban planning perspectives
+   - RA4: Case studies and future trends
 
-## 📊 Example Research Questions
+2. **Research in parallel** using web search
 
-Try these to see the system in action:
-
-1. **Technology**: "How do neural networks actually work?"
-2. **Analysis**: "Compare renewable energy sources for homes"
-3. **Complex**: "What would happen if we eliminated all mosquitoes?"
-4. **Current Events**: "Analyze the impact of remote work on cities"
+3. **Create outputs**:
+   - `research-plan.md` - The strategy
+   - `assistants/ra-1-findings.md` through `ra-4-findings.md`
+   - `final-analysis.md` - Complete synthesis
 
 ## 📁 Understanding Your Output
 
@@ -119,50 +113,41 @@ After ~15-20 minutes, check your results:
 # List all research outputs
 ls -la outputs/
 
+# View Claude's research plan
+cat outputs/2025-07-18-reduce-traffic-congestion/research-plan.md
+
 # View the final analysis
 cat outputs/2025-07-18-reduce-traffic-congestion/final-analysis.md
 ```
 
-Output structure:
-```
-outputs/2025-07-18-reduce-traffic-congestion/
-├── coordination-prompt.md    # The prompt used
-├── assistants/
-│   ├── ra-1-findings.md     # Technology research
-│   ├── ra-2-findings.md     # Impact analysis
-│   └── ra-3-findings.md     # Critical review
-└── final-analysis.md        # Synthesized insights
-```
-
 ## 💡 Pro Tips
 
-1. **Let the system guide you**: Interactive mode suggests optimal settings
-2. **Use auto-launch**: Much easier than copy-pasting prompts
-3. **Start simple**: Try a basic query first to see how it works
-4. **Watch the progress**: Claude shows what each assistant is researching
-5. **Save good prompts**: The coordination prompts can be reused
+1. **Let Claude decide**: It knows how many assistants to use
+2. **Be specific**: "traffic congestion in large cities" > "traffic"
+3. **Watch the magic**: Claude shows its thinking as it works
+4. **Save good research**: Outputs are timestamped and organized
 
 ## 🔍 Monitoring Progress
 
 While Claude Code runs, you'll see:
+- The research plan being created
 - Which assistant is currently researching
 - What sources they're finding
-- Progress through the research phases
-- Real-time synthesis as it happens
+- Progress through synthesis
 
 ## ❓ Common Questions
 
-**Q: Why not fully automated?**
-A: Interactive mode gives you full Claude Code features without API costs, larger context windows, and real-time monitoring.
+**Q: How many assistants will Claude use?**
+A: Claude decides based on query complexity (usually 2-6).
+
+**Q: Can I specify the number of assistants?**
+A: No - this is Claude's decision based on optimal research strategy.
+
+**Q: What if I want specific research angles?**
+A: Make your query more specific to guide Claude's approach.
 
 **Q: How long does research take?**
-A: Typically 15-20 minutes for 4 assistants, depending on query complexity.
-
-**Q: Can I stop and resume?**
-A: Yes, all work is saved in git worktrees. You can stop and continue later.
-
-**Q: What if Claude Code closes?**
-A: Just re-run with the same query - worktrees persist the state.
+A: Typically 15-20 minutes, depending on complexity.
 
 ## 🚨 Troubleshooting
 
@@ -182,9 +167,9 @@ git --version
 
 ## 🎉 Next Steps
 
-1. Try different query types to see various research patterns
-2. Experiment with different assistant counts (2-6)
-3. Check out `patterns/` for specialized research templates
-4. Read `ADVANCED.md` for power user features
+1. Try different types of queries to see Claude adapt
+2. Compare how Claude handles scientific vs business queries
+3. Save interesting research plans for reference
+4. Read the final analyses to see synthesis in action
 
 Happy researching! 🔬

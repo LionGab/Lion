@@ -1,267 +1,232 @@
-# Advanced Usage
+# Advanced Usage Guide
 
-## Custom Research Patterns
+## 🧠 Understanding Claude's Orchestration
 
-### Creating Your Own Pattern
+Claude Code Heavy is designed to give Claude full control over the research process. Here's what happens behind the scenes:
 
-1. Create a YAML file in `patterns/`:
-```yaml
-name: "Security Audit"
-agents: 5
-questions:
-  - "Known vulnerabilities and CVEs?"
-  - "Attack surface analysis?"
-  - "Best practices compliance?"
-  - "Incident history and responses?"
-  - "Mitigation strategies?"
-```
+### 1. Query Analysis
+Claude evaluates:
+- Scope and complexity of the question
+- Type of research needed (technical, historical, analytical, etc.)
+- Optimal number of research assistants
+- Best angles to approach the topic
 
-2. Use it:
+### 2. Dynamic Planning
+Claude creates a custom research plan including:
+- Number of assistants (2-8)
+- Specific research questions for each
+- Assigned roles and perspectives
+- Research methodology
+
+### 3. Parallel Execution
+Claude coordinates:
+- Multiple web searches simultaneously
+- Different research angles in parallel
+- Efficient workspace switching
+- Progress monitoring
+
+## 🛠️ Command Line Options
+
+### Basic Syntax
 ```bash
-./ccheavy.sh --pattern security "Analyze security of Kubernetes"
+./ccheavy.sh "query" [format] [--dangerous]
 ```
 
-## Integration with CCCEO Workflow
-
-### As a Research Phase
-
-Before creating issues, use heavy analysis:
+### Examples
 ```bash
-# Research phase
-./ccheavy.sh "Research best practices for authentication in Next.js 14"
+# Default markdown output
+./ccheavy.sh "Analyze the impact of AI on education"
 
-# Use findings to create issues
-claude-desktop: "Create 10 issues based on heavy analysis findings"
+# Text format output
+./ccheavy.sh "Compare React vs Vue frameworks" text
+
+# With dangerous permissions (for local file access)
+./ccheavy.sh "Analyze my project codebase" markdown --dangerous
 ```
 
-### For Architecture Decisions
+## 🔒 Security Considerations
 
+### Dangerous Mode
+The `--dangerously-skip-permissions` flag:
+- Allows Claude to access local files
+- Enables system command execution
+- Should only be used for trusted tasks
+- Default is OFF for safety
+
+### When to Use Dangerous Mode
+- Analyzing local codebases
+- Processing private documents
+- System administration tasks
+- Internal company research
+
+### When NOT to Use
+- General web research
+- Public information gathering
+- Untrusted queries
+- Shared environments
+
+## 📊 Output Analysis
+
+### Research Plan (`research-plan.md`)
+Claude's strategy document includes:
+- Query interpretation
+- Number of assistants and rationale
+- Research questions for each assistant
+- Expected outcomes
+
+### Assistant Findings (`assistants/ra-N-findings.md`)
+Each assistant produces:
+- 500-1000 words of focused research
+- Source citations
+- Key insights for their angle
+- Relevant data and examples
+
+### Final Analysis (`final-analysis.md`)
+The synthesis includes:
+- Executive summary
+- Integrated findings from all assistants
+- Cross-referenced insights
+- Conclusions and recommendations
+- Source attributions
+
+## 🎯 Optimizing Your Queries
+
+### Be Specific
 ```bash
-# Deep dive before choosing
-./ccheavy.sh "Compare PostgreSQL vs DynamoDB for our use case" 6
+# Good
+"Analyze the environmental impact of lithium mining for EV batteries"
 
-# Informed decision making
-outputs/*/final-analysis.md → architectural-decisions.md
+# Better
+"Compare environmental impacts of lithium mining in Chile vs Australia, focusing on water usage and ecosystem damage"
 ```
 
-## Automation Patterns
-
-### Scheduled Research
-
+### Include Context
 ```bash
-# Daily AI news digest
-0 9 * * * cd ~/claude-code-heavy && ./ccheavy.sh "Latest AI developments in last 24 hours" 3
+# Good
+"Evaluate remote work policies"
 
-# Weekly competitor analysis
-0 10 * * 1 cd ~/claude-code-heavy && ./ccheavy.sh "What shipped at major AI companies this week" 4
+# Better
+"Evaluate remote work policies for tech startups with 50-200 employees in 2025"
 ```
 
-### CI/CD Integration
-
-```yaml
-# .github/workflows/research.yml
-name: Architecture Research
-on:
-  issues:
-    types: [labeled]
-
-jobs:
-  research:
-    if: contains(github.event.label.name, 'needs-research')
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - run: |
-          ./ccheavy.sh "${{ github.event.issue.title }}" 4
-          # Upload findings as artifact
-```
-
-## Performance Optimization
-
-### Caching Agent Responses
-
+### Specify Outcomes
 ```bash
-# Enable caching (reduces duplicate searches)
-export CLAUDE_CACHE_DIR="./cache"
-./ccheavy.sh "Cached query" 4
+# Good
+"Research blockchain applications"
+
+# Better
+"Research blockchain applications in supply chain management with ROI analysis"
 ```
 
-### Parallel Efficiency
+## 🔄 Workflow Integration
 
+### Continuous Research
+Create a research pipeline:
 ```bash
-# Optimal agent counts by query type
-Simple facts: 2-3 agents
-Standard research: 4 agents (default)
-Complex analysis: 6-8 agents
-Academic depth: 8-10 agents
+# Morning briefing
+./ccheavy.sh "Latest developments in my industry"
 
-# Diminishing returns after 10 agents
+# Competitive analysis
+./ccheavy.sh "What are my competitors announcing this week"
+
+# Trend analysis
+./ccheavy.sh "Emerging trends in [your field]"
 ```
 
-## Advanced Synthesis Options
-
-### Custom Synthesis Prompts
-
-Create `templates/synthesis-academic.txt`:
-```
-Synthesize as academic paper with:
-- Abstract
-- Literature Review  
-- Methodology
-- Findings
-- Discussion
-- References
-```
-
-Use with:
+### Team Collaboration
+Share research outputs:
 ```bash
-./ccheavy.sh --synthesis academic "Research topic"
+# Research is saved with timestamps
+ls outputs/
+
+# Share specific analysis
+cp outputs/2025-07-18-*/final-analysis.md ~/shared/research/
 ```
 
-### Multi-Stage Analysis
-
+### Building Knowledge Base
 ```bash
-# Stage 1: Broad research
-./ccheavy.sh "AI in healthcare" 6
+# Create topic-based archives
+mkdir -p ~/research/{market,technical,competitive}
 
-# Stage 2: Deep dive on findings
-./ccheavy.sh "AI in radiology specifically" 4
-
-# Stage 3: Implementation focus
-./ccheavy.sh "Implementing AI radiology in hospitals" 4
+# Organize by topic
+cp outputs/*/final-analysis.md ~/research/market/
 ```
 
-## Debugging & Troubleshooting
+## 🚀 Performance Tips
 
-### Verbose Mode
+### Query Optimization
+1. **Front-load important terms**: Claude analyzes early words more heavily
+2. **Use domain-specific language**: Helps Claude select appropriate sources
+3. **Specify timeframes**: "last 6 months" vs "historical" changes approach
 
+### System Optimization
+1. **SSD recommended**: Faster git operations
+2. **Good internet**: Parallel web searches need bandwidth
+3. **Close unnecessary apps**: Claude Code uses significant resources
+
+### Research Quality
+1. **One topic at a time**: Better than combining multiple questions
+2. **Iterate on findings**: Use outputs as input for deeper research
+3. **Cross-reference**: Run similar queries for validation
+
+## 🐛 Advanced Troubleshooting
+
+### Worktree Issues
 ```bash
-# See what each agent is doing
-./ccheavy.sh --verbose "Query" 4
+# Clean up all worktrees
+git worktree prune
+rm -rf worktrees/*
 
-# Includes:
-# - Generated questions
-# - Agent commands
-# - Search queries
-# - Timing information
+# Rebuild
+./setup.sh
 ```
 
-### Agent Logs
-
+### Performance Issues
 ```bash
-# Check individual agent work
-tail -f outputs/latest/agent-1.log
+# Check git status
+cd worktrees/ra-1
+git status
 
-# Common issues:
-# - "No results" → Query too specific
-# - "Timeout" → Complex query, increase timeout
-# - "Git error" → Clean worktrees
+# Clean up if needed
+git clean -fd
 ```
 
-### Recovery from Failures
-
+### Recovery
 ```bash
-# If synthesis fails but agents completed
-claude -p "Synthesize: $(ls outputs/latest/vp-*.md)"
-
-# If specific agent fails
-claude -p "Research question 3 from outputs/latest/questions.txt"
+# If research interrupted
+# Outputs are continuously saved
+# Check partial results in outputs/*/assistants/
 ```
 
-## MCP Tool Integration
+## 🔬 Experimental Features
 
-### Available During Research
+### Custom Prompts
+Advanced users can modify the orchestration prompt:
+1. Run the script normally
+2. When prompt is created, edit before launching Claude
+3. Add specific instructions or constraints
 
-Each agent can use:
-- Web search
-- GitHub operations
-- Google Drive access
-- Custom MCP servers
+### Workspace Persistence
+Worktrees remain after research:
+- Inspect what each assistant researched
+- See search history
+- Understand Claude's process
 
-### Adding Custom Tools
-
-1. Install MCP server:
+### Chaining Research
+Use outputs as inputs:
 ```bash
-npm install -g @your/mcp-server
+# Initial research
+./ccheavy.sh "Overview of quantum computing"
+
+# Deep dive based on findings
+./ccheavy.sh "Detailed analysis of [specific finding from above]"
 ```
 
-2. Configure in Claude:
-```json
-{
-  "mcpServers": {
-    "custom": {
-      "command": "npx",
-      "args": ["@your/mcp-server"]
-    }
-  }
-}
-```
+## 📈 Best Practices
 
-3. Agents automatically use available tools
+1. **Start broad, then narrow**: General → Specific research chains
+2. **Save exemplary outputs**: Build a library of good research
+3. **Monitor patterns**: See how Claude approaches different topics
+4. **Experiment freely**: Claude adapts to any research need
 
-## Extending the System
-
-### Add Progress Notifications
-
-```bash
-# In ccheavy.sh, add:
-notify_complete() {
-  osascript -e 'display notification "Research complete!" with title "Claude Heavy"'
-}
-```
-
-### Export Formats
-
-```bash
-# Add converters
-./ccheavy.sh "Query" 4 --export pdf
-./ccheavy.sh "Query" 4 --export markdown
-./ccheavy.sh "Query" 4 --export notion
-```
-
-### API Wrapper
-
-```python
-# heavy_api.py
-import subprocess
-import json
-
-def heavy_research(query, agents=4):
-    result = subprocess.run(
-        ["./ccheavy.sh", query, str(agents)],
-        capture_output=True,
-        text=True
-    )
-    return parse_output(result.stdout)
-```
-
-## Best Practices
-
-1. **Start Broad, Then Narrow**
-   - First run: General topic
-   - Second run: Specific aspects
-   - Third run: Implementation details
-
-2. **Save Important Research**
-   ```bash
-   cp -r outputs/20240118_142532/ saved-research/ai-strategy/
-   ```
-
-3. **Reuse Good Questions**
-   - Save effective questions
-   - Create pattern templates
-   - Share with team
-
-4. **Monitor Token Usage**
-   ```bash
-   # Add to ccheavy.sh
-   echo "Estimated tokens: $((AGENT_COUNT * 50000))"
-   ```
-
-5. **Version Control Research**
-   ```bash
-   git add saved-research/
-   git commit -m "Research: AI strategy findings"
-   ```
-
-Remember: The power is in parallel perspectives combining into unified insight.
+Remember: The power is in letting Claude orchestrate. Trust the AI to understand and adapt to your research needs!

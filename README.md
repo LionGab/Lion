@@ -4,12 +4,12 @@ A powerful multi-agent research system using Claude Code to deliver comprehensiv
 
 ## 🚀 What is Claude Code Heavy?
 
-Claude Code Heavy orchestrates multiple research assistants in parallel to:
-- 🧠 **Deep Analysis**: Generate specialized research questions automatically
-- 🔀 **Parallel Research**: Deploy 2-6 agents simultaneously for comprehensive coverage  
-- 🎯 **Multi-Perspective**: Each agent approaches from a unique angle
-- 🔄 **Intelligent Synthesis**: Combine all findings into unified insights
-- 🚙 **Interactive Mode**: User-friendly prompts for easy operation
+Claude Code Heavy gives Claude full control to orchestrate parallel research:
+- 🧠 **Intelligent Planning**: Claude analyzes your query and creates the optimal research strategy
+- 🔀 **Parallel Research**: Claude decides how many agents to deploy (2-8 available)
+- 🎯 **Dynamic Adaptation**: Questions and roles are tailored to your specific query
+- 🔄 **Smart Synthesis**: Claude combines all findings into unified insights
+- 🚙 **Interactive Mode**: Simple setup with powerful results
 
 ## 🎯 Quick Start
 
@@ -28,48 +28,43 @@ chmod +x ccheavy.sh
 ./ccheavy.sh "How do we solve the global water supply issue?"
 ```
 
-## 🤔 Why Interactive Mode?
+## 🤔 Why This Approach?
 
-We use an interactive approach rather than headless execution for several important reasons:
+**Claude is the Intelligence**: Instead of hard-coding research patterns, we let Claude:
+- Analyze your query and determine the best approach
+- Decide how many research assistants are needed
+- Create specific, targeted research questions
+- Adapt the research strategy in real-time
 
-1. **No API Costs**: Running in headless mode requires API keys and incurs per-token costs. Interactive mode lets you use Claude Code's full capabilities without any additional charges.
-
-2. **Full Context Window**: API calls are limited by token constraints, while interactive Claude Code sessions have access to the full 200k token context window.
-
-3. **Real-time Oversight**: You can monitor the research progress, see what each assistant is finding, and intervene if needed.
-
-4. **Browser Access**: Interactive mode gives Claude access to web search and browser tools that aren't available in headless API mode.
-
-5. **One-Click Execution**: While not fully automated, we've made it as simple as possible - the script pre-fills the entire coordination prompt and Claude starts the research automatically.
+**Pre-built Infrastructure**: The script simply:
+- Creates 8 research workspaces (worktrees)
+- Sets up output directories
+- Launches Claude with full orchestration control
 
 ## 📖 How It Works
 
 ```mermaid
 graph TD
-    A[Run ./heavy.sh] --> B[Interactive Setup]
-    B --> C[Choose Query & Settings]
-    C --> D[Generate Research Plan]
-    D --> E[Create Git Worktrees]
-    E --> F[Launch Claude Code]
-    F --> G[Press Enter to Start]
-    G --> H[RA1: Research]
-    G --> I[RA2: Research]
-    G --> J[RA3: Research]
-    G --> K[RA4: Research]
-    H --> L[Synthesis]
-    I --> L
-    J --> L
-    K --> L
-    L --> M[Final Analysis]
+    A[Run ./ccheavy.sh] --> B[Setup Workspaces]
+    B --> C[Claude Analyzes Query]
+    C --> D[Creates Research Plan]
+    D --> E[Decides Assistant Count]
+    E --> F[Generates Questions]
+    F --> G[Parallel Research]
+    G --> H[Synthesis]
+    H --> I[Final Analysis]
 ```
 
-### Research Process
+### Process Flow
 
-1. **Interactive Setup**: Run `./ccheavy.sh` for guided setup or provide command line args
-2. **Smart Suggestions**: System suggests optimal number of assistants based on query
-3. **Automated Launch**: Option to launch Claude Code with pre-filled prompt
-4. **Parallel Research**: Claude coordinates multiple research assistants
-5. **Comprehensive Output**: All findings saved to organized folders
+1. **You provide a query**: Any research question or topic
+2. **Script prepares environment**: Creates 8 workspaces, output directories
+3. **Claude takes over**:
+   - Analyzes complexity and scope
+   - Plans optimal research strategy
+   - Creates targeted questions
+   - Orchestrates parallel execution
+   - Synthesizes comprehensive results
 
 ## 🛠️ Installation
 
@@ -93,106 +88,57 @@ cd claude-code-heavy
 ./ccheavy.sh
 # Follow the prompts:
 # - Enter your research question
-# - System detects pattern type (scientific, policy, etc.)
-# - Accept or modify suggested assistant count
-# - Choose output format
+# - Choose output format (markdown/text)
 # - Decide on dangerous mode (default: N)
 # - Confirm to proceed (default: Y)
-# - Review and optionally edit research questions
 # - Optionally auto-launch Claude Code (default: Y)
 ```
 
 ### Command Line Mode
 ```bash
-# Default: 4 assistants, markdown output
-./ccheavy.sh "Analyze the impact of AI on software development"
+# Basic usage
+./ccheavy.sh "What are the latest advances in quantum computing?"
 
-# Custom assistant count
-./ccheavy.sh "Complex quantum computing question" 6
+# With text output
+./ccheavy.sh "Explain Docker containers" text
 
-# Text output format
-./ccheavy.sh "What is Python?" 2 text
+# With dangerous permissions
+./ccheavy.sh "Analyze my codebase" markdown --dangerous
 ```
-
-### Smart Folder Naming
-Queries are converted to readable folder names:
-- "How do we solve the global water crisis?" → `2025-07-18-solve-global-water-crisis`
-- "What is the future of AI?" → `2025-07-18-future-ai`
-- "Analyze renewable energy trends" → `2025-07-18-analyze-renewable-energy-trends`
 
 ### Output Structure
 ```
 outputs/
 └── 2025-07-18-solve-global-water-crisis/
-    ├── coordination-prompt.md     # The prompt to paste/auto-load
+    ├── orchestration-prompt.md    # Initial prompt for Claude
+    ├── research-plan.md          # Claude's research strategy
     ├── assistants/
-    │   ├── ra-1-findings.md      # RA1's research
-    │   ├── ra-2-findings.md      # RA2's research
-    │   ├── ra-3-findings.md      # RA3's research
-    │   └── ra-4-findings.md      # RA4's research
+    │   ├── ra-1-findings.md      # Assistant 1's research
+    │   ├── ra-2-findings.md      # Assistant 2's research
+    │   └── ...                   # Up to 8 assistants
     └── final-analysis.md         # Synthesized results
 ```
 
-## 📋 Example Output
+## 📋 Example Queries
 
-<details>
-<summary>Example: "What would a city designed entirely by AI optimize for?"</summary>
+Claude adapts to any type of research:
 
-**Research Questions:**
-- RA1: Current real-world examples of AI in urban planning
-- RA2: What metrics would AI optimize for vs human priorities
-- RA3: Human needs that AI might miss or ignore
-- RA4: Verify claims about smart cities and human satisfaction
-
-**Synthesized Result:**
-AI would create a 98% efficient city with zero traffic jams but potentially zero human joy. While Singapore shows 15% traffic reduction with AI, residents of "perfect" cities like Brasília flee to chaotic neighborhoods for actual life...
-</details>
+- **Scientific**: "How do mRNA vaccines work?"
+- **Business**: "Analyze the electric vehicle market"
+- **Policy**: "Evaluate universal basic income proposals"
+- **Technical**: "Compare Rust vs Go for systems programming"
+- **Historical**: "What led to the fall of the Roman Empire?"
+- **Local**: "What's the 5-year outlook for Austin, TX?"
 
 ## 🔧 Configuration
 
-The script intelligently suggests settings based on your query:
-- Simple queries: 2 assistants
-- Analytical queries: 3 assistants  
-- Comprehensive queries: 4 assistants
-
-Edit `config.sh` for defaults:
-```bash
-# Number of parallel agents
-DEFAULT_AGENTS=4
-
-# Output directory
-OUTPUT_DIR="./outputs"
-```
-
-## 🤝 Comparison with make-it-heavy
-
-| Feature | make-it-heavy | claude-code-heavy |
-|---------|---------------|-------------------|
-| Parallel Agents | ✅ Python threads | ✅ Git worktrees |
-| Question Generation | ✅ AI-powered | ✅ Pre-configured |
-| Tool Access | ✅ Custom tools | ✅ Native + web search |
-| API Required | ✅ OpenRouter ($$$) | ❌ No API needed |
-| Setup Time | ~5 minutes | ~30 seconds |
-| Context Window | ⚠️ Model dependent | ✅ 200k tokens |
-| Launch Method | Command line | Interactive + Auto-launch |
-| Cost | Per-token charges | Free (using Claude Code) |
+The script is intentionally minimal. Claude handles:
+- Determining optimal assistant count
+- Creating research questions
+- Assigning roles and perspectives
+- Adapting to query complexity
 
 ## 🚀 Advanced Features
-
-### Smart Pattern Detection
-The system automatically detects the type of research and applies specialized patterns:
-- **Scientific**: 5 assistants for research papers, experiments, theories
-- **Policy**: 5 assistants for legislation, regulations, government analysis  
-- **Historical**: 4 assistants for timeline, context, and modern relevance
-- **Product/Market**: 5 assistants for business, competition, user research
-- **Default**: 4 assistants for general comprehensive analysis
-
-### Customizable Research Questions
-In interactive mode:
-- Preview all research questions before starting
-- Edit any question to better fit your needs
-- Add up to 2 additional assistants (max 8 total)
-- Define custom roles for new assistants
 
 ### Security Options
 - Option to use `--dangerously-skip-permissions` flag
@@ -200,18 +146,16 @@ In interactive mode:
 - Only enable for trusted research tasks
 
 ### Parallel Execution
-- Prompts explicitly request parallel tool calls
+- Claude orchestrates parallel tool calls
 - Multiple web searches execute simultaneously
 - Faster research completion
 
-### One-Click Launch
-When you choose to auto-launch Claude Code:
-1. Script generates complete coordination prompt
-2. Launches Claude with prompt pre-filled
-3. Research begins automatically
-4. No copy-paste or additional input needed!
+### Smart Folder Naming
+- Queries converted to readable folder names
+- Automatic date prefixing
+- Easy to find past research
 
-## 🏗️ Architecture Details
+## 🏗️ Architecture
 
 ### Why Git Worktrees?
 - Each assistant gets isolated workspace
@@ -219,18 +163,18 @@ When you choose to auto-launch Claude Code:
 - Easy context switching for Claude
 - Git tracks all research history
 
-### Interactive Benefits
-- See research progress in real-time
-- Claude can use web search effectively
-- No token limits or API restrictions
-- Full browser automation if needed
+### Why Let Claude Decide?
+- Every query is unique
+- Claude understands context better
+- Dynamic adaptation beats static patterns
+- Optimal resource allocation
 
 ## 🎯 Best Practices
 
-1. **Use Interactive Mode**: Just run `./ccheavy.sh` for the best experience
-2. **Trust the Suggestions**: Assistant count suggestions are based on query analysis
-3. **Let it Auto-Launch**: Choose 'y' when asked to launch Claude automatically
-4. **Save Important Results**: Final analysis saved in timestamped folders
+1. **Trust Claude's Judgment**: It will analyze and adapt to your query
+2. **Be Specific**: More detailed queries get better research plans
+3. **Use Interactive Mode**: Easier than command line
+4. **Save Important Results**: All outputs timestamped and organized
 
 ## 🐛 Troubleshooting
 
@@ -244,8 +188,22 @@ brew upgrade git  # Mac
 sudo apt-get update && sudo apt-get upgrade git  # Linux
 ```
 
-### Claude Code doesn't launch
-Ensure Claude Desktop is running before using auto-launch
+### Research seems slow
+- Normal research takes 15-20 minutes
+- Complex queries may take longer
+- Check if web searches are working
+
+## 🤝 Comparison with make-it-heavy
+
+| Feature | make-it-heavy | claude-code-heavy |
+|---------|---------------|-------------------|
+| Intelligence | Pre-defined patterns | Claude decides everything |
+| Agents | Fixed Python threads | Dynamic git worktrees |
+| Questions | Template-based | Query-specific generation |
+| Tool Access | Custom tools | Native Claude + web search |
+| API Required | Yes ($$$) | No (free with Claude) |
+| Setup Time | ~5 minutes | ~30 seconds |
+| Adaptability | Limited | Fully dynamic |
 
 ## 🤝 Contributing
 
@@ -256,10 +214,10 @@ Ensure Claude Desktop is running before using auto-launch
 
 ## 📄 License
 
-MIT - Inspired by make-it-heavy's approach but implemented entirely with Claude Code.
+MIT - Inspired by make-it-heavy's approach but reimagined with Claude's intelligence at the core.
 
 ## 🙏 Acknowledgments
 
 - Inspired by [make-it-heavy](https://github.com/Doriandarko/make-it-heavy) by Pietro Schirano
 - Built on Claude Code by Anthropic
-- Smart folder naming and interactive features for better UX
+- Simplified to let AI handle the complexity
