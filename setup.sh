@@ -89,10 +89,10 @@ Thumbs.db
 EOF
 
 # Make script executable
-chmod +x heavy.sh
+chmod +x ccheavy.sh
 chmod +x setup.sh
 
 echo "✅ Setup complete!"
 echo
 echo "Try it out:"
-echo "./heavy.sh \"Who is Claude?\""
+echo "./ccheavy.sh \"Who is Claude?\""

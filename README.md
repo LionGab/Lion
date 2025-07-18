@@ -19,13 +19,13 @@ git clone https://github.com/yourusername/claude-code-heavy
 cd claude-code-heavy
 
 # Make script executable
-chmod +x heavy.sh
+chmod +x ccheavy.sh
 
 # Run interactively (recommended)
-./heavy.sh
+./ccheavy.sh
 
 # Or run with command line args
-./heavy.sh "How do we solve the global water supply issue?"
+./ccheavy.sh "How do we solve the global water supply issue?"
 ```
 
 ## 🤔 Why Interactive Mode?
@@ -65,7 +65,7 @@ graph TD
 
 ### Research Process
 
-1. **Interactive Setup**: Run `./heavy.sh` for guided setup or provide command line args
+1. **Interactive Setup**: Run `./ccheavy.sh` for guided setup or provide command line args
 2. **Smart Suggestions**: System suggests optimal number of assistants based on query
 3. **Automated Launch**: Option to launch Claude Code with pre-filled prompt
 4. **Parallel Research**: Claude coordinates multiple research assistants
@@ -90,25 +90,25 @@ cd claude-code-heavy
 
 ### Interactive Mode (Recommended)
 ```bash
-./heavy.sh
+./ccheavy.sh
 # Follow the prompts:
 # - Enter your research question
 # - Accept or modify suggested assistant count
 # - Choose output format
-# - Confirm to proceed
-# - Optionally auto-launch Claude Code
+# - Confirm to proceed (default: Y)
+# - Optionally auto-launch Claude Code (default: Y)
 ```
 
 ### Command Line Mode
 ```bash
 # Default: 4 assistants, markdown output
-./heavy.sh "Analyze the impact of AI on software development"
+./ccheavy.sh "Analyze the impact of AI on software development"
 
 # Custom assistant count
-./heavy.sh "Complex quantum computing question" 6
+./ccheavy.sh "Complex quantum computing question" 6
 
 # Text output format
-./heavy.sh "What is Python?" 2 text
+./ccheavy.sh "What is Python?" 2 text
 ```
 
 ### Smart Folder Naming
@@ -212,7 +212,7 @@ When you choose to auto-launch Claude Code:
 
 ## 🎯 Best Practices
 
-1. **Use Interactive Mode**: Just run `./heavy.sh` for the best experience
+1. **Use Interactive Mode**: Just run `./ccheavy.sh` for the best experience
 2. **Trust the Suggestions**: Assistant count suggestions are based on query analysis
 3. **Let it Auto-Launch**: Choose 'y' when asked to launch Claude automatically
 4. **Save Important Results**: Final analysis saved in timestamped folders

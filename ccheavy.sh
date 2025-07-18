@@ -1,5 +1,5 @@
 #!/bin/bash
-# heavy.sh - Claude Code Heavy Research System
+# ccheavy.sh - Claude Code Heavy Research System
 # Parallel research orchestration using git worktrees
 
 set -euo pipefail
@@ -89,15 +89,19 @@ interactive_mode() {
         format="markdown"
     fi
     
-    # Confirm settings
+    # Confirm settings (default Y)
     echo -e "\n${BLUE}Ready to start research with:${NC}"
     echo -e "  📝 Query: $query"
     echo -e "  👥 Assistants: $num_assistants"
     echo -e "  📄 Format: $format"
-    echo -e "\n${GREEN}Proceed? (y/n)${NC}"
+    echo -e "\n${GREEN}Proceed? (Y/n)${NC}"
     read -r -p "> " confirm
     
-    if [[ ! "$confirm" =~ ^[Yy]$ ]]; then
+    # Default to yes if empty or starts with y/Y
+    if [[ -z "$confirm" || "$confirm" =~ ^[Yy] ]]; then
+        # Continue
+        :
+    else
         echo -e "${YELLOW}Cancelled.${NC}"
         exit 0
     fi
@@ -284,26 +288,42 @@ Start the research!
 EOF
 fi
 
-# Display completion and offer to launch
+# Display completion and offer to launch (default Y)
 echo
 echo -e "${GREEN}✅ Setup complete!${NC}"
 echo
-echo -e "${BLUE}Would you like to launch Claude Code with the prompt? (y/n)${NC}"
+echo -e "${BLUE}Would you like to launch Claude Code with the prompt? (Y/n)${NC}"
 read -r -p "> " launch
 
-if [[ "$launch" =~ ^[Yy]$ ]]; then
+# Default to yes if empty or starts with y/Y
+if [[ -z "$launch" || "$launch" =~ ^[Yy] ]]; then
     echo -e "${YELLOW}Launching Claude Code...${NC}"
     echo -e "${GREEN}Just press Enter in Claude to start the research!${NC}"
     
     # Launch Claude with the prompt pre-filled
-    claude --no-conversation-file --chat "$(cat "$PROMPT_FILE")"
+    # Try different Claude command variations
+    if command -v claude &> /dev/null; then
+        # Try without the --no-conversation-file flag first
+        claude --chat "$(cat "$PROMPT_FILE")" 2>/dev/null || \
+        claude "$(cat "$PROMPT_FILE")" 2>/dev/null || \
+        {
+            echo -e "${YELLOW}Note: Could not auto-launch Claude Code. Please run manually:${NC}"
+            echo -e "${GREEN}claude${NC}"
+            echo -e "Then paste the prompt from: ${BLUE}$PROMPT_FILE${NC}"
+        }
+    else
+        echo -e "${RED}Claude command not found. Please ensure Claude Code is installed.${NC}"
+        echo -e "${YELLOW}Manual instructions:${NC}"
+        echo -e "1. Open Claude Code"
+        echo -e "2. Paste the prompt from: ${BLUE}$PROMPT_FILE${NC}"
+    fi
 else
     echo
     echo -e "${CYAN}══ Manual Launch Instructions ══${NC}"
     echo
     echo -e "${YELLOW}To start:${NC}"
     echo
-    echo "1. Run: ${GREEN}claude --no-conversation-file${NC}"
+    echo "1. Run: ${GREEN}claude${NC}"
     echo
     echo "2. Paste the coordination prompt from:"
     echo "   ${BLUE}$PROMPT_FILE${NC}"

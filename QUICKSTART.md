@@ -18,7 +18,7 @@ cd claude-code-heavy
 The easiest way to use Claude Code Heavy:
 
 ```bash
-./heavy.sh
+./ccheavy.sh
 ```
 
 You'll see:
@@ -42,16 +42,16 @@ Ready to start research with:
   👥 Assistants: 3
   📄 Format: markdown
 
-Proceed? (y/n)
-> y
+Proceed? (Y/n)
+> [Enter]
 ```
 
 Then choose to auto-launch Claude:
 ```
 ✅ Setup complete!
 
-Would you like to launch Claude Code with the prompt? (y/n)
-> y
+Would you like to launch Claude Code with the prompt? (Y/n)
+> [Enter]
 
 Launching Claude Code...
 Just press Enter in Claude to start the research!
@@ -65,13 +65,13 @@ For automation or specific settings:
 
 ```bash
 # Basic usage
-./heavy.sh "What are the latest advances in quantum computing?"
+./ccheavy.sh "What are the latest advances in quantum computing?"
 
 # With 6 assistants for complex topics
-./heavy.sh "Analyze global economic impacts of climate change" 6
+./ccheavy.sh "Analyze global economic impacts of climate change" 6
 
 # Text format output
-./heavy.sh "Explain Docker containers" 2 text
+./ccheavy.sh "Explain Docker containers" 2 text
 ```
 
 ## 📊 Example Research Questions
@@ -143,7 +143,7 @@ Make sure Claude Desktop is running first.
 
 ### "Permission denied"
 ```bash
-chmod +x heavy.sh setup.sh
+chmod +x ccheavy.sh setup.sh
 ```
 
 ### Git errors

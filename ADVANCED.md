@@ -18,7 +18,7 @@ questions:
 
 2. Use it:
 ```bash
-./heavy.sh --pattern security "Analyze security of Kubernetes"
+./ccheavy.sh --pattern security "Analyze security of Kubernetes"
 ```
 
 ## Integration with CCCEO Workflow
@@ -28,7 +28,7 @@ questions:
 Before creating issues, use heavy analysis:
 ```bash
 # Research phase
-./heavy.sh "Research best practices for authentication in Next.js 14"
+./ccheavy.sh "Research best practices for authentication in Next.js 14"
 
 # Use findings to create issues
 claude-desktop: "Create 10 issues based on heavy analysis findings"
@@ -38,7 +38,7 @@ claude-desktop: "Create 10 issues based on heavy analysis findings"
 
 ```bash
 # Deep dive before choosing
-./heavy.sh "Compare PostgreSQL vs DynamoDB for our use case" 6
+./ccheavy.sh "Compare PostgreSQL vs DynamoDB for our use case" 6
 
 # Informed decision making
 outputs/*/final-analysis.md → architectural-decisions.md
@@ -50,10 +50,10 @@ outputs/*/final-analysis.md → architectural-decisions.md
 
 ```bash
 # Daily AI news digest
-0 9 * * * cd ~/claude-code-heavy && ./heavy.sh "Latest AI developments in last 24 hours" 3
+0 9 * * * cd ~/claude-code-heavy && ./ccheavy.sh "Latest AI developments in last 24 hours" 3
 
 # Weekly competitor analysis
-0 10 * * 1 cd ~/claude-code-heavy && ./heavy.sh "What shipped at major AI companies this week" 4
+0 10 * * 1 cd ~/claude-code-heavy && ./ccheavy.sh "What shipped at major AI companies this week" 4
 ```
 
 ### CI/CD Integration
@@ -72,7 +72,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          ./heavy.sh "${{ github.event.issue.title }}" 4
+          ./ccheavy.sh "${{ github.event.issue.title }}" 4
           # Upload findings as artifact
 ```
 
@@ -83,7 +83,7 @@ jobs:
 ```bash
 # Enable caching (reduces duplicate searches)
 export CLAUDE_CACHE_DIR="./cache"
-./heavy.sh "Cached query" 4
+./ccheavy.sh "Cached query" 4
 ```
 
 ### Parallel Efficiency
@@ -115,20 +115,20 @@ Synthesize as academic paper with:
 
 Use with:
 ```bash
-./heavy.sh --synthesis academic "Research topic"
+./ccheavy.sh --synthesis academic "Research topic"
 ```
 
 ### Multi-Stage Analysis
 
 ```bash
 # Stage 1: Broad research
-./heavy.sh "AI in healthcare" 6
+./ccheavy.sh "AI in healthcare" 6
 
 # Stage 2: Deep dive on findings
-./heavy.sh "AI in radiology specifically" 4
+./ccheavy.sh "AI in radiology specifically" 4
 
 # Stage 3: Implementation focus
-./heavy.sh "Implementing AI radiology in hospitals" 4
+./ccheavy.sh "Implementing AI radiology in hospitals" 4
 ```
 
 ## Debugging & Troubleshooting
@@ -137,7 +137,7 @@ Use with:
 
 ```bash
 # See what each agent is doing
-./heavy.sh --verbose "Query" 4
+./ccheavy.sh --verbose "Query" 4
 
 # Includes:
 # - Generated questions
@@ -204,7 +204,7 @@ npm install -g @your/mcp-server
 ### Add Progress Notifications
 
 ```bash
-# In heavy.sh, add:
+# In ccheavy.sh, add:
 notify_complete() {
   osascript -e 'display notification "Research complete!" with title "Claude Heavy"'
 }
@@ -214,9 +214,9 @@ notify_complete() {
 
 ```bash
 # Add converters
-./heavy.sh "Query" 4 --export pdf
-./heavy.sh "Query" 4 --export markdown
-./heavy.sh "Query" 4 --export notion
+./ccheavy.sh "Query" 4 --export pdf
+./ccheavy.sh "Query" 4 --export markdown
+./ccheavy.sh "Query" 4 --export notion
 ```
 
 ### API Wrapper
@@ -228,7 +228,7 @@ import json
 
 def heavy_research(query, agents=4):
     result = subprocess.run(
-        ["./heavy.sh", query, str(agents)],
+        ["./ccheavy.sh", query, str(agents)],
         capture_output=True,
         text=True
     )
@@ -254,7 +254,7 @@ def heavy_research(query, agents=4):
 
 4. **Monitor Token Usage**
    ```bash
-   # Add to heavy.sh
+   # Add to ccheavy.sh
    echo "Estimated tokens: $((AGENT_COUNT * 50000))"
    ```
 
