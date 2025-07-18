@@ -1,6 +1,12 @@
 #!/bin/bash
-# heavy.sh - Claude Code Heavy orchestrator
-# Replicates make-it-heavy functionality using Claude Code
+# heavy.sh - AUTOMATED Claude Code Heavy orchestrator
+# ⚠️  REQUIRES API KEY CONFIGURATION - Won't work with standard Claude Code!
+# 
+# This script attempts to use 'claude -p' (programmatic mode) which requires:
+# 1. Anthropic API key set up
+# 2. Claude Code configured for API access
+#
+# For most users: Use heavy-interactive.sh instead!
 
 set -euo pipefail
 

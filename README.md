@@ -2,6 +2,8 @@
 
 A powerful multi-agent research system using Claude Code to deliver comprehensive, multi-perspective analysis through intelligent orchestration. Inspired by Grok's heavy mode and make-it-heavy.
 
+**⚠️ IMPORTANT: Read [WHICH-SCRIPT.md](WHICH-SCRIPT.md) to understand which script to use!**
+
 ## 🚀 What is Claude Code Heavy?
 
 Claude Code Heavy orchestrates multiple Claude instances in parallel to:
@@ -13,17 +15,23 @@ Claude Code Heavy orchestrates multiple Claude instances in parallel to:
 
 ## 🎯 Quick Start
 
+**⚠️ IMPORTANT: Use `heavy-interactive.sh` for standard Claude Code!**
+
 ```bash
 # Clone the repo
 git clone https://github.com/yourusername/claude-code-heavy
 cd claude-code-heavy
 
 # Make scripts executable
-chmod +x heavy.sh
+chmod +x heavy-interactive.sh
 
-# Run a heavy analysis
-./heavy.sh "What would a city designed entirely by AI optimize for?"
+# Run the INTERACTIVE version (works with standard Claude Code)
+./heavy-interactive.sh "What would a city designed entirely by AI optimize for?"
 ```
+
+**Note on Scripts:**
+- ✅ `heavy-interactive.sh` - Works with standard Claude Code installation
+- ❌ `heavy.sh` - Requires API key setup (see API Mode section below)
 
 ## 📖 How It Works
 
@@ -71,23 +79,41 @@ cd claude-code-heavy
 
 ## 🎮 Usage Modes
 
-### Heavy Mode (Default)
-Full parallel multi-agent analysis:
+### Interactive Mode (Recommended)
+Full parallel multi-agent analysis with human orchestration:
 ```bash
-./heavy.sh "Analyze the impact of AI on software development"
+./heavy-interactive.sh "Analyze the impact of AI on software development"
 ```
 
-### Custom Agent Count
-Run with more agents for deeper analysis:
+### Custom Assistant Count
+Run with more assistants for deeper analysis:
 ```bash
-./heavy.sh "Complex quantum computing question" 6
+./heavy-interactive.sh "Complex quantum computing question" 6
 ```
 
-### Single Agent Mode
-For simpler queries:
+### Minimal Mode
+For simpler queries with fewer assistants:
 ```bash
-./heavy.sh "What is Python?" 1
+./heavy-interactive.sh "What is Python?" 2
 ```
+
+## 🔑 API Mode (Advanced Users Only)
+
+If you have an Anthropic API key and want fully automated operation:
+
+1. Set up your API key:
+```bash
+export ANTHROPIC_API_KEY="your-key-here"
+```
+
+2. Configure Claude Code for API access (see Anthropic docs)
+
+3. Use the automated script:
+```bash
+./heavy.sh "Your question" 4  # Requires API setup!
+```
+
+**Note**: Most users should use `heavy-interactive.sh` instead.
 
 ## 📋 Example Outputs
 
@@ -120,15 +146,15 @@ SYNTHESIS_STYLE="comprehensive"  # or "concise", "academic"
 
 ## 🤝 Comparison with make-it-heavy
 
-| Feature | make-it-heavy | claude-code-heavy |
-|---------|---------------|-------------------|
-| Parallel Agents | ✅ Python threads | ✅ Git worktrees |
-| Question Generation | ✅ AI-powered | ✅ AI-powered |
-| Tool Access | ✅ Custom tools | ✅ Native + MCP |
-| API Limits | ⚠️ OpenRouter limits | ✅ No limits |
-| Context Window | ⚠️ Model dependent | ✅ 200k tokens |
-| Real Browser | ❌ | ✅ Puppeteer |
-| Git Integration | ❌ | ✅ Full tracking |
+| Feature | make-it-heavy | claude-code-heavy (interactive) | claude-code-heavy (API) |
+|---------|---------------|--------------------------------|-------------------------|
+| Parallel Agents | ✅ Python threads | ✅ Manual orchestration | ✅ Git worktrees |
+| Question Generation | ✅ AI-powered | ✅ AI-powered | ✅ AI-powered |
+| Tool Access | ✅ Custom tools | ✅ Native + MCP | ✅ Native + MCP |
+| API Required | ✅ OpenRouter | ❌ No API needed | ✅ Anthropic API |
+| Setup Time | ~5 minutes | ~30 seconds | ~10 minutes |
+| Human Involvement | Minimal | Active orchestrator | Watch it run |
+| Works Out of Box | ❌ Need API key | ✅ Yes! | ❌ Need API key |
 
 ## 🚀 Advanced Features
 

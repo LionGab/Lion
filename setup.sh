@@ -90,9 +90,12 @@ EOF
 
 # Make scripts executable
 chmod +x heavy.sh
+chmod +x heavy-interactive.sh
 chmod +x setup.sh
 
 echo "✅ Setup complete!"
 echo
 echo "Try it out:"
-echo "./heavy.sh \"Who is Claude?\""
+echo "./heavy-interactive.sh \"Who is Claude?\""
+echo
+echo "Note: heavy.sh requires API key setup. See WHICH-SCRIPT.md"

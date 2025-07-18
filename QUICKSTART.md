@@ -15,37 +15,39 @@ cd claude-code-heavy
 ## Your First Heavy Analysis
 
 ```bash
-./heavy.sh "What is the future of AI?"
+./heavy-interactive.sh "What is the future of AI?"
 ```
 
 This will:
-1. Generate 4 research questions
-2. Launch 4 parallel Claude agents
-3. Each researches their specific angle
-4. Synthesize into comprehensive analysis
-5. Save results to `outputs/[timestamp]/`
+1. Create a research plan with Head Researcher & Assistants
+2. Generate prompts for 4 Research Assistants
+3. You manually launch 4 Claude terminals
+4. Paste each assistant's prompt
+5. They research in parallel
+6. You synthesize findings as Head Researcher
+7. Results saved to `outputs/[timestamp]/`
 
 ## Example Queries
 
 ### Technology Analysis
 ```bash
-./heavy.sh "Compare React, Vue, and Angular for enterprise applications"
+./heavy-interactive.sh "Compare React, Vue, and Angular for enterprise applications"
 ```
 
 ### Person Research  
 ```bash
-./heavy.sh "Who is Sam Altman and what is his impact on AI?"
+./heavy-interactive.sh "Who is Sam Altman and what is his impact on AI?"
 ```
 
 ### Complex Topics
 ```bash
-./heavy.sh "Analyze the implications of quantum computing on cryptography" 6
-# Uses 6 agents for deeper analysis
+./heavy-interactive.sh "Analyze the implications of quantum computing on cryptography" 6
+# Uses 6 assistants for deeper analysis
 ```
 
 ### Business Analysis
 ```bash
-./heavy.sh "What are the key success factors for AI startups in 2024?"
+./heavy-interactive.sh "What are the key success factors for AI startups in 2024?"
 ```
 
 ## Understanding the Output
@@ -82,7 +84,7 @@ Watch the real-time progress indicators:
 ```bash
 # Clean up and retry
 rm -rf worktrees/
-./heavy.sh "Your query"
+./heavy-interactive.sh "Your query"
 ```
 
 **Need to stop?**
