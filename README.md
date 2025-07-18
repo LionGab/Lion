@@ -157,9 +157,9 @@ The script is intentionally minimal. Claude handles:
 - Faster research completion
 
 ### Smart Folder Naming
-- Queries converted to readable folder names
-- Automatic date prefixing
-- Easy to find past research
+- Queries converted to readable folder names automatically
+- Date prefixing for easy chronological sorting
+- Example: "What's the outlook for Austin?" → `2025-07-18-what-s-the-outlook-for-austin`
 
 ## 🏗️ Architecture
 
