@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabriel Lion | Clube Lion - Transformando Vítimas em Predadores</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --gold: #D4AF37;
+            --dark-gold: #B8941F;
+            --blood-red: #8B0000;
+            --black: #0A0A0A;
+            --white: #FFFFFF;
+            --gray: #1a1a1a;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* Loading Screen */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loader-text {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Hero Section com Parallax */
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(180deg, 
+                rgba(10,10,10,0.3) 0%, 
+                rgba(10,10,10,0.7) 50%, 
+                rgba(10,10,10,1) 100%),
+                url('https://i.imgur.com/755KcKX.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at center, 
+                transparent 0%, 
+                rgba(10,10,10,0.4) 50%, 
+                rgba(10,10,10,0.8) 100%);
+            pointer-events: none;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 900px;
+            padding: 0 20px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .lion-title {
+            font-size: clamp(40px, 8vw, 80px);
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3)); }
+            to { filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.5)); }
+        }
+        
+        .subtitle {
+            font-size: clamp(18px, 3vw, 24px);
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .highlight {
+            color: var(--gold);
+            font-weight: bold;
+        }
+        
+        .clube-badge {
+            display: inline-block;
+            padding: 10px 25px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--gold);
+            border-radius: 50px;
+            margin: 20px 0;
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+        
+        @keyframes shimmer {
+            0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.2); }
+            50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.4); }
+        }
+        
+        /* Story Section */
+        .story-section {
+            padding: 100px 20px;
+            background: linear-gradient(180deg, var(--black) 0%, var(--gray) 100%);
+            position: relative;
+        }
+        
+        .story-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+        
+        .story-image {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 20px 60px rgba(212, 175, 55, 0.2);
+        }
+        
+        .story-image::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--gold), transparent, var(--gold));
+            border-radius: 10px;
+            opacity: 0.5;
+            animation: borderRotate 3s linear infinite;
+        }
+        
+        @keyframes borderRotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .story-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .story-content {
+            padding: 20px;
+        }
+        
+        .story-title {
+            font-size: 36px;
+            color: var(--gold);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .story-text {
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+        
+        .story-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-box {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .stat-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+        
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--gold);
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        /* Mission Section */
+        .mission-section {
+            padding: 100px 20px;
+            background: var(--black);
+            text-align: center;
+        }
+        
+        .mission-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .mission-title {
+            font-size: 48px;
+            color: var(--gold);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+        
+        .mission-text {
+            font-size: 24px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 40px;
+        }
+        
+        .predator-quote {
+            font-size: 32px;
+            font-weight: bold;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 30px;
+            border: 3px solid var(--gold);
+            border-radius: 10px;
+            background: rgba(212, 175, 55, 0.05);
+            display: inline-block;
+            animation: pulseBorder 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulseBorder {
+            0%, 100% { border-color: var(--gold); }
+            50% { border-color: var(--dark-gold); }
+        }
+        
+        /* Challenge Section */
+        .challenge-section {
+            padding: 100px 20px;
+            background: var(--gray);
+            position: relative;
+        }
+        
+        .challenge-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 48px;
+            text-align: center;
+            margin-bottom: 60px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--gold);
+        }
+        
+        .challenge-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        
+        .challenge-card {
+            background: rgba(10, 10, 10, 0.7);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .challenge-card:hover::before {
+            left: 100%;
+        }
+        
+        .challenge-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--gold);
+            box-shadow: 0 20px 40px rgba(212, 175, 55, 0.2);
+        }
+        
+        .challenge-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .challenge-title {
+            font-size: 24px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+        
+        .challenge-description {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.6;
+        }
+        
+        /* Clube Lion Section */
+        .clube-section {
+            padding: 100px 20px;
+            background: linear-gradient(135deg, var(--black) 0%, var(--gray) 100%);
+            position: relative;
+        }
+        
+        .clube-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .clube-title {
+            font-size: 56px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--white) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .clube-subtitle {
+            font-size: 24px;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 50px;
+        }
+        
+        .clube-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .clube-feature {
+            padding: 30px;
+            background: rgba(212, 175, 55, 0.05);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 15px;
+            transition: all 0.3s ease;
+        }
+        
+        .clube-feature:hover {
+            transform: scale(1.05);
+            background: rgba(212, 175, 55, 0.1);
+            border-color: var(--gold);
+        }
+        
+        .clube-feature h3 {
+            font-size: 28px;
+            color: var(--gold);
+            margin-bottom: 15px;
+        }
+        
+        .clube-feature p {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 20px;
+            background: var(--black);
+            text-align: center;
+        }
+        
+        .cta-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .cta-title {
+            font-size: 48px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--white) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 40px 0;
+            flex-wrap: wrap;
+        }
+        
+        .countdown-item {
+            background: rgba(212, 175, 55, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid var(--gold);
+            min-width: 100px;
+        }
+        
+        .countdown-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: var(--gold);
+            display: block;
+        }
+        
+        .countdown-label {
+            font-size: 14px;
+            text-transform: uppercase;
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        
+        /* Form Section */
+        .form-container {
+            max-width: 600px;
+            margin: 60px auto 0;
+            background: rgba(10, 10, 10, 0.8);
+            padding: 40px;
+            border-radius: 15px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+        
+        .form-title {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--gold);
+            text-transform: uppercase;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(212, 175, 55, 0.8);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            color: var(--white);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--dark-gold) 100%);
+            color: var(--black);
+            border: none;
+            border-radius: 8px;
+            font-size: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+        
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .spots-counter {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(139, 0, 0, 0.2);
+            border: 1px solid var(--blood-red);
+            border-radius: 5px;
+            margin-top: 20px;
+            color: var(--white);
+        }
+        
+        .spots-number {
+            color: var(--gold);
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        /* Testimonial Section */
+        .testimonial-section {
+            padding: 80px 20px;
+            background: var(--gray);
+        }
+        
+        .testimonial-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .testimonial-quote {
+            font-size: 24px;
+            font-style: italic;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+            line-height: 1.8;
+            position: relative;
+        }
+        
+        .testimonial-quote::before,
+        .testimonial-quote::after {
+            content: '"';
+            font-size: 60px;
+            color: var(--gold);
+            position: absolute;
+            opacity: 0.3;
+        }
+        
+        .testimonial-quote::before {
+            top: -20px;
+            left: -40px;
+        }
+        
+        .testimonial-quote::after {
+            bottom: -40px;
+            right: -40px;
+        }
+        
+        .testimonial-author {
+            font-size: 18px;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            background: var(--black);
+            text-align: center;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+        }
+        
+        .footer-text {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .story-container {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            
+            .countdown-container {
+                gap: 15px;
+            }
+            
+            .challenge-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .lion-title {
+                font-size: 36px;
+            }
+            
+            .section-title {
+                font-size: 32px;
+            }
+        }
+        
+        /* Animações de scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Particles Background */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            opacity: 0.3;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            from {
+                transform: translateY(100vh) translateX(0);
+            }
+            to {
+                transform: translateY(-100px) translateX(100px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loader">
+        <div class="loader-text">GABRIEL LION</div>
+    </div>
+    
+    <!-- Particles -->
+    <div class="particles" id="particles"></div>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="lion-title">GABRIEL LION</h1>
+            <div class="clube-badge">CLUBE LION</div>
+            <p class="subtitle">
+                <span class="highlight">Transformando Vítimas em Predadores</span> em 31 Dias
+            </p>
+            <p style="font-size: 20px; margin-top: 30px; opacity: 0.9;">
+                O movimento que desperta o predador adormecido dentro de você.
+            </p>
+        </div>
+    </section>
+    
+    <!-- Story Section -->
+    <section class="story-section fade-in">
+        <div class="story-container">
+            <div class="story-image">
+                <img src="https://i.imgur.com/755KcKX.jpg" alt="Gabriel Lion" style="width: 100%; height: 500px; object-fit: cover;">
+            </div>
+            <div class="story-content">
+                <h2 class="story-title">GABRIEL LION</h2>
+                <p class="story-text">
+                    Aos 1 ano de idade, sobrevivi a um acidente que matou 8 pessoas, incluindo meus pais. 
+                    Minha irmã ficou em cadeira de rodas. Eu saí ileso fisicamente, mas quebrado por dentro.
+                </p>
+                <p class="story-text">
+                    Anos de vícios, pornografia, nicotina, auto-sabotagem. Até que decidi: 
+                    <strong>ou eu morro como vítima, ou renasço como predador.</strong>
+                </p>
+                <p class="story-text">
+                    Hoje, +100 dias de banho gelado. +100 dias sem nicotina após 8 anos. 
+                    Provérbios diários. Disciplina inabalável. E uma missão: 
+                    <span class="highlight">criar um exército de predadores através do Clube Lion.</span>
+                </p>
+                <div class="story-stats">
+                    <div class="stat-box">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Dias Banho Gelado</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">100+</div>
+                        <div class="stat-label">Dias Sem Vícios</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">31</div>
+                        <div class="stat-label">Provérbios</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-number">1</div>
+                        <div class="stat-label">Vida Para Mudar</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Mission Section -->
+    <section class="mission-section fade-in">
+        <div class="mission-container">
+            <h2 class="mission-title">A MISSÃO</h2>
+            <p class="mission-text">
+                O Clube Lion não é um curso. Não é um programa. 
+                É um movimento de transformação brutal que existe para um único propósito:
+            </p>
+            <div class="predator-quote">
+                TRANSFORMAR VÍTIMAS EM PREDADORES
+            </div>
+        </div>
+    </section>
+    
+    <!-- Clube Lion Section -->
+    <section class="clube-section fade-in">
+        <div class="clube-container">
+            <h2 class="clube-title">CLUBE LION</h2>
+            <p class="clube-subtitle">O Movimento dos Predadores Disciplinados</p>
+            
+            <div class="clube-features">
+                <div class="clube-feature">
+                    <h3>MENTALIDADE PREDADORA</h3>
+                    <p>Pare de ser presa. Aprenda a caçar oportunidades, destruir limitações e dominar seu território.</p>
+                </div>
+                <div class="clube-feature">
+                    <h3>IRMANDADE DE FERRO</h3>
+                    <p>Você não está sozinho. No Clube Lion, ferro afia ferro. Predadores criam predadores.</p>
+                </div>
+                <div class="clube-feature">
+                    <h3>DISCIPLINA DIÁRIA</h3>
+                    <p>31 dias de transformação brutal. Banho gelado, provérbios, exercícios, vendas. Sem desculpas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Challenge Section -->
+    <section class="challenge-section fade-in">
+        <div class="challenge-container">
+            <h2 class="section-title">O DESAFIO CLUBE LION - 31 DIAS</h2>
+            <div class="challenge-grid">
+                <div class="challenge-card">
+                    <div class="challenge-icon">🧊</div>
+                    <h3 class="challenge-title">Banho Gelado</h3>
+                    <p class="challenge-description">
+                        Todo dia, sem desculpas. Forje sua mente no gelo. 
+                        A disciplina começa quando o conforto termina.
+                    </p>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-icon">📖</div>
+                    <h3 class="challenge-title">Provérbios com Gabriel</h3>
+                    <p class="challenge-description">
+                        1 capítulo por dia. Live comigo toda manhã. 
+                        Sabedoria milenar para predadores modernos.
+                    </p>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-icon">💪</div>
+                    <h3 class="challenge-title">Treino Predador</h3>
+                    <p class="challenge-description">
+                        Nem que sejam 10 flexões. Movimento é vida. 
+                        Um corpo forte abriga uma mente predadora.
+                    </p>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-icon">🎯</div>
+                    <h3 class="challenge-title">Caçada Diária</h3>
+                    <p class="challenge-description">
+                        Uma ação de vendas por dia. Prospectar, vender, crescer. 
+                        Predadores caçam todos os dias.
+                    </p>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-icon">✍️</div>
+                    <h3 class="challenge-title">Diário do Predador</h3>
+                    <p class="challenge-description">
+                        Registre suas batalhas diárias. O que caçou, o que aprendeu. 
+                        Documentação é evolução.
+                    </p>
+                </div>
+                <div class="challenge-card">
+                    <div class="challenge-icon">🔥</div>
+                    <h3 class="challenge-title">Alcateia Elite</h3>
+                    <p class="challenge-description">
+                        WhatsApp exclusivo do Clube Lion. Só predadores comprometidos. 
+                        Ferro afia ferro.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Testimonial -->
+    <section class="testimonial-section fade-in">
+        <div class="testimonial-container">
+            <p class="testimonial-quote">
+                "Não estou aqui para te motivar. Motivação é para presas. 
+                Estou aqui para despertar o predador que você sempre foi. 
+                31 dias no Clube Lion vão transformar você em algo que sua mãe não vai reconhecer."
+            </p>
+            <p class="testimonial-author">— GABRIEL LION</p>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-container">
+            <h2 class="cta-title">ENTRE PARA O CLUBE LION</h2>
+            <p style="font-size: 20px; margin-bottom: 40px; opacity: 0.9;">
+                O próximo ciclo começa em Janeiro. As vagas são limitadas. 
+                A transformação é garantida para quem não desistir.
+            </p>
+            
+            <div class="countdown-container">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">30</span>
+                    <span class="countdown-label">Dias</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Horas</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Minutos</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Segundos</span>
+                </div>
+            </div>
+            
+            <div class="form-container">
+                <h3 class="form-title">TORNE-SE UM PREDADOR</h3>
+                <form id="lionForm">
+                    <div class="form-group">
+                        <label for="name">Nome de Predador *</label>
+                        <input type="text" id="name" name="name" required placeholder="Como você quer ser chamado no Clube">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" name="email" required placeholder="seu@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="whatsapp">WhatsApp *</label>
+                        <input type="tel" id="whatsapp" name="whatsapp" required placeholder="(11) 98765-4321">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="battle">Qual vítima vive em você? *</label>
+                        <textarea id="battle" name="battle" required placeholder="Seja brutalmente honesto. Vícios? Procrastinação? Medo? Fraqueza? Diga a verdade, só assim posso transformar você em predador."></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="commitment">Nível de Comprometimento com o Clube Lion *</label>
+                        <select id="commitment" name="commitment" required>
+                            <option value="">Selecione...</option>
+                            <option value="testing">Iniciante - Teste o Clube (R$ 47)</option>
+                            <option value="ready">Predador - Pronto para caçar (R$ 97)</option>
+                            <option value="allin">Alpha - All-in na transformação (R$ 197)</option>
+                            <option value="vip">LION VIP - Mentoria com Gabriel (R$ 497)</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        ENTRAR NO CLUBE LION
+                    </button>
+                    
+                    <div class="form-footer">
+                        <p>🔒 Suas informações estão seguras</p>
+                        <div class="spots-counter">
+                            Restam apenas <span class="spots-number">17</span> vagas para o Clube Lion
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <p class="footer-text">
+            © 2025 Gabriel Lion | Clube Lion - Transformando Vítimas em Predadores
+        </p>
+    </footer>
+    
+    <script>
+        // Remove loader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.loader').classList.add('hidden');
+            }, 1000);
+        });
+        
+        // Particles
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (15 + Math.random() * 10) + 's';
+                container.appendChild(particle);
+            }
+        }
+        createParticles();
+        
+        // Countdown
+        function updateCountdown() {
+            const launchDate = new Date();
+            launchDate.setDate(launchDate.getDate() + 30);
+            
+            const now = new Date().getTime();
+            const distance = launchDate - now;
+            
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+        
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+        
+        // Form handler
+        document.getElementById('lionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData);
+            
+            // Aqui você integra com seu backend
+            console.log('Dados do formulário:', data);
+            
+            // WhatsApp redirect
+            const message = `🦁 CLUBE LION - NOVA INSCRIÇÃO\n\nNome: ${data.name}\nEmail: ${data.email}\nWhatsApp: ${data.whatsapp}\nVítima Interior: ${data.battle}\nComprometimento: ${data.commitment}`;
+            
+            const whatsappUrl = `https://wa.me/5511999999999?text=${encodeURIComponent(message)}`;
+            
+            alert('🦁 Bem-vindo ao Clube Lion! Você será redirecionado para confirmar no WhatsApp.');
+            window.open(whatsappUrl, '_blank');
+            
+            this.reset();
+        });
+        
+        // Format WhatsApp input
+        document.getElementById('whatsapp').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            let formatted = '';
+            
+            if (value.length > 0) {
+                formatted = '(' + value.substring(0, 2);
+            }
+            if (value.length > 2) {
+                formatted += ') ' + value.substring(2, 7);
+            }
+            if (value.length > 7) {
+                formatted += '-' + value.substring(7, 11);
+            }
+            
+            e.target.value = formatted;
+        });
+        
+        // Update spots randomly
+        let spots = 17;
+        setInterval(() => {
+            if (Math.random() > 0.8 && spots > 3) {
+                spots--;
+                document.querySelector('.spots-number').innerText = spots;
+            }
+        }, 45000);
+    </script>
+</body>
+</html>
