@@ -175,7 +175,6 @@
         /* Hero Section Mobile First */
         .hero {
             min-height: 100vh;
-            min-height: 100dvh;
             position: relative;
             display: flex;
             align-items: center;
@@ -190,7 +189,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            /* Fixed attachment removed for mobile compatibility */
+            background-attachment: fixed;
         }
         
         .hero-content {
@@ -312,6 +311,12 @@
             transform: scale(0.98);
         }
         
+        /* Membership Section Mobile First */
+        .membership-section {
+            padding: 60px 20px;
+            background: linear-gradient(180deg, var(--black) 0%, var(--gray) 100%);
+        }
+        
         .section-header {
             text-align: center;
             margin-bottom: 40px;
@@ -343,6 +348,96 @@
             font-size: 16px;
             color: rgba(255, 255, 255, 0.7);
             padding: 0 20px;
+        }
+        
+        .membership-levels {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        .membership-card {
+            background: rgba(10, 10, 10, 0.8);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
+            padding: 30px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .membership-card.featured {
+            border-color: var(--gold);
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
+        }
+        
+        .membership-card.featured::before {
+            content: 'MAIS POPULAR';
+            position: absolute;
+            top: 15px;
+            right: -35px;
+            background: var(--gold);
+            color: var(--black);
+            padding: 5px 40px;
+            font-size: 10px;
+            font-weight: bold;
+            transform: rotate(45deg);
+        }
+        
+        .membership-icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .membership-name {
+            font-size: 24px;
+            color: var(--gold);
+            margin-bottom: 20px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+        
+        .membership-features {
+            list-style: none;
+            margin: 20px 0;
+            text-align: left;
+        }
+        
+        .membership-features li {
+            padding: 8px 0;
+            color: rgba(255, 255, 255, 0.8);
+            position: relative;
+            padding-left: 25px;
+            font-size: 14px;
+        }
+        
+        .membership-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-weight: bold;
+        }
+        
+        .membership-btn {
+            width: 100%;
+            padding: 15px 20px;
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+            color: var(--black);
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .membership-btn:active {
+            transform: scale(0.98);
         }
         
         /* Protocol Section Mobile First */
@@ -770,12 +865,17 @@
             
             .hero {
                 padding: 120px 40px 60px;
-                background-attachment: fixed;
             }
             
             .hero-stats {
                 grid-template-columns: repeat(3, 150px);
                 justify-content: center;
+                gap: 30px;
+            }
+            
+            .membership-levels {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
                 gap: 30px;
             }
             
@@ -814,6 +914,11 @@
                 grid-template-columns: repeat(4, 1fr);
             }
             
+            .membership-levels {
+                grid-template-columns: repeat(3, 1fr);
+                max-width: 1200px;
+                margin: 40px auto 0;
+            }
             
             .hero-content {
                 max-width: 900px;
@@ -898,6 +1003,61 @@
         </div>
     </section>
     
+    <!-- Membership Levels -->
+    <section class="membership-section fade-in">
+        <div class="section-header">
+            <span class="section-badge">Escolha Seu Nível</span>
+            <h2 class="section-title">Entre Para o Clube</h2>
+            <p class="section-subtitle">
+                Não vendemos cursos. Recrutamos leões. 
+                Escolha seu nível de comprometimento.
+            </p>
+        </div>
+        
+        <div class="membership-levels">
+            <div class="membership-card">
+                <div class="membership-icon">🥉</div>
+                <h3 class="membership-name">Iniciante</h3>
+                <ul class="membership-features">
+                    <li>Desafio 31 Dias Completo</li>
+                    <li>Grupo WhatsApp Exclusivo</li>
+                    <li>Lives Diárias de Provérbios</li>
+                    <li>Protocolo Lion PDF</li>
+                    <li>Certificado de Conclusão</li>
+                </ul>
+                <button class="membership-btn">Começar Jornada</button>
+            </div>
+            
+            <div class="membership-card featured">
+                <div class="membership-icon">🥇</div>
+                <h3 class="membership-name">Alpha</h3>
+                <ul class="membership-features">
+                    <li>Tudo do Iniciante +</li>
+                    <li>Mentoria em Grupo Semanal</li>
+                    <li>Acesso ao Inner Circle</li>
+                    <li>Material Avançado de Vendas</li>
+                    <li>1 Call Individual com Gabriel</li>
+                    <li>Brotherhood Vitalício</li>
+                </ul>
+                <button class="membership-btn">Virar Alpha</button>
+            </div>
+            
+            <div class="membership-card">
+                <div class="membership-icon">💎</div>
+                <h3 class="membership-name">Elite</h3>
+                <ul class="membership-features">
+                    <li>Tudo do Alpha +</li>
+                    <li>Mentoria Individual Mensal</li>
+                    <li>Acesso Direto ao Gabriel</li>
+                    <li>Eventos Presenciais VIP</li>
+                    <li>Parceria em Projetos</li>
+                    <li>Selo Elite Lion</li>
+                </ul>
+                <button class="membership-btn">Ser Elite</button>
+            </div>
+        </div>
+    </section>
+    
     <!-- Protocol Section -->
     <section class="protocol-section fade-in" id="protocolo">
         <div class="section-header">
@@ -959,16 +1119,20 @@
                 <span class="founder-badge">Fundador</span>
                 <h2 class="founder-name">Gabriel Lion</h2>
                 <p class="founder-story">
-                    <strong>Sobrevivi quando 8 morreram.</strong> Acidente aos 1 ano. 
-                    Pais mortos. Irmã em cadeira de rodas.
+                    <strong>1 ano de idade. Uma batida. 8 mortos.</strong><br>
+                    Meus pais entre eles. Minha irmã nunca mais andou.<br>
+                    Eu saí ileso. Ou foi o que pensaram.
                 </p>
                 <p class="founder-story">
-                    Anos de vícios. Pornografia. Nicotina. Depressão. 
-                    <strong>Até que decidi: ou morro vítima, ou viro leão.</strong>
+                    Cresci órfão. Aos 15, pornografia virou fuga. 
+                    Aos 17, nicotina virou rotina. Aos 20, depressão virou identidade.
+                    <strong>8 anos me destruindo, até o dia que decidi: 
+                    "Ou morro como presa, ou renasço como predador."</strong>
                 </p>
                 <p class="founder-story">
-                    Hoje: +100 dias de disciplina absoluta. 
-                    <span class="highlight">Minha missão: criar mais leões.</span>
+                    100 dias de banho gelado. 100 dias sem vícios. 
+                    100 dias em Provérbios. <span class="highlight">Descobri meu propósito: 
+                    Não sobrevivi por acaso. Sobrevivi para criar um exército de leões.</span>
                 </p>
                 <div class="founder-stats">
                     <div class="founder-stat">
