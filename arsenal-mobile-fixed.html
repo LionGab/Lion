@@ -942,25 +942,126 @@
 
         function analyzeOffline(input) {
             const lower = input.toLowerCase();
-            let response = '📊 **Análise Offline**\n\n';
+            let response = '🛡️ **Arsenal Offline - Análise Tática**\n\n';
             
-            // Detecção simples
-            if (lower.includes('gaslighting') || lower.includes('duvidar')) {
-                response += '🔍 **Tática Detectada:** Gaslighting\n';
-                response += '⚠️ **Nível:** Alto\n';
-                response += '✅ **Ação Imediata:** "Minha percepção é válida. Vou verificar os fatos."\n';
-                response += '📝 **Estratégia:** Documente tudo, busque testemunhas, confie em sua percepção.\n';
-            } else if (lower.includes('pressão') || lower.includes('urgente')) {
-                response += '🔍 **Tática Detectada:** Pressão para decisão\n';
-                response += '⚠️ **Nível:** Médio\n';
-                response += '✅ **Ação Imediata:** "Preciso de 24h para uma decisão responsável."\n';
-                response += '📝 **Estratégia:** Nunca decida sob pressão. Tempo é seu aliado.\n';
-            } else {
-                response += '📝 **Análise Geral:**\n';
-                response += 'Mantenha calma, documente situações suspeitas, estabeleça limites claros.\n';
+            // Banco de conhecimento offline expandido
+            const tacticsDatabase = {
+                gaslighting: {
+                    keywords: ['gaslighting', 'duvidar', 'louco', 'imaginando', 'nunca disse', 'não lembro'],
+                    level: 'Alto',
+                    immediate: '"Minha percepção é válida. Vou verificar os fatos."',
+                    strategy: 'Documente tudo, busque testemunhas, confie em sua percepção. Grave conversas se legal.',
+                    scripts: ['"Vou verificar isso e volto para você."', '"Minha memória está clara sobre isso."']
+                },
+                pressure: {
+                    keywords: ['pressão', 'urgente', 'agora', 'imediatamente', 'sem tempo', 'decide já'],
+                    level: 'Médio',
+                    immediate: '"Preciso de 24h para uma decisão responsável."',
+                    strategy: 'Nunca decida sob pressão. Tempo é seu aliado. Crie espaço para pensar.',
+                    scripts: ['"Decisões importantes precisam de reflexão."', '"Vou analisar e te respondo amanhã."']
+                },
+                manipulation: {
+                    keywords: ['manipulação', 'chantagem', 'ameaça', 'culpa', 'vergonha'],
+                    level: 'Alto',
+                    immediate: '"Não aceito ser manipulado. Vamos conversar com respeito."',
+                    strategy: 'Identifique o padrão, estabeleça limites firmes, busque apoio.',
+                    scripts: ['"Isso não é aceitável."', '"Vamos focar nos fatos, não em emoções."']
+                },
+                narcisismo: {
+                    keywords: ['narcisista', 'egoísta', 'arrogante', 'superior', 'especial'],
+                    level: 'Alto',
+                    immediate: '"Entendo sua perspectiva. Vamos ouvir outros pontos de vista."',
+                    strategy: 'Não confronte diretamente. Use técnica de espelhamento e redirecionamento.',
+                    scripts: ['"Interessante. Como você chegou a essa conclusão?"', '"Vamos ver o que os dados mostram."']
+                },
+                trabalho: {
+                    keywords: ['chefe', 'trabalho', 'reunião', 'projeto', 'deadline', 'equipe'],
+                    level: 'Médio',
+                    immediate: '"Vou analisar isso e dar um retorno estruturado."',
+                    strategy: 'Mantenha profissionalismo, documente tudo, busque clareza nas expectativas.',
+                    scripts: ['"Preciso entender melhor os objetivos."', '"Vamos alinhar as expectativas."']
+                },
+                relacionamento: {
+                    keywords: ['namorado', 'namorada', 'marido', 'esposa', 'relacionamento', 'amor'],
+                    level: 'Alto',
+                    immediate: '"Precisamos conversar com calma sobre isso."',
+                    strategy: 'Comunicação assertiva, estabeleça limites saudáveis, busque diálogo.',
+                    scripts: ['"Me sinto desconfortável quando..."', '"Preciso que você entenda minha perspectiva."']
+                }
+            };
+            
+            // Análise por padrões
+            let detectedTactic = null;
+            let confidence = 0;
+            
+            for (const [tacticName, tacticData] of Object.entries(tacticsDatabase)) {
+                let matches = 0;
+                for (const keyword of tacticData.keywords) {
+                    if (lower.includes(keyword)) {
+                        matches++;
+                    }
+                }
+                
+                const currentConfidence = (matches / tacticData.keywords.length) * 100;
+                if (currentConfidence > confidence) {
+                    confidence = currentConfidence;
+                    detectedTactic = { name: tacticName, data: tacticData };
+                }
             }
             
+            if (detectedTactic && confidence > 20) {
+                response += `🔍 **Tática Detectada:** ${detectedTactic.name.charAt(0).toUpperCase() + detectedTactic.name.slice(1)}\n`;
+                response += `⚠️ **Nível de Risco:** ${detectedTactic.data.level}\n`;
+                response += `📊 **Confiança:** ${Math.round(confidence)}%\n\n`;
+                response += `✅ **Ação Imediata:**\n${detectedTactic.data.immediate}\n\n`;
+                response += `📝 **Estratégia:**\n${detectedTactic.data.strategy}\n\n`;
+                response += `💬 **Scripts Prontos:**\n`;
+                detectedTactic.data.scripts.forEach((script, index) => {
+                    response += `${index + 1}. ${script}\n`;
+                });
+                
+                // Salvar padrão para aprendizado
+                savePattern(lower, detectedTactic.name);
+                
+            } else {
+                // Análise geral melhorada
+                response += '📝 **Análise Geral:**\n\n';
+                
+                if (lower.includes('ajuda') || lower.includes('help')) {
+                    response += '🆘 **Suporte Identificado:** Você está buscando orientação.\n';
+                    response += '✅ **Recomendação:** Continue descrevendo a situação com mais detalhes.\n';
+                } else if (lower.includes('problema') || lower.includes('dificuldade')) {
+                    response += '⚠️ **Situação Problemática Detectada**\n';
+                    response += '✅ **Próximos Passos:** Identifique os envolvidos e o contexto específico.\n';
+                }
+                
+                response += '\n📋 **Protocolo Padrão:**\n';
+                response += '1. Mantenha a calma e documente a situação\n';
+                response += '2. Estabeleça limites claros\n';
+                response += '3. Busque uma segunda opinião\n';
+                response += '4. Prepare scripts de resposta\n';
+                response += '5. Tenha um plano de saída se necessário\n';
+            }
+            
+            // Gamificação offline
+            tacticsCount++;
+            localStorage.setItem('tacticsCount', tacticsCount);
+            updateStats();
+            
             return response;
+        }
+
+        function savePattern(input, tacticType) {
+            let patterns = JSON.parse(localStorage.getItem('learnedPatterns') || '{}');
+            if (!patterns[tacticType]) patterns[tacticType] = [];
+            
+            patterns[tacticType].push({
+                input: input.substring(0, 50), // Primeiros 50 chars
+                timestamp: Date.now(),
+                count: (patterns[tacticType].find(p => p.input === input.substring(0, 50))?.count || 0) + 1
+            });
+            
+            localStorage.setItem('learnedPatterns', JSON.stringify(patterns));
         }
 
         function displayResponse(content) {
