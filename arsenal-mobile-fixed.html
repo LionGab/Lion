@@ -905,7 +905,13 @@
             );
             
             const messages = await messagesResponse.json();
-            return messages.data[0].content[0].text.value;
+            let response = messages.data[0].content[0].text.value;
+            
+            // Remover referências de fonte [números:números source]
+            response = response.replace(/\[\d+:\d+\s*source\]/g, '');
+            response = response.replace(/\[\d+\]/g, '');
+            
+            return response.trim();
         }
 
         async function consultExplorarGPT() {
