@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Prático MT - Marketing com IA para Negócios Locais</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c5aa0;
+            --secondary: #ff6b35;
+            --accent: #4CAF50;
+            --dark: #1a1a1a;
+            --light: #f8f9fa;
+            --gradient: linear-gradient(135deg, #2c5aa0 0%, #1e3d70 100%);
+            --success: #28a745;
+            --warning: #ffc107;
+            --danger: #dc3545;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            background: var(--light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            background: var(--gradient);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 20"><polygon fill="rgba(255,255,255,0.1)" points="0,20 100,0 100,20"/></svg>');
+            background-size: 100px 20px;
+        }
+
+        .hero {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero .slogan {
+            font-size: 1.5rem;
+            color: var(--secondary);
+            margin-bottom: 2rem;
+            font-weight: bold;
+        }
+
+        .hero .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 107, 53, 0.4);
+        }
+
+        /* Sections */
+        section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+
+        /* Diferencial */
+        .diferencial {
+            background: white;
+        }
+
+        .pilares {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pilar {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        .pilar:hover {
+            transform: translateY(-5px);
+        }
+
+        .pilar i {
+            font-size: 3rem;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .pilar h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        /* Pacotes */
+        .pacotes {
+            background: var(--light);
+        }
+
+        .pacotes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pacote {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .pacote:hover {
+            transform: translateY(-10px);
+        }
+
+        .pacote.destaque {
+            border: 3px solid var(--secondary);
+            transform: scale(1.05);
+        }
+
+        .pacote.destaque::before {
+            content: 'MAIS VENDIDO';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .pacote h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .preco {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--secondary);
+            margin-bottom: 1rem;
+        }
+
+        .preco span {
+            font-size: 1rem;
+            color: var(--dark);
+        }
+
+        .beneficios {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .beneficios li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .beneficios i {
+            color: var(--accent);
+            margin-right: 10px;
+        }
+
+        .garantia {
+            background: var(--accent);
+            color: white;
+            padding: 1rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin: 1rem 0;
+        }
+
+        /* Serviços Individuais */
+        .servicos {
+            background: white;
+        }
+
+        .servicos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .servico {
+            background: var(--light);
+            padding: 1.5rem;
+            border-radius: 15px;
+            border-left: 4px solid var(--secondary);
+            transition: all 0.3s;
+        }
+
+        .servico:hover {
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            transform: translateX(5px);
+        }
+
+        .servico h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .servico .preco-individual {
+            font-weight: bold;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Contato */
+        .contato {
+            background: var(--gradient);
+            color: white;
+            text-align: center;
+        }
+
+        .contato-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .contato-item {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        .contato-item i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--secondary);
+        }
+
+        /* Garantias */
+        .garantias {
+            background: var(--accent);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .garantias-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .garantia-item {
+            background: rgba(255,255,255,0.2);
+            padding: 1.5rem;
+            border-radius: 15px;
+        }
+
+        .garantia-item i {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        /* WhatsApp Float */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            padding: 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.5rem;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero .slogan {
+                font-size: 1.2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .pacotes-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pacote.destaque {
+                transform: none;
+            }
+        }
+
+        /* Depoimentos */
+        .depoimentos {
+            background: white;
+            padding: 4rem 0;
+        }
+
+        .depoimento {
+            background: var(--light);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 1rem;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .depoimento .autor {
+            font-weight: bold;
+            color: var(--primary);
+            margin-top: 1rem;
+        }
+
+        /* Stats */
+        .stats {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .stat {
+            padding: 1rem;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="hero">
+                <h1><i class="fas fa-robot"></i> Digital Prático MT</h1>
+                <p class="slogan">"Resultados reais em 30 dias ou trabalhamos de graça"</p>
+                <p class="subtitle">Marketing com IA para Negócios Locais no Mato Grosso</p>
+                <a href="#contato" class="cta-button">
+                    <i class="fab fa-whatsapp"></i> Quero Começar Agora
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Stats -->
+    <section class="stats">
+        <div class="container">
+            <h2>O Mercado de Marketing Digital no MT</h2>
+            <div class="stats-grid">
+                <div class="stat">
+                    <div class="stat-number">95%</div>
+                    <div class="stat-label">dos comércios locais NÃO usam marketing digital</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">R$ 2.000+</div>
+                    <div class="stat-label">cobrado pela concorrência</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">75%</div>
+                    <div class="stat-label">já têm ferramentas digitais básicas</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">3x</div>
+                    <div class="stat-label">ROI garantido</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Diferencial -->
+    <section class="diferencial">
+        <div class="container">
+            <h2 class="section-title">Por que Somos Diferentes?</h2>
+            <div class="pilares">
+                <div class="pilar">
+                    <i class="fas fa-dollar-sign"></i>
+                    <h3>Preço Justo, Valor Superior</h3>
+                    <p>Enquanto outros cobram R$2.000+, oferecemos pacotes completos a partir de <strong>R$699</strong>, incluindo IA, gestão completa e otimização WhatsApp.</p>
+                </div>
+                <div class="pilar">
+                    <i class="fas fa-robot"></i>
+                    <h3>IA Simplificada</h3>
+                    <p>Inteligência artificial como "assistente digital 24h". Reduzimos 70% do tempo de execução mantendo qualidade superior com ChatGPT, Canva AI e automações.</p>
+                </div>
+                <div class="pilar">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Conhecimento Local</h3>
+                    <p>Conhecemos pessoalmente os donos, entendemos ciclos da safra, festas regionais e comportamento de compra local. Vantagem que agências de fora nunca terão.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pacotes -->
+    <section class="pacotes" id="pacotes">
+        <div class="container">
+            <h2 class="section-title">Nossos Pacotes</h2>
+            <div class="pacotes-grid">
+                <div class="pacote">
+                    <h3>Início Digital</h3>
+                    <div class="preco">R$ 699<span>/mês</span></div>
+                    <p><strong>Para pequenos negócios que querem entrar no digital</strong></p>
+                    
+                    <ul class="beneficios">
+                        <li><i class="fas fa-check"></i> Gestão Instagram e Facebook (12 posts)</li>
+                        <li><i class="fas fa-check"></i> WhatsApp Business configurado</li>
+                        <li><i class="fas fa-check"></i> Conteúdos visuais com IA</li>
+                        <li><i class="fas fa-check"></i> Google Meu Negócio otimizado</li>
+                        <li><i class="fas fa-check"></i> Relatório mensal simplificado</li>
+                        <li><i class="fas fa-check"></i> Suporte WhatsApp comercial</li>
+                        <li><i class="fas fa-check"></i> Tráfego pago (invest. R$300)</li>
+                    </ul>
+                    
+                    <div class="garantia">
+                        30 dias ou dinheiro de volta
+                    </div>
+                </div>
+
+                <div class="pacote destaque">
+                    <h3>Crescimento Inteligente</h3>
+                    <div class="preco">R$ 1.299<span>/mês</span></div>
+                    <p><strong>Para quem quer resultados consistentes</strong></p>
+                    
+                    <ul class="beneficios">
+                        <li><i class="fas fa-check"></i> Tudo do Pacote Início, mais:</li>
+                        <li><i class="fas fa-check"></i> 30 publicações no Instagram</li>
+                        <li><i class="fas fa-check"></i> Automação WhatsApp inteligente</li>
+                        <li><i class="fas fa-check"></i> 3 vídeos Reels/semana com IA</li>
+                        <li><i class="fas fa-check"></i> Estratégias de remarketing</li>
+                        <li><i class="fas fa-check"></i> Análise concorrência local</li>
+                        <li><i class="fas fa-check"></i> Consultoria quinzenal</li>
+                        <li><i class="fas fa-check"></i> Tráfego pago incluso</li>
+                    </ul>
+                    
+                    <div class="garantia">
+                        Dobrar leads qualificados em 90 dias
+                    </div>
+                </div>
+
+                <div class="pacote">
+                    <h3>Dominação Local</h3>
+                    <div class="preco">R$ 2.999<span>/mês</span></div>
+                    <p><strong>Para líderes de mercado</strong></p>
+                    
+                    <ul class="beneficios">
+                        <li><i class="fas fa-check"></i> Tudo do Crescimento, mais:</li>
+                        <li><i class="fas fa-check"></i> Gestão completa marketing</li>
+                        <li><i class="fas fa-check"></i> R$500 verba anúncios inclusos</li>
+                        <li><i class="fas fa-check"></i> Chatbot WhatsApp IA personalizada</li>
+                        <li><i class="fas fa-check"></i> Vídeos profissionais premium</li>
+                        <li><i class="fas fa-check"></i> SEO local e blog otimizado</li>
+                        <li><i class="fas fa-check"></i> Campanhas sazonais</li>
+                        <li><i class="fas fa-check"></i> Dashboard tempo real</li>
+                    </ul>
+                    
+                    <div class="garantia">
+                        ROI mínimo 3:1 ou crédito mês seguinte
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Serviços Individuais -->
+    <section class="servicos" id="servicos">
+        <div class="container">
+            <h2 class="section-title">Serviços Individuais</h2>
+            <div class="servicos-grid">
+                <div class="servico">
+                    <h4><i class="fab fa-whatsapp"></i> WhatsApp Business Turbinado</h4>
+                    <div class="preco-individual">R$ 399</div>
+                    <p>Configuração completa com catálogo, respostas automáticas inteligentes e treinamento da equipe.</p>
+                </div>
+
+                <div class="servico">
+                    <h4><i class="fas fa-video"></i> Instagram Reels Viral</h4>
+                    <div class="preco-individual">R$ 599</div>
+                    <p>8 Reels mensais com IA, áudios em alta, roteiros testados e edição profissional.</p>
+                </div>
+
+                <div class="servico">
+                    <h4><i class="fas fa-bullhorn"></i> Tráfego Pago Simplificado</h4>
+                    <div class="preco-individual">R$ 799 + verba</div>
+                    <p>Campanhas Instagram/Facebook com relatórios semanais em linguagem simples.</p>
+                </div>
+
+                <div class="servico">
+                    <h4><i class="fas fa-search"></i> Google Meu Negócio Dominante</h4>
+                    <div class="preco-individual">R$ 299</div>
+                    <p>Otimização para aparecer primeiro nas buscas locais, gestão completa.</p>
+                </div>
+
+                <div class="servico">
+                    <h4><i class="fas fa-utensils"></i> Cardápio Digital Inteligente</h4>
+                    <div class="preco-individual">R$ 499 único</div>
+                    <p>Para restaurantes: cardápio interativo WhatsApp com pedidos automatizados.</p>
+                </div>
+
+                <div class="servico">
+                    <h4><i class="fas fa-store"></i> Vitrine Virtual 24h</h4>
+                    <div class="preco-individual">R$ 699</div>
+                    <p>Loja Instagram Shopping + catálogo WhatsApp sincronizados.</p>
+                </div>
+
+                <div class="servico">
+                    <h4><i class="fas fa-star"></i> Influenciadores Locais</h4>
+                    <div class="preco-individual">R$ 899</div>
+                    <p>Parceria com micro-influenciadores locais (1K-10K seguidores).</p>
+                </div>
+
+                <div class="servico">
+                    <h4><i class="fas fa-envelope"></i> Email Marketing que Vende</h4>
+                    <div class="preco-individual">R$ 399</div>
+                    <p>Campanhas segmentadas, automação aniversariantes, recuperação clientes.</p>
+                </div>
+
+                <div class="servico">
+                    <h4><i class="fas fa-magic"></i> Conteúdo Infinito com IA</h4>
+                    <div class="preco-individual">R$ 799</div>
+                    <p>30 posts mensais criados com IA, mantendo voz da marca local.</p>
+                </div>
+
+                <div class="servico">
+                    <h4><i class="fas fa-chart-line"></i> Análise Competitiva Local</h4>
+                    <div class="preco-individual">R$ 299</div>
+                    <p>Relatório mensal sobre concorrentes e oportunidades inexploradas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Garantias -->
+    <section class="garantias">
+        <div class="container">
+            <h2>Nossas Garantias</h2>
+            <div class="garantias-grid">
+                <div class="garantia-item">
+                    <i class="fas fa-money-back"></i>
+                    <h3>30 dias ou dinheiro de volta</h3>
+                    <p>Sem letras miúdas</p>
+                </div>
+                <div class="garantia-item">
+                    <i class="fas fa-clock"></i>
+                    <h3>Resposta em 2 horas</h3>
+                    <p>Durante horário comercial</p>
+                </div>
+                <div class="garantia-item">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Resultados mensuráveis</h3>
+                    <p>Métricas claras, não promessas</p>
+                </div>
+                <div class="garantia-item">
+                    <i class="fas fa-unlock"></i>
+                    <h3>Sem fidelidade</h3>
+                    <p>Cancele quando quiser</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Depoimentos -->
+    <section class="depoimentos">
+        <div class="container">
+            <h2 class="section-title">O que nossos clientes dizem</h2>
+            <div class="depoimento">
+                <p>"Em 30 dias aumentamos as vendas em 40%. O WhatsApp agora vende sozinho!"</p>
+                <div class="autor">- Maria Silva, Loja de Roupas</div>
+            </div>
+            <div class="depoimento">
+                <p>"Finalmente marketing digital que funciona e cabe no meu bolso. ROI de 5:1 no primeiro mês."</p>
+                <div class="autor">- João Santos, Restaurante</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contato -->
+    <section class="contato" id="contato">
+        <div class="container">
+            <h2 class="section-title">Vamos Conversar?</h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem;">
+                Análise gratuita do seu negócio + estratégia personalizada
+            </p>
+            
+            <div class="contato-info">
+                <div class="contato-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3>WhatsApp</h3>
+                    <p>(65) 9 9999-9999</p>
+                    <a href="https://wa.me/5565999999999?text=Olá! Quero saber mais sobre o Digital Prático MT" class="cta-button">
+                        Chamar Agora
+                    </a>
+                </div>
+                
+                <div class="contato-item">
+                    <i class="fas fa-envelope"></i>
+                    <h3>Email</h3>
+                    <p>contato@digitalpraticomt.com.br</p>
+                </div>
+                
+                <div class="contato-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <h3>Localização</h3>
+                    <p>Atendemos todo Mato Grosso<br>Base: [Sua Cidade]</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/5565999999999?text=Olá! Quero uma análise gratuita do meu negócio" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <script>
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.pilar, .pacote, .servico').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease';
+            observer.observe(el);
+        });
+
+        // WhatsApp tracking
+        document.querySelectorAll('a[href*="wa.me"]').forEach(link => {
+            link.addEventListener('click', () => {
+                console.log('WhatsApp clicked');
+                // Adicionar tracking analytics aqui
+            });
+        });
+    </script>
+</body>
+</html>
