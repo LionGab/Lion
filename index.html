@@ -495,44 +495,102 @@
             margin-top: 3px;
         }
         
-        /* Testimonial Section Mobile First */
-        .testimonial-section {
+        /* Vision Section Mobile First */
+        .vision-section {
             padding: 60px 20px;
             background: var(--black);
         }
         
-        .testimonial-grid {
-            display: flex;
-            flex-direction: column;
+        .vision-grid {
+            display: grid;
+            grid-template-columns: 1fr;
             gap: 20px;
             margin-top: 40px;
         }
         
-        .testimonial-card {
+        .vision-card {
             background: rgba(212, 175, 55, 0.05);
-            padding: 25px 20px;
+            padding: 30px 20px;
             border-radius: 12px;
             border: 1px solid rgba(212, 175, 55, 0.2);
+            text-align: center;
+            transition: all 0.3s ease;
         }
         
-        .testimonial-quote {
-            font-size: 16px;
-            font-style: italic;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 15px;
-            line-height: 1.5;
+        .vision-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(212, 175, 55, 0.4);
+            background: rgba(212, 175, 55, 0.08);
         }
         
-        .testimonial-author {
-            font-size: 14px;
+        .vision-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
+        }
+        
+        .vision-title {
+            font-size: 20px;
             color: var(--gold);
+            margin-bottom: 15px;
             font-weight: bold;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
-        .testimonial-role {
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.6);
+        .vision-description {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+        
+        .vision-manifesto {
+            margin-top: 60px;
+            background: rgba(10, 10, 10, 0.8);
+            padding: 40px 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .vision-manifesto::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gold), var(--dark-gold));
+        }
+        
+        .manifesto-content {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .manifesto-title {
+            font-size: 24px;
+            color: var(--gold);
+            margin-bottom: 25px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 900;
+        }
+        
+        .manifesto-text {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+        
+        .manifesto-signature {
+            font-size: 14px;
+            color: var(--gold);
+            font-style: italic;
+            margin-top: 30px;
         }
         
         /* CTA Section Mobile First */
@@ -887,9 +945,8 @@
                 height: 500px;
             }
             
-            .testimonial-grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            .vision-grid {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 30px;
             }
             
@@ -906,6 +963,9 @@
                 grid-template-columns: repeat(4, 1fr);
             }
             
+            .vision-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
             
             .hero-content {
                 max-width: 900px;
@@ -1093,39 +1153,66 @@
         </div>
     </section>
     
-    <!-- Testimonials -->
-    <section class="testimonial-section fade-in" id="membros">
+    <!-- Vision Section -->
+    <section class="vision-section fade-in" id="membros">
         <div class="section-header">
-            <span class="section-badge">Resultados Reais</span>
-            <h2 class="section-title">Leões do Clube</h2>
+            <span class="section-badge">A Visão</span>
+            <h2 class="section-title">Por Que o Clube Lion?</h2>
         </div>
         
-        <div class="testimonial-grid">
-            <div class="testimonial-card">
-                <p class="testimonial-quote">
-                    "31 dias que mudaram 31 anos de mediocridade. 
-                    O Protocolo Lion é transformação real."
+        <div class="vision-grid">
+            <div class="vision-card">
+                <div class="vision-icon">🎯</div>
+                <h3 class="vision-title">Propósito Real</h3>
+                <p class="vision-description">
+                    Não é mais um curso. É um sistema de vida. 
+                    31 dias para descobrir quem você realmente é.
                 </p>
-                <div class="testimonial-author">João Silva</div>
-                <div class="testimonial-role">Membro Alpha</div>
             </div>
             
-            <div class="testimonial-card">
-                <p class="testimonial-quote">
-                    "Entrei viciado e depressivo. 
-                    Saí disciplinado e com propósito."
+            <div class="vision-card">
+                <div class="vision-icon">⚔️</div>
+                <h3 class="vision-title">Batalha Diária</h3>
+                <p class="vision-description">
+                    Todo dia é uma guerra contra a mediocridade. 
+                    Vamos lutar juntos. Vamos vencer juntos.
                 </p>
-                <div class="testimonial-author">Pedro Santos</div>
-                <div class="testimonial-role">Membro Elite</div>
             </div>
             
-            <div class="testimonial-card">
-                <p class="testimonial-quote">
-                    "Faturamento triplicou. Vícios zerados. 
-                    Clube Lion é renascimento."
+            <div class="vision-card">
+                <div class="vision-icon">🔥</div>
+                <h3 class="vision-title">Transformação Radical</h3>
+                <p class="vision-description">
+                    Sem meias palavras. Sem zona de conforto. 
+                    Só transformação real ou dinheiro de volta.
                 </p>
-                <div class="testimonial-author">Marcus Oliveira</div>
-                <div class="testimonial-role">Inner Circle</div>
+            </div>
+            
+            <div class="vision-card">
+                <div class="vision-icon">🦁</div>
+                <h3 class="vision-title">Irmandade de Leões</h3>
+                <p class="vision-description">
+                    Não é só sobre você. É sobre criarmos um 
+                    exército de homens que escolheram vencer.
+                </p>
+            </div>
+        </div>
+        
+        <div class="vision-manifesto">
+            <div class="manifesto-content">
+                <h3 class="manifesto-title">O Manifesto do Leão</h3>
+                <p class="manifesto-text">
+                    <strong>"Enquanto outros falam, nós fazemos. 
+                    Enquanto outros sonham, nós conquistamos. 
+                    Enquanto outros desistem, nós rugimos mais alto."</strong>
+                </p>
+                <p class="manifesto-text">
+                    O Clube Lion não é para todo mundo. É para quem está cansado de ser 
+                    comum. Para quem escolheu a dor da disciplina ao invés da dor do arrependimento.
+                </p>
+                <p class="manifesto-signature">
+                    — Gabriel Lion, Fundador
+                </p>
             </div>
         </div>
     </section>
@@ -1170,8 +1257,8 @@
                         <strong>Seja avisado antes de todos:</strong><br>
                         Entre na lista de espera e garanta prioridade.
                     </p>
-                    <a href="https://instagram.com/gabriellion" target="_blank" class="notify-btn">
-                        📱 SEGUIR NO INSTAGRAM
+                    <a href="https://ig.me/m/gabrielsfreddo?text=Gabriel%2C%20quero%20fazer%20parte%20do%20Clube%20Lion%21" target="_blank" class="notify-btn">
+                        📱 QUERO FAZER PARTE
                     </a>
                 </div>
                 
@@ -1200,7 +1287,7 @@
             <a href="#protocolo" class="footer-link">Protocolo</a>
             <a href="#fundador" class="footer-link">Fundador</a>
             <a href="#membros" class="footer-link">Membros</a>
-            <a href="https://instagram.com/gabriellion" class="footer-link" target="_blank">Instagram</a>
+            <a href="https://instagram.com/gabrielsfreddo" class="footer-link" target="_blank">Instagram</a>
         </div>
         <p class="footer-text">
             © 2025 Clube Lion<br>
