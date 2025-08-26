@@ -706,27 +706,36 @@
             // Cálculos para cenário atual
             const faturamentoAtual = ticketMedio * clientesMes;
             
-            // CÁLCULOS REALISTAS
-            // Potencial com uso otimizado do LinkedIn
-            const conexoesPotenciais = Math.min(conexoes * 2, 1000); // Pode crescer 2x até 1000
-            const postsIdeais = 8; // 2 posts por semana
-            const taxaConversaoOtimizada = Math.min(taxaConversao * 1.5, 5); // Pode aumentar 1.5x
+            // CÁLCULOS PROPORCIONAIS AO VOLUME DO NEGÓCIO
+            // Base: quanto mais clientes já tem, maior o potencial perdido
+            const baseClientesMes = Math.max(clientesMes, 1);
             
-            // Cálculo de leads baseado em engajamento REALISTA
-            const engajamentoPorPost = conexoesPotenciais * 0.02; // 2% das conexões engajam
-            const leadsGerados = Math.floor(engajamentoPorPost * postsIdeais * 0.05); // 5% viram leads
+            // Potencial de crescimento baseado no LinkedIn
+            const fatorCrescimento = Math.min(conexoes / 100, 10); // Máximo 10x baseado em conexões
+            const potencialPostagem = Math.max(postsMes * 2, 8); // Dobrar posts ou mínimo 8
             
-            // Novos clientes potenciais
+            // Leads potenciais baseados no volume atual
+            const leadsBase = Math.floor(conexoes * 0.02); // 2% das conexões podem virar leads
+            const leadsComFrequencia = Math.floor(leadsBase * (potencialPostagem / 10)); // Mais posts = mais leads
+            const leadsGerados = Math.max(leadsComFrequencia, baseClientesMes * 2); // Mínimo o dobro de clientes atuais
+            
+            // Clientes adicionais com conversão otimizada
+            const taxaConversaoOtimizada = Math.max(taxaConversao * 1.8, 4); // Melhora significativa
             const clientesAdicionais = Math.floor(leadsGerados * (taxaConversaoOtimizada / 100));
-            const faturamentoPotencial = (clientesMes + clientesAdicionais) * ticketMedio;
+            const clientesAdicionaisMinimo = Math.max(clientesAdicionais, Math.floor(baseClientesMes * 0.5)); // Mínimo 50% dos clientes atuais
             
-            // Valores perdidos
-            valorPerdidoMensal = faturamentoPotencial - faturamentoAtual;
-            const clientesPerdidosParaConcorrencia = clientesAdicionais;
+            // Faturamento potencial
+            const faturamentoPotencial = (baseClientesMes + clientesAdicionaisMinimo) * ticketMedio;
             
-            // Com ghostwriting melhora moderadamente
-            const leadsComGhostwriting = leadsGerados * 1.8; // Aumenta 80% os leads com conteúdo profissional
-            const faturamentoAdicionalComGhostwriting = clientesAdicionais * ticketMedio * 1.8;
+            // Valores perdidos (proporcional ao faturamento atual)
+            const faturamentoAtualReal = baseClientesMes * ticketMedio;
+            valorPerdidoMensal = Math.max(faturamentoPotencial - faturamentoAtualReal, faturamentoAtualReal * 0.3); // Mínimo 30% do faturamento atual
+            const clientesPerdidosParaConcorrencia = clientesAdicionaisMinimo;
+            
+            // Com ghostwriting (melhoria de 80%)
+            const leadsComGhostwriting = Math.floor(leadsGerados * 1.8);
+            const clientesComGhostwriting = Math.floor(clientesAdicionaisMinimo * 1.8);
+            const faturamentoAdicionalComGhostwriting = clientesComGhostwriting * ticketMedio;
             
             // Perda diária (removido alerta)
             const perdaDiaria = valorPerdidoMensal / 30;
