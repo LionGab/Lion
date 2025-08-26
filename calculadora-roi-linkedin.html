@@ -46,6 +46,16 @@
             text-align: center;
             position: relative;
         }
+        
+        .header-image {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            border-radius: 15px;
+            margin: 20px auto 15px;
+            display: block;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
 
         .header::after {
             content: '';
@@ -491,14 +501,33 @@
             .modal-content {
                 padding: 20px;
             }
+            
+            .header-image {
+                max-width: 250px;
+                margin: 15px auto 10px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            h1 {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+            
+            .subtitle {
+                font-size: 13px;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
+            <img src="https://i.imgur.com/V7VvBfv.png" alt="Calculadora de ROI LinkedIn para CEOs" class="header-image">
             <h1>Calculadora de ROI LinkedIn</h1>
-            <p class="subtitle">Descubra quanto <span class="gold-highlight">dinheiro você está perdendo</span> por não usar o LinkedIn estrategicamente</p>
+            <p class="subtitle">Descubra quanto <span class="gold-highlight">faturamento você pode gerar</span> no LinkedIn estrategicamente</p>
         </div>
 
         <div class="form-section">
