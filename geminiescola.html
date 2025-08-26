@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Disciplinar Escolar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f0f2f5;
+        }
+        :root {
+            --primary-color: #1e3a8a;
+        }
+        .navbar-dark, .btn-primary, .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+        .nav-tabs .nav-link.active {
+            color: var(--primary-color);
+            border-color: var(--primary-color) var(--primary-color) #fff;
+            font-weight: bold;
+        }
+        .card-header {
+            background-color: rgba(30, 58, 138, 0.1);
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        .metric-card {
+            border-left: 5px solid var(--primary-color);
+        }
+        .flash-success {
+            animation: flash-green 1s ease-out;
+        }
+        @keyframes flash-green {
+            0% { background-color: transparent; }
+            50% { background-color: #d1fae5; }
+            100% { background-color: transparent; }
+        }
+        #loading-spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1050;
+            display: none;
+        }
+        .footer {
+            padding: 1rem 0;
+            background-color: #e9ecef;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">Dashboard Disciplinar</a>
+            <div class="d-flex">
+                <button class="btn btn-outline-light me-2" id="btn-atualizar-manual">Atualizar</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="consultar-tab" data-bs-toggle="tab" data-bs-target="#consultar" type="button" role="tab">Consultar Ficha</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="lancar-tab" data-bs-toggle="tab" data-bs-target="#lancar" type="button" role="tab">Lançar Ocorrência</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="faltas-tab" data-bs-toggle="tab" data-bs-target="#faltas" type="button" role="tab">Controle de Faltas</button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="metricas-tab" data-bs-toggle="tab" data-bs-target="#metricas" type="button" role="tab">Métricas por Turma</button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <!-- Aba Consultar Ficha -->
+            <div class="tab-pane fade show active" id="consultar" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">Consultar Ficha do Aluno</div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="busca-aluno" class="form-label">Nome do Aluno</label>
+                                <input class="form-control" list="datalist-alunos" id="busca-aluno" placeholder="Digite para buscar...">
+                                <datalist id="datalist-alunos"></datalist>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button class="btn btn-primary w-100" id="btn-buscar-aluno">Buscar</button>
+                            </div>
+                        </div>
+                        <div id="resultado-busca" class="mt-4"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba Lançar Ocorrência -->
+            <div class="tab-pane fade" id="lancar" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">Lançar Nova Ocorrência</div>
+                    <div class="card-body">
+                        <form id="form-ocorrencia">
+                            <div class="mb-3">
+                                <label for="ocorrencia-aluno" class="form-label">Aluno</label>
+                                <select class="form-select" id="ocorrencia-aluno" required></select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="ocorrencia-tipo" class="form-label">Tipo de Ocorrência</label>
+                                <select class="form-select" id="ocorrencia-tipo" required>
+                                    <option value="Indisciplina">Indisciplina</option>
+                                    <option value="Atraso">Atraso</option>
+                                    <option value="Uniforme">Uniforme Incompleto</option>
+                                    <option value="Material">Falta de Material</option>
+                                    <option value="Outro">Outro</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label for="ocorrencia-descricao" class="form-label">Descrição</label>
+                                <textarea class="form-control" id="ocorrencia-descricao" rows="3" required></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Salvar Ocorrência</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba Controle de Faltas -->
+            <div class="tab-pane fade" id="faltas" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">Controle de Faltas e Presença</div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="filtro-turma-faltas" class="form-label">Filtrar por Turma:</label>
+                            <select class="form-select" id="filtro-turma-faltas"></select>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Aluno</th>
+                                        <th>Turma</th>
+                                        <th>Faltas</th>
+                                        <th>Aulas Totais</th>
+                                        <th>% Presença</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabela-faltas-corpo">
+                                    <!-- Conteúdo gerado via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba Métricas -->
+            <div class="tab-pane fade" id="metricas" role="tabpanel">
+                <div class="card mt-3">
+                    <div class="card-header">Métricas Gerais e por Turma</div>
+                    <div class="card-body">
+                        <div class="row g-3" id="cards-metricas">
+                            <!-- Cards de métricas gerados via JS -->
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <canvas id="chart-ocorrencias-por-turma"></canvas>
+                            </div>
+                            <div class="col-md-6">
+                                <canvas id="chart-presenca-media-por-turma"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading-spinner" class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+
+    <footer class="footer mt-5">
+        <div class="container">
+            <p class="mb-1" id="contador-registros">Total de 0 alunos e 0 ocorrências.</p>
+            <p class="mb-0">
+                <span id="ultima-atualizacao"></span> | 
+                <button class="btn btn-sm btn-secondary" id="btn-exportar">Exportar JSON</button>
+                <label class="btn btn-sm btn-secondary">
+                    Importar JSON <input type="file" id="btn-importar" hidden accept=".json">
+                </label>
+                <button class="btn btn-sm btn-danger" id="btn-resetar">Resetar Dados</button>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+document.addEventListener('DOMContentLoaded', () => {
+    // --- CONFIGURAÇÕES E ESTADO INICIAL ---
+    const DB_KEY = 'geminiEscolaDB';
+    let bancoDeDados = {};
+    let charts = {};
+
+    const turmas = ['1A', '1B', '1C', '1D', '2A', '2B', '2C', '2D', '3A', '3B', '3C', '3D'];
+    const nomes = ["Miguel", "Arthur", "Gael", "Heitor", "Helena", "Alice", "Laura", "Maria Alice", "Sophia", "Manuela"];
+    const sobrenomes = ["Silva", "Santos", "Oliveira", "Souza", "Rodrigues", "Ferreira", "Alves", "Pereira", "Lima", "Gomes"];
+
+    // --- ELEMENTOS DO DOM ---
+    const spinner = document.getElementById('loading-spinner');
+    const datalistAlunos = document.getElementById('datalist-alunos');
+    const selectOcorrenciaAluno = document.getElementById('ocorrencia-aluno');
+    const filtroTurmaFaltas = document.getElementById('filtro-turma-faltas');
+    const buscaAlunoInput = document.getElementById('busca-aluno');
+    const resultadoBuscaDiv = document.getElementById('resultado-busca');
+    const tabelaFaltasCorpo = document.getElementById('tabela-faltas-corpo');
+    const cardsMetricasDiv = document.getElementById('cards-metricas');
+    const contadorRegistrosP = document.getElementById('contador-registros');
+    const ultimaAtualizacaoSpan = document.getElementById('ultima-atualizacao');
+
+    // --- FUNÇÕES DE DADOS ---
+
+    function gerarDadosIniciais() {
+        console.log("Gerando dados iniciais de exemplo...");
+        const dados = {
+            alunos: [],
+            ocorrencias: [],
+            config: { aulasTotais: 200 }
+        };
+        let idCounter = 1;
+        turmas.forEach(turma => {
+            for (let i = 0; i < 5; i++) {
+                const nome = `${nomes[Math.floor(Math.random() * nomes.length)]} ${sobrenomes[Math.floor(Math.random() * sobrenomes.length)]}`;
+                dados.alunos.push({
+                    id: idCounter++,
+                    nome: nome,
+                    turma: turma,
+                    faltas: Math.floor(Math.random() * 20),
+                });
+            }
+        });
+        return dados;
+    }
+
+    function salvarDados() {
+        try {
+            bancoDeDados.lastUpdate = new Date().toISOString();
+            localStorage.setItem(DB_KEY, JSON.stringify(bancoDeDados));
+            console.log('Dados salvos no LocalStorage.', new Date().toLocaleTimeString());
+        } catch (error) {
+            console.error("Erro ao salvar dados:", error);
+            alert("Erro ao salvar dados. Verifique o console para mais detalhes.");
+        }
+    }
+
+    function carregarDados() {
+        const dadosSalvos = localStorage.getItem(DB_KEY);
+        if (dadosSalvos) {
+            console.log("Carregando dados do LocalStorage...");
+            bancoDeDados = JSON.parse(dadosSalvos);
+        } else {
+            console.log("Nenhum dado salvo encontrado. Carregando dados de exemplo.");
+            bancoDeDados = gerarDadosIniciais();
+            salvarDados();
+        }
+    }
+
+    // --- FUNÇÃO CENTRAL DE ATUALIZAÇÃO ---
+
+    function atualizarTudo(origem = 'desconhecida') {
+        console.log(`Atualização geral disparada por: ${origem}`);
+        showSpinner(true);
+        
+        // Atualiza componentes que dependem de listas de alunos/turmas
+        popularDropdowns();
+        
+        // Renderiza as seções principais
+        renderizarTabelaFaltas();
+        renderizarMetricas();
+        
+        // Atualiza a ficha do aluno se um estiver sendo visualizado
+        const alunoIdBuscado = buscaAlunoInput.dataset.alunoId;
+        if (alunoIdBuscado) {
+            renderizarFichaAluno(parseInt(alunoIdBuscado, 10));
+        } else {
+            resultadoBuscaDiv.innerHTML = '<p class="text-muted">Nenhum aluno selecionado.</p>';
+        }
+
+        // Atualiza o rodapé
+        atualizarContadoresRodape();
+        atualizarTimestamp();
+        
+        showSpinner(false);
+    }
+
+    // --- FUNÇÕES DE RENDERIZAÇÃO ---
+
+    function popularDropdowns() {
+        // Datalist para busca
+        datalistAlunos.innerHTML = '';
+        bancoDeDados.alunos.sort((a, b) => a.nome.localeCompare(b.nome)).forEach(aluno => {
+            const option = document.createElement('option');
+            option.value = `${aluno.nome} (Turma: ${aluno.turma})`;
+            option.dataset.id = aluno.id;
+            datalistAlunos.appendChild(option);
+        });
+
+        // Select para lançar ocorrência
+        selectOcorrenciaAluno.innerHTML = '<option value="">Selecione um aluno...</option>';
+        bancoDeDados.alunos.forEach(aluno => {
+            const option = document.createElement('option');
+            option.value = aluno.id;
+            option.textContent = `${aluno.nome} (${aluno.turma})`;
+            selectOcorrenciaAluno.appendChild(option);
+        });
+
+        // Filtro de turmas para faltas
+        filtroTurmaFaltas.innerHTML = '<option value="todas">Todas as Turmas</option>';
+        turmas.forEach(turma => {
+            const option = document.createElement('option');
+            option.value = turma;
+            option.textContent = turma;
+            filtroTurmaFaltas.appendChild(option);
+        });
+    }
+
+    function renderizarFichaAluno(alunoId) {
+        const aluno = bancoDeDados.alunos.find(a => a.id === alunoId);
+        if (!aluno) {
+            resultadoBuscaDiv.innerHTML = '<div class="alert alert-danger">Aluno não encontrado.</div>';
+            return;
+        }
+
+        const ocorrênciasAluno = bancoDeDados.ocorrencias.filter(o => o.alunoId === alunoId)
+            .sort((a, b) => new Date(b.data) - new Date(a.data));
+        
+        const presenca = calcularPresenca(aluno.faltas, bancoDeDados.config.aulasTotais);
+
+        let html = `
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">${aluno.nome}</h4>
+                    <h6 class="card-subtitle mb-2 text-muted">Turma: ${aluno.turma}</h6>
+                    <hr>
+                    <p><strong>Faltas:</strong> ${aluno.faltas}</p>
+                    <p><strong>Aulas Totais:</strong> ${bancoDeDados.config.aulasTotais}</p>
+                    <p><strong>Presença:</strong> <span class="badge bg-${presenca >= 75 ? 'success' : 'danger'}">${presenca.toFixed(2)}%</span></p>
+                    <hr>
+                    <h5>Histórico de Ocorrências (${ocorrênciasAluno.length})</h5>
+        `;
+
+        if (ocorrênciasAluno.length > 0) {
+            html += '<ul class="list-group">';
+            ocorrênciasAluno.forEach(o => {
+                html += `
+                    <li class="list-group-item">
+                        <strong>${o.tipo}</strong> em ${new Date(o.data).toLocaleDateString()}
+                        <p class="mb-0 mt-1">${o.descricao}</p>
+                    </li>
+                `;
+            });
+            html += '</ul>';
+        } else {
+            html += '<p class="text-muted">Nenhuma ocorrência registrada.</p>';
+        }
+
+        html += '</div></div>';
+        resultadoBuscaDiv.innerHTML = html;
+    }
+
+    function renderizarTabelaFaltas() {
+        const turmaSelecionada = filtroTurmaFaltas.value;
+        const alunosFiltrados = bancoDeDados.alunos.filter(a => turmaSelecionada === 'todas' || a.turma === turmaSelecionada);
+
+        tabelaFaltasCorpo.innerHTML = '';
+        if (alunosFiltrados.length === 0) {
+            tabelaFaltasCorpo.innerHTML = '<tr><td colspan="6" class="text-center">Nenhum aluno encontrado.</td></tr>';
+            return;
+        }
+
+        alunosFiltrados.forEach(aluno => {
+            const presenca = calcularPresenca(aluno.faltas, bancoDeDados.config.aulasTotais);
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${aluno.nome}</td>
+                <td>${aluno.turma}</td>
+                <td id="faltas-${aluno.id}">${aluno.faltas}</td>
+                <td id="aulas-${aluno.id}">${bancoDeDados.config.aulasTotais}</td>
+                <td id="presenca-${aluno.id}"><span class="badge bg-${presenca >= 75 ? 'success' : 'danger'}">${presenca.toFixed(2)}%</span></td>
+                <td>
+                    <button class="btn btn-sm btn-success" data-action="add" data-aluno-id="${aluno.id}">+</button>
+                    <button class="btn btn-sm btn-danger" data-action="remove" data-aluno-id="${aluno.id}">-</button>
+                </td>
+            `;
+            tabelaFaltasCorpo.appendChild(row);
+        });
+    }
+
+    function renderizarMetricas() {
+        cardsMetricasDiv.innerHTML = '';
+        turmas.forEach(turma => {
+            const alunosDaTurma = bancoDeDados.alunos.filter(a => a.turma === turma);
+            const idsAlunosDaTurma = alunosDaTurma.map(a => a.id);
+            const ocorrenciasDaTurma = bancoDeDados.ocorrencias.filter(o => idsAlunosDaTurma.includes(o.alunoId));
+            const totalFaltasTurma = alunosDaTurma.reduce((acc, a) => acc + a.faltas, 0);
+            const totalAulasTurma = alunosDaTurma.length * bancoDeDados.config.aulasTotais;
+            const presencaMedia = totalAulasTurma > 0 ? calcularPresenca(totalFaltasTurma, totalAulasTurma) : 100;
+
+            const card = document.createElement('div');
+            card.className = 'col-md-4 col-lg-3';
+            card.innerHTML = `
+                <div class="card metric-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Turma ${turma}</h5>
+                        <p class="card-text mb-1">Ocorrências: ${ocorrenciasDaTurma.length}</p>
+                        <p class="card-text mb-0">Presença Média: <span class="fw-bold">${presencaMedia.toFixed(2)}%</span></p>
+                    </div>
+                </div>
+            `;
+            cardsMetricasDiv.appendChild(card);
+        });
+        renderizarGraficos();
+    }
+    
+    function renderizarGraficos() {
+        const ctxOcorrencias = document.getElementById('chart-ocorrencias-por-turma').getContext('2d');
+        const ctxPresenca = document.getElementById('chart-presenca-media-por-turma').getContext('2d');
+
+        const dataOcorrencias = turmas.map(turma => {
+            const idsAlunosDaTurma = bancoDeDados.alunos.filter(a => a.turma === turma).map(a => a.id);
+            return bancoDeDados.ocorrencias.filter(o => idsAlunosDaTurma.includes(o.alunoId)).length;
+        });
+
+        const dataPresenca = turmas.map(turma => {
+            const alunosDaTurma = bancoDeDados.alunos.filter(a => a.turma === turma);
+            const totalFaltasTurma = alunosDaTurma.reduce((acc, a) => acc + a.faltas, 0);
+            const totalAulasTurma = alunosDaTurma.length * bancoDeDados.config.aulasTotais;
+            return totalAulasTurma > 0 ? calcularPresenca(totalFaltasTurma, totalAulasTurma) : 100;
+        });
+
+        if (charts.ocorrencias) charts.ocorrencias.destroy();
+        charts.ocorrencias = new Chart(ctxOcorrencias, {
+            type: 'bar',
+            data: {
+                labels: turmas,
+                datasets: [{
+                    label: 'Nº de Ocorrências',
+                    data: dataOcorrencias,
+                    backgroundColor: 'rgba(30, 58, 138, 0.7)',
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Ocorrências por Turma' }
+                }
+            }
+        });
+
+        if (charts.presenca) charts.presenca.destroy();
+        charts.presenca = new Chart(ctxPresenca, {
+            type: 'line',
+            data: {
+                labels: turmas,
+                datasets: [{
+                    label: '% de Presença Média',
+                    data: dataPresenca,
+                    borderColor: 'rgba(30, 58, 138, 0.7)',
+                    backgroundColor: 'rgba(30, 58, 138, 0.2)',
+                    fill: true,
+                    tension: 0.1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: { display: true, text: 'Presença Média por Turma' }
+                },
+                scales: {
+                    y: { min: 0, max: 100 }
+                }
+            }
+        });
+    }
+
+    function atualizarContadoresRodape() {
+        const numAlunos = bancoDeDados.alunos.length;
+        const numOcorrencias = bancoDeDados.ocorrencias.length;
+        contadorRegistrosP.textContent = `Total de ${numAlunos} alunos e ${numOcorrencias} ocorrências.`;
+    }
+
+    function atualizarTimestamp() {
+        if (bancoDeDados.lastUpdate) {
+            ultimaAtualizacaoSpan.textContent = `Última atualização: ${new Date(bancoDeDados.lastUpdate).toLocaleString()}`;
+        } else {
+            ultimaAtualizacaoSpan.textContent = 'Nenhuma atualização registrada.';
+        }
+    }
+
+    // --- FUNÇÕES AUXILIARES ---
+
+    function calcularPresenca(faltas, total) {
+        if (total === 0) return 100;
+        return ((total - faltas) / total) * 100;
+    }
+
+    function showSpinner(show) {
+        spinner.style.display = show ? 'block' : 'none';
+    }
+
+    function flashFeedback(element) {
+        element.classList.add('flash-success');
+        setTimeout(() => element.classList.remove('flash-success'), 1000);
+    }
+
+    // --- MANIPULADORES DE EVENTOS ---
+
+    document.getElementById('btn-buscar-aluno').addEventListener('click', () => {
+        const valorBusca = buscaAlunoInput.value;
+        const option = Array.from(datalistAlunos.options).find(opt => opt.value === valorBusca);
+        
+        if (option) {
+            const alunoId = parseInt(option.dataset.id, 10);
+            buscaAlunoInput.dataset.alunoId = alunoId; // Armazena o ID para futuras atualizações
+            renderizarFichaAluno(alunoId);
+        } else {
+            resultadoBuscaDiv.innerHTML = '<div class="alert alert-warning">Por favor, selecione um aluno da lista.</div>';
+            delete buscaAlunoInput.dataset.alunoId;
+        }
+    });
+
+    document.getElementById('form-ocorrencia').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const novaOcorrencia = {
+            id: Date.now(),
+            alunoId: parseInt(form.elements['ocorrencia-aluno'].value, 10),
+            tipo: form.elements['ocorrencia-tipo'].value,
+            descricao: form.elements['ocorrencia-descricao'].value,
+            data: new Date().toISOString()
+        };
+
+        bancoDeDados.ocorrencias.push(novaOcorrencia);
+        salvarDados();
+        
+        flashFeedback(form);
+        form.reset();
+        
+        atualizarTudo('lançamento de ocorrência');
+    });
+
+    filtroTurmaFaltas.addEventListener('change', renderizarTabelaFaltas);
+
+    tabelaFaltasCorpo.addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+            const action = e.target.dataset.action;
+            const alunoId = parseInt(e.target.dataset.alunoId, 10);
+            const aluno = bancoDeDados.alunos.find(a => a.id === alunoId);
+
+            if (aluno) {
+                if (action === 'add' && aluno.faltas > 0) {
+                    aluno.faltas--;
+                } else if (action === 'remove') {
+                    aluno.faltas++;
+                }
+                
+                salvarDados();
+                
+                // Atualização instantânea na tabela
+                const faltasTd = document.getElementById(`faltas-${aluno.id}`);
+                const presencaTd = document.getElementById(`presenca-${aluno.id}`);
+                const presenca = calcularPresenca(aluno.faltas, bancoDeDados.config.aulasTotais);
+                
+                faltasTd.textContent = aluno.faltas;
+                presencaTd.innerHTML = `<span class="badge bg-${presenca >= 75 ? 'success' : 'danger'}">${presenca.toFixed(2)}%</span>`;
+                flashFeedback(e.target.closest('tr'));
+
+                // Dispara atualização geral para métricas e ficha (se aberta)
+                atualizarTudo('ajuste de falta');
+            }
+        }
+    });
+
+    document.getElementById('btn-exportar').addEventListener('click', () => {
+        const dataStr = JSON.stringify(bancoDeDados, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `backup_dashboard_${new Date().toISOString().split('T')[0]}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        console.log("Dados exportados.");
+    });
+
+    document.getElementById('btn-importar').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const dadosImportados = JSON.parse(event.target.result);
+                // Validação simples
+                if (dadosImportados.alunos && dadosImportados.ocorrencias && dadosImportados.config) {
+                    bancoDeDados = dadosImportados;
+                    salvarDados();
+                    atualizarTudo('importação de dados');
+                    console.log("Dados importados com sucesso.");
+                    alert("Dados importados com sucesso!");
+                } else {
+                    throw new Error("Arquivo JSON em formato inválido.");
+                }
+            } catch (error) {
+                console.error("Erro ao importar arquivo:", error);
+                alert(`Erro ao importar arquivo: ${error.message}`);
+            } finally {
+                e.target.value = ''; // Reseta o input de arquivo
+            }
+        };
+        reader.readAsText(file);
+    });
+
+    document.getElementById('btn-resetar').addEventListener('click', () => {
+        if (confirm("Tem certeza que deseja resetar todos os dados? Os dados atuais serão perdidos.")) {
+            console.log("Resetando dados...");
+            bancoDeDados = gerarDadosIniciais();
+            salvarDados();
+            atualizarTudo('reset de dados');
+            alert("Dados resetados para o padrão.");
+        }
+    });
+    
+    document.getElementById('btn-atualizar-manual').addEventListener('click', () => {
+        atualizarTudo('botão manual');
+        flashFeedback(document.body);
+    });
+
+    // --- INICIALIZAÇÃO ---
+    function init() {
+        carregarDados();
+        atualizarTudo('inicialização');
+    }
+
+    init();
+});
+    </script>
+</body>
+</html>

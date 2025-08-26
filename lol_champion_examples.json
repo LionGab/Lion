@@ -1,0 +1,262 @@
+{
+  "carry_champions": [
+    {
+      "name": "Kassadin",
+      "role": "Mid Lane",
+      "category": "Late Game Hypercarry",
+      "power_spikes": {
+        "level_6": {
+          "description": "Gains ultimate mobility with Riftwalk",
+          "strength": "Medium",
+          "playstyle": "Play safe, farm, avoid extended trades"
+        },
+        "level_11": {
+          "description": "Riftwalk cooldown reduction, increased mobility",
+          "strength": "High",
+          "playstyle": "Start looking for picks, roam more actively"
+        },
+        "level_16": {
+          "description": "Maximum Riftwalk damage and lowest cooldown",
+          "strength": "Extreme",
+          "playstyle": "Hypercarry mode, 1v9 potential in team fights"
+        },
+        "item_spikes": [
+          {
+            "item": "Rod of Ages",
+            "timing": "10-12 minutes",
+            "impact": "Significant mana sustain and scaling base"
+          },
+          {
+            "item": "Archangel's Staff",
+            "timing": "15-18 minutes",
+            "impact": "Massive mana pool and ability power"
+          },
+          {
+            "item": "Rabadon's Deathcap",
+            "timing": "22-25 minutes",
+            "impact": "Game-changing damage output"
+          }
+        ]
+      },
+      "win_conditions": [
+        "Survive lane phase without falling too far behind",
+        "Reach level 16 with 3+ core items",
+        "Force late game team fights around objectives"
+      ],
+      "counters": ["Early game aggression", "Lane bullies", "Hard CC chains"],
+      "synergies": ["Engage supports", "Tanks", "Protective team comps"]
+    },
+    {
+      "name": "Draven",
+      "role": "ADC",
+      "category": "Early Game Snowball",
+      "power_spikes": {
+        "level_1": {
+          "description": "Spinning Axe damage advantage",
+          "strength": "High",
+          "playstyle": "Trade aggressively, establish lane dominance"
+        },
+        "level_2": {
+          "description": "Blood Rush movement speed and attack speed",
+          "strength": "Extreme",
+          "playstyle": "All-in potential with support, first blood opportunity"
+        },
+        "level_6": {
+          "description": "Whirling Death global execute potential",
+          "strength": "High",
+          "playstyle": "Look for kills across map, secure kills in lane"
+        },
+        "item_spikes": [
+          {
+            "item": "B.F. Sword",
+            "timing": "5-7 minutes",
+            "impact": "Massive damage spike for trades and all-ins"
+          },
+          {
+            "item": "Immortal Shieldbow",
+            "timing": "10-12 minutes",
+            "impact": "Survivability and sustained damage in fights"
+          },
+          {
+            "item": "The Collector",
+            "timing": "15-17 minutes",
+            "impact": "Execute potential and lethality for squishies"
+          }
+        ]
+      },
+      "win_conditions": [
+        "Establish early lead through aggressive laning",
+        "Convert kills into map pressure and objectives",
+        "End game before late game carries come online"
+      ],
+      "counters": ["Hard engage supports", "Assassins", "Late game team comps"],
+      "synergies": ["Enchanters", "Poke supports", "Early game junglers"]
+    },
+    {
+      "name": "Fiora",
+      "role": "Top Lane",
+      "category": "Split Push Duelist",
+      "power_spikes": {
+        "level_1": {
+          "description": "Passive vital damage and movement speed",
+          "strength": "Medium",
+          "playstyle": "Short trades focusing on vital procs"
+        },
+        "level_2": {
+          "description": "Riposte for outplay potential",
+          "strength": "High",
+          "playstyle": "Extended trades, parry key abilities"
+        },
+        "level_6": {
+          "description": "Grand Challenge for 1v1 dominance",
+          "strength": "Extreme",
+          "playstyle": "Look for all-ins, establish lane control"
+        },
+        "item_spikes": [
+          {
+            "item": "Trinity Force",
+            "timing": "11-13 minutes",
+            "impact": "Major damage and mobility spike"
+          },
+          {
+            "item": "Ravenous Hydra",
+            "timing": "16-18 minutes",
+            "impact": "Sustain and waveclear for split pushing"
+          },
+          {
+            "item": "Sterak's Gage",
+            "timing": "21-23 minutes",
+            "impact": "Survivability for team fights and 1v2 potential"
+          }
+        ]
+      },
+      "win_conditions": [
+        "Win lane and deny enemy top laner",
+        "Split push pressure in side lanes",
+        "Draw multiple enemies to stop split push"
+      ],
+      "counters": ["Team fight compositions", "Hard CC", "Range champions"],
+      "synergies": ["Engage team comps", "Waveclear mid laners", "Objective control"]
+    },
+    {
+      "name": "Graves",
+      "role": "Jungle",
+      "category": "Mid Game Powerhouse",
+      "power_spikes": {
+        "level_3": {
+          "description": "Full clear potential with all abilities",
+          "strength": "High",
+          "playstyle": "Fast clear, early ganks or invades"
+        },
+        "level_6": {
+          "description": "Collateral Damage for burst and mobility",
+          "strength": "High",
+          "playstyle": "Aggressive ganking and skirmishing"
+        },
+        "level_11": {
+          "description": "Enhanced ultimate damage and lower cooldown",
+          "strength": "Extreme",
+          "playstyle": "Team fight damage dealer, objective control"
+        },
+        "item_spikes": [
+          {
+            "item": "Eclipse",
+            "timing": "8-10 minutes",
+            "impact": "Massive damage spike for dueling and ganks"
+          },
+          {
+            "item": "The Collector",
+            "timing": "13-15 minutes",
+            "impact": "Execute potential and increased burst"
+          },
+          {
+            "item": "Lord Dominik's Regards",
+            "timing": "18-20 minutes",
+            "impact": "Tank busting capability for team fights"
+          }
+        ]
+      },
+      "win_conditions": [
+        "Control enemy jungle and deny vision",
+        "Secure mid game objectives with burst damage",
+        "Create picks with mobility and burst"
+      ],
+      "counters": ["Hard engage", "Long range poke", "Armor stacking"],
+      "synergies": ["Poke compositions", "Pick compositions", "Dive comps"]
+    },
+    {
+      "name": "Jinx",
+      "role": "ADC",
+      "category": "Late Game Hypercarry",
+      "power_spikes": {
+        "level_6": {
+          "description": "Global ultimate for kill securing",
+          "strength": "Medium",
+          "playstyle": "Focus on farming, use R for assists"
+        },
+        "level_11": {
+          "description": "Enhanced ultimate damage and range",
+          "strength": "High",
+          "playstyle": "Team fight participation increases"
+        },
+        "level_13": {
+          "description": "Max rank Fishbones for team fight DPS",
+          "strength": "High",
+          "playstyle": "Primary damage dealer in team fights"
+        },
+        "item_spikes": [
+          {
+            "item": "Kraken Slayer",
+            "timing": "11-13 minutes",
+            "impact": "Major DPS increase against all targets"
+          },
+          {
+            "item": "Runaan's Hurricane",
+            "timing": "16-18 minutes",
+            "impact": "Team fight AoE damage and Get Excited resets"
+          },
+          {
+            "item": "Infinity Edge",
+            "timing": "21-23 minutes",
+            "impact": "Massive crit damage for hypercarry status"
+          }
+        ]
+      },
+      "win_conditions": [
+        "Survive lane phase and farm safely",
+        "Position perfectly in team fights",
+        "Get resets with Get Excited passive"
+      ],
+      "counters": ["Assassins", "Dive compositions", "Early game pressure"],
+      "synergies": ["Protective supports", "Peel compositions", "Front-to-back team fighting"]
+    }
+  ],
+  "meta_analysis": {
+    "early_game_meta": {
+      "strongest_champions": ["Draven", "Lucian", "Renekton", "Graves"],
+      "win_conditions": "Establish leads, take early objectives, end by 25 minutes"
+    },
+    "mid_game_meta": {
+      "strongest_champions": ["Graves", "Azir", "Orianna", "Camille"],
+      "win_conditions": "Control objectives, team fight around power spikes"
+    },
+    "late_game_meta": {
+      "strongest_champions": ["Kassadin", "Jinx", "Kayle", "Azir"],
+      "win_conditions": "Scale safely, win team fights, control Baron/Elder"
+    }
+  },
+  "synergy_examples": {
+    "engage_composition": {
+      "champions": ["Malphite", "Graves", "Orianna", "Jinx", "Leona"],
+      "strategy": "Force team fights with massive engage, follow up with AoE damage"
+    },
+    "poke_composition": {
+      "champions": ["Jayce", "Graves", "Xerath", "Caitlyn", "Xerath"],
+      "strategy": "Siege objectives, poke before fights, disengage when engaged upon"
+    },
+    "split_push_composition": {
+      "champions": ["Fiora", "Graves", "Azir", "Jinx", "Thresh"],
+      "strategy": "Fiora splits, team groups and threatens objectives 4v4"
+    }
+  }
+}

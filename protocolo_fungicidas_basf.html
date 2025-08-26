@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protocolo de Fungicidas BASF - Sistema Inteligente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --basf-blue: #004a96;
+            --basf-light-blue: #e3f2fd;
+            --basf-green: #2d7d32;
+            --basf-orange: #f57c00;
+            --basf-red: #c62828;
+            --basf-gray: #9e9e9e;
+            --basf-light-gray: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--basf-light-gray);
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--basf-blue) 0%, #1565c0 100%);
+            color: white;
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 700;
+        }
+
+        .header-info {
+            text-align: right;
+        }
+
+        .main-title {
+            text-align: center;
+            margin: 2rem 0;
+            padding: 2rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .main-title h1 {
+            color: var(--basf-blue);
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .main-title p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .protocol-wizard {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .wizard-sidebar {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .wizard-content {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .step-indicator {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .step.active {
+            background-color: var(--basf-light-blue);
+            border-color: var(--basf-blue);
+        }
+
+        .step.completed {
+            background-color: #e8f5e8;
+            border-color: var(--basf-green);
+        }
+
+        .step-number {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--basf-gray);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .step.active .step-number {
+            background-color: var(--basf-blue);
+        }
+
+        .step.completed .step-number {
+            background-color: var(--basf-green);
+        }
+
+        .step-text {
+            font-weight: 500;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--basf-blue);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--basf-blue);
+            box-shadow: 0 0 0 3px rgba(0, 74, 150, 0.1);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background-color: var(--basf-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #003d7a;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background-color: var(--basf-green);
+            color: white;
+        }
+
+        .btn-warning {
+            background-color: var(--basf-orange);
+            color: white;
+        }
+
+        .culture-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .culture-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .culture-card:hover {
+            border-color: var(--basf-blue);
+            transform: translateY(-2px);
+        }
+
+        .culture-card.selected {
+            border-color: var(--basf-blue);
+            background-color: var(--basf-light-blue);
+        }
+
+        .culture-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .results-panel {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .fungicide-recommendation {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .fungicide-recommendation:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .fungicide-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--basf-blue);
+            margin-bottom: 0.5rem;
+        }
+
+        .fungicide-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+
+        .calculator-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .calc-input-group {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .calc-result {
+            background-color: var(--basf-blue);
+            color: white;
+            padding: 1rem;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .timeline {
+            margin-top: 2rem;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            border-left: 3px solid var(--basf-blue);
+            margin-bottom: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .timeline-date {
+            min-width: 120px;
+            font-weight: 600;
+            color: var(--basf-blue);
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            border-left: 4px solid;
+        }
+
+        .alert-info {
+            background-color: #e3f2fd;
+            border-color: var(--basf-blue);
+            color: #1565c0;
+        }
+
+        .alert-warning {
+            background-color: #fff3e0;
+            border-color: var(--basf-orange);
+            color: #f57c00;
+        }
+
+        .alert-success {
+            background-color: #e8f5e8;
+            border-color: var(--basf-green);
+            color: var(--basf-green);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 2rem;
+            color: var(--basf-blue);
+        }
+
+        .spinner {
+            width: 30px;
+            height: 30px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid var(--basf-blue);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .protocol-wizard {
+                grid-template-columns: 1fr;
+            }
+
+            .wizard-sidebar {
+                position: relative;
+                top: 0;
+            }
+
+            .step-indicator {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 1rem;
+            }
+
+            .step {
+                min-width: 200px;
+            }
+        }
+
+        .tab-container {
+            margin-top: 2rem;
+        }
+
+        .tab-buttons {
+            display: flex;
+            border-bottom: 2px solid #e0e0e0;
+            margin-bottom: 1.5rem;
+        }
+
+        .tab-button {
+            padding: 1rem 1.5rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            color: #666;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-button.active {
+            color: var(--basf-blue);
+            border-bottom-color: var(--basf-blue);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">BASF</div>
+                <div class="header-info">
+                    <div>Sistema Inteligente de Fungicidas</div>
+                    <div style="font-size: 0.9rem; opacity: 0.8;">Versão 2.0 | Última atualização: <span id="lastUpdate"></span></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-title">
+            <h1>🛡️ Protocolo de Fungicidas BASF</h1>
+            <p>Sistema inteligente para recomendação personalizada de tratamentos fungicidas</p>
+        </div>
+
+        <div class="protocol-wizard">
+            <div class="wizard-sidebar">
+                <h3 style="margin-bottom: 1.5rem; color: var(--basf-blue);">Etapas do Protocolo</h3>
+                <div class="step-indicator">
+                    <div class="step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-text">Selecionar Cultura</div>
+                    </div>
+                    <div class="step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-text">Condições da Lavoura</div>
+                    </div>
+                    <div class="step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-text">Identificar Doenças</div>
+                    </div>
+                    <div class="step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-text">Recomendações</div>
+                    </div>
+                    <div class="step" data-step="5">
+                        <div class="step-number">5</div>
+                        <div class="step-text">Protocolo Final</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 2rem; padding: 1rem; background-color: var(--basf-light-blue); border-radius: 8px;">
+                    <h4 style="color: var(--basf-blue); margin-bottom: 0.5rem;">💡 Dica</h4>
+                    <p style="font-size: 0.9rem; color: #555;">Use as informações mais precisas possível para obter recomendações otimizadas.</p>
+                </div>
+            </div>
+
+            <div class="wizard-content">
+                <!-- Etapa 1: Seleção de Cultura -->
+                <div class="wizard-step" id="step-1">
+                    <h2 style="color: var(--basf-blue); margin-bottom: 1.5rem;">🌱 Selecione sua Cultura</h2>
+                    
+                    <div class="culture-grid">
+                        <div class="culture-card" data-culture="soja">
+                            <div class="culture-icon">🌱</div>
+                            <h3>Soja</h3>
+                            <p>Glycine max</p>
+                        </div>
+                        <div class="culture-card" data-culture="milho">
+                            <div class="culture-icon">🌽</div>
+                            <h3>Milho</h3>
+                            <p>Zea mays</p>
+                        </div>
+                        <div class="culture-card" data-culture="algodao">
+                            <div class="culture-icon">☁️</div>
+                            <h3>Algodão</h3>
+                            <p>Gossypium</p>
+                        </div>
+                        <div class="culture-card" data-culture="feijao">
+                            <div class="culture-icon">🫘</div>
+                            <h3>Feijão</h3>
+                            <p>Phaseolus vulgaris</p>
+                        </div>
+                        <div class="culture-card" data-culture="trigo">
+                            <div class="culture-icon">🌾</div>
+                            <h3>Trigo</h3>
+                            <p>Triticum aestivum</p>
+                        </div>
+                        <div class="culture-card" data-culture="cafe">
+                            <div class="culture-icon">☕</div>
+                            <h3>Café</h3>
+                            <p>Coffea arabica</p>
+                        </div>
+                        <div class="culture-card" data-culture="tomate">
+                            <div class="culture-icon">🍅</div>
+                            <h3>Tomate</h3>
+                            <p>Solanum lycopersicum</p>
+                        </div>
+                        <div class="culture-card" data-culture="batata">
+                            <div class="culture-icon">🥔</div>
+                            <h3>Batata</h3>
+                            <p>Solanum tuberosum</p>
+                        </div>
+                        <div class="culture-card" data-culture="maca">
+                            <div class="culture-icon">🍎</div>
+                            <h3>Maçã</h3>
+                            <p>Malus domestica</p>
+                        </div>
+                        <div class="culture-card" data-culture="citros">
+                            <div class="culture-icon">🍊</div>
+                            <h3>Citros</h3>
+                            <p>Citrus spp.</p>
+                        </div>
+                    </div>
+
+                    <div id="culture-info" class="hidden">
+                        <div class="alert alert-success">
+                            <strong>Cultura selecionada:</strong> <span id="selected-culture-name"></span>
+                            <br>Principais doenças fúngicas conhecidas para esta cultura serão consideradas.
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary" onclick="nextStep(2)" id="btn-step-1" disabled>
+                        Continuar para Condições da Lavoura →
+                    </button>
+                </div>
+
+                <!-- Etapa 2: Condições da Lavoura -->
+                <div class="wizard-step hidden" id="step-2">
+                    <h2 style="color: var(--basf-blue); margin-bottom: 1.5rem;">🌡️ Condições da Lavoura</h2>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                        <div class="form-group">
+                            <label class="form-label">📍 Localização (Estado)</label>
+                            <select class="form-control" id="estado">
+                                <option value="">Selecione o estado</option>
+                                <option value="MT">Mato Grosso</option>
+                                <option value="GO">Goiás</option>
+                                <option value="MS">Mato Grosso do Sul</option>
+                                <option value="PR">Paraná</option>
+                                <option value="RS">Rio Grande do Sul</option>
+                                <option value="SP">São Paulo</option>
+                                <option value="MG">Minas Gerais</option>
+                                <option value="BA">Bahia</option>
+                                <option value="TO">Tocantins</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">📅 Estágio da Cultura</label>
+                            <select class="form-control" id="estagio">
+                                <option value="">Selecione o estágio</option>
+                                <option value="plantio">Plantio/Germinação</option>
+                                <option value="vegetativo">Crescimento Vegetativo</option>
+                                <option value="floração">Floração</option>
+                                <option value="enchimento">Enchimento de Grãos</option>
+                                <option value="maturação">Maturação</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">🌡️ Temperatura Média (°C)</label>
+                            <input type="number" class="form-control" id="temperatura" min="0" max="45" placeholder="Ex: 25">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">💧 Umidade Relativa (%)</label>
+                            <input type="number" class="form-control" id="umidade" min="0" max="100" placeholder="Ex: 70">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">🌧️ Precipitação (últimos 7 dias)</label>
+                            <select class="form-control" id="chuva">
+                                <option value="">Selecione</option>
+                                <option value="baixa">Baixa (0-10mm)</option>
+                                <option value="moderada">Moderada (10-30mm)</option>
+                                <option value="alta">Alta (30-60mm)</option>
+                                <option value="muito-alta">Muito Alta (+60mm)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">📏 Área (hectares)</label>
+                            <input type="number" class="form-control" id="area" min="0" step="0.1" placeholder="Ex: 100.5">
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button class="btn" style="background-color: #6c757d; color: white;" onclick="prevStep(1)">
+                            ← Voltar
+                        </button>
+                        <button class="btn btn-primary" onclick="nextStep(3)" id="btn-step-2">
+                            Continuar para Identificação →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Etapa 3: Identificar Doenças -->
+                <div class="wizard-step hidden" id="step-3">
+                    <h2 style="color: var(--basf-blue); margin-bottom: 1.5rem;">🔍 Identificação de Doenças</h2>
+                    
+                    <div class="alert alert-info">
+                        <strong>📋 Instruções:</strong> Selecione todas as doenças observadas ou suspeitas na lavoura. Se não tiver certeza, marque "Prevenção Geral".
+                    </div>
+
+                    <div id="diseases-container">
+                        <!-- Doenças serão carregadas dinamicamente baseado na cultura -->
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                        <button class="btn" style="background-color: #6c757d; color: white;" onclick="prevStep(2)">
+                            ← Voltar
+                        </button>
+                        <button class="btn btn-primary" onclick="generateRecommendations()">
+                            Gerar Recomendações 🔬
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Etapa 4: Recomendações -->
+                <div class="wizard-step hidden" id="step-4">
+                    <div class="loading" id="loading-recommendations">
+                        <div class="spinner"></div>
+                        <span>Analisando condições e gerando recomendações personalizadas...</span>
+                    </div>
+
+                    <div id="recommendations-content" class="hidden">
+                        <h2 style="color: var(--basf-blue); margin-bottom: 1.5rem;">📋 Recomendações Personalizadas</h2>
+                        
+                        <div id="recommendations-list">
+                            <!-- Recomendações serão geradas dinamicamente -->
+                        </div>
+
+                        <div class="calculator-section">
+                            <h3 style="color: var(--basf-blue); margin-bottom: 1rem;">🧮 Calculadora de Aplicação</h3>
+                            <div class="calculator-grid">
+                                <div class="calc-input-group">
+                                    <label>Área Total:</label>
+                                    <input type="number" id="calc-area" class="form-control" readonly>
+                                    <span>ha</span>
+                                </div>
+                                <div class="calc-input-group">
+                                    <label>Dose por ha:</label>
+                                    <input type="number" id="calc-dose" class="form-control" step="0.1">
+                                    <span>L/ha</span>
+                                </div>
+                                <div class="calc-result">
+                                    <div>Total Necessário</div>
+                                    <div id="calc-total" style="font-size: 1.5rem;">0 L</div>
+                                </div>
+                                <div class="calc-result">
+                                    <div>Custo Estimado</div>
+                                    <div id="calc-cost" style="font-size: 1.5rem;">R$ 0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+                            <button class="btn" style="background-color: #6c757d; color: white;" onclick="prevStep(3)">
+                                ← Voltar
+                            </button>
+                            <button class="btn btn-success" onclick="nextStep(5)">
+                                Gerar Protocolo Final 📄
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Etapa 5: Protocolo Final -->
+                <div class="wizard-step hidden" id="step-5">
+                    <h2 style="color: var(--basf-blue); margin-bottom: 1.5rem;">📄 Protocolo de Aplicação</h2>
+                    
+                    <div class="tab-container">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" onclick="showTab('resumo')">📋 Resumo</button>
+                            <button class="tab-button" onclick="showTab('cronograma')">📅 Cronograma</button>
+                            <button class="tab-button" onclick="showTab('relatorio')">📊 Relatório</button>
+                        </div>
+
+                        <div class="tab-content active" id="tab-resumo">
+                            <div id="protocol-summary">
+                                <!-- Resumo será gerado dinamicamente -->
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="tab-cronograma">
+                            <h3 style="margin-bottom: 1rem;">📅 Cronograma de Aplicações</h3>
+                            <div class="timeline" id="application-timeline">
+                                <!-- Timeline será gerada dinamicamente -->
+                            </div>
+                        </div>
+
+                        <div class="tab-content" id="tab-relatorio">
+                            <h3 style="margin-bottom: 1rem;">📊 Relatório Detalhado</h3>
+                            <div id="detailed-report">
+                                <!-- Relatório será gerado dinamicamente -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                        <button class="btn" style="background-color: #6c757d; color: white;" onclick="prevStep(4)">
+                            ← Voltar
+                        </button>
+                        <button class="btn btn-success" onclick="downloadProtocol()">
+                            📥 Baixar Protocolo
+                        </button>
+                        <button class="btn btn-primary" onclick="resetWizard()">
+                            🔄 Novo Protocolo
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="background-color: var(--basf-blue); color: white; text-align: center; padding: 2rem 0; margin-top: 3rem;">
+        <div class="container">
+            <p>&copy; 2024 BASF - Sistema Inteligente de Fungicidas | Desenvolvido para máxima eficiência agrícola</p>
+        </div>
+    </footer>
+
+    <script>
+        // Dados dos fungicidas BASF - Portfólio Atualizado 2024/2025
+        const fungicidesDatabase = {
+            soja: [
+                {
+                    name: "Opera®",
+                    activeIngredient: "Piraclostrobina + Epoxiconazol",
+                    dosage: "0.5-0.7 L/ha",
+                    diseases: ["ferrugem", "antracnose", "mancha-alvo", "cercosporiose"],
+                    price: 92.80,
+                    carencia: 30,
+                    mode: "Sistêmico + Contato",
+                    year: "2023",
+                    classification: "Estabelecido"
+                },
+                {
+                    name: "Orkestra® SC",
+                    activeIngredient: "Fluxapiroxade + Piraclostrobina",
+                    dosage: "0.3-0.4 L/ha",
+                    diseases: ["ferrugem", "antracnose", "cercosporiose", "mancha-alvo"],
+                    price: 118.50,
+                    carencia: 28,
+                    mode: "Sistêmico",
+                    year: "2023",
+                    classification: "Premium"
+                },
+                {
+                    name: "Comet®",
+                    activeIngredient: "Piraclostrobina",
+                    dosage: "0.3-0.4 L/ha",
+                    diseases: ["ferrugem", "cercosporiose", "mancha-parda"],
+                    price: 68.90,
+                    carencia: 45,
+                    mode: "Sistêmico",
+                    year: "2022",
+                    classification: "Estabelecido"
+                },
+                {
+                    name: "Cabrio® Top",
+                    activeIngredient: "Piraclostrobina + Metiram",
+                    dosage: "2.0-2.5 kg/ha",
+                    diseases: ["ferrugem", "antracnose", "oídio", "cercosporiose"],
+                    price: 48.70,
+                    carencia: 28,
+                    mode: "Sistêmico + Contato",
+                    year: "2022",
+                    classification: "Estabelecido"
+                }
+            ],
+            milho: [
+                {
+                    name: "Opera®",
+                    activeIngredient: "Piraclostrobina + Epoxiconazol",
+                    dosage: "0.75-1.0 L/ha",
+                    diseases: ["ferrugem", "cercosporiose", "antracnose", "helmintosporiose"],
+                    price: 92.80,
+                    carencia: 45,
+                    mode: "Sistêmico + Contato",
+                    year: "2023",
+                    classification: "Estabelecido"
+                },
+                {
+                    name: "Orkestra® SC",
+                    activeIngredient: "Fluxapiroxade + Piraclostrobina",
+                    dosage: "0.4-0.5 L/ha",
+                    diseases: ["ferrugem", "cercosporiose", "mancha-branca", "antracnose"],
+                    price: 118.50,
+                    carencia: 42,
+                    mode: "Sistêmico",
+                    year: "2023",
+                    classification: "Premium"
+                },
+                {
+                    name: "Headline®",
+                    activeIngredient: "Piraclostrobina",
+                    dosage: "0.4-0.5 L/ha",
+                    diseases: ["ferrugem", "mancha-branca", "cercosporiose"],
+                    price: 74.60,
+                    carencia: 30,
+                    mode: "Sistêmico",
+                    year: "2022",
+                    classification: "Estabelecido"
+                }
+            ],
+            algodao: [
+                {
+                    name: "Opera®",
+                    activeIngredient: "Piraclostrobina + Epoxiconazol",
+                    dosage: "0.5-0.75 L/ha",
+                    diseases: ["ramularia", "mancha-angular", "antracnose"],
+                    price: 92.80,
+                    carencia: 35,
+                    mode: "Sistêmico + Contato",
+                    year: "2023",
+                    classification: "Estabelecido"
+                },
+                {
+                    name: "Orkestra® SC",
+                    activeIngredient: "Fluxapiroxade + Piraclostrobina",
+                    dosage: "0.3-0.4 L/ha",
+                    diseases: ["ramularia", "mancha-angular", "antracnose", "cercosporiose"],
+                    price: 118.50,
+                    carencia: 30,
+                    mode: "Sistêmico",
+                    year: "2023",
+                    classification: "Premium"
+                }
+            ],
+            feijao: [
+                {
+                    name: "Opera®",
+                    activeIngredient: "Piraclostrobina + Epoxiconazol",
+                    dosage: "0.5-0.7 L/ha",
+                    diseases: ["antracnose", "ferrugem", "mancha-angular"],
+                    price: 92.80,
+                    carencia: 21,
+                    mode: "Sistêmico + Contato",
+                    year: "2023",
+                    classification: "Estabelecido"
+                },
+                {
+                    name: "Cantus®",
+                    activeIngredient: "Boscalida",
+                    dosage: "0.2-0.3 kg/ha",
+                    diseases: ["mofo-branco", "antracnose", "mancha-angular"],
+                    price: 156.90,
+                    carencia: 14,
+                    mode: "Sistêmico",
+                    year: "2023",
+                    classification: "Especializado"
+                }
+            ],
+            trigo: [
+                {
+                    name: "Opera®",
+                    activeIngredient: "Piraclostrobina + Epoxiconazol",
+                    dosage: "0.5-0.75 L/ha",
+                    diseases: ["ferrugem", "giberela", "oídio", "septoriose"],
+                    price: 92.80,
+                    carencia: 35,
+                    mode: "Sistêmico + Contato",
+                    year: "2023",
+                    classification: "Estabelecido"
+                },
+                {
+                    name: "Orkestra® SC",
+                    activeIngredient: "Fluxapiroxade + Piraclostrobina",
+                    dosage: "0.3-0.4 L/ha",
+                    diseases: ["ferrugem", "giberela", "oídio", "septoriose"],
+                    price: 118.50,
+                    carencia: 35,
+                    mode: "Sistêmico",
+                    year: "2023",
+                    classification: "Premium"
+                }
+            ],
+            cafe: [
+                {
+                    name: "Cantus®",
+                    activeIngredient: "Boscalida",
+                    dosage: "0.25-0.35 kg/ha",
+                    diseases: ["ferrugem", "cercosporiose", "antracnose"],
+                    price: 156.90,
+                    carencia: 30,
+                    mode: "Sistêmico",
+                    year: "2023",
+                    classification: "Especializado"
+                },
+                {
+                    name: "Comet®",
+                    activeIngredient: "Piraclostrobina",
+                    dosage: "0.3-0.4 L/ha",
+                    diseases: ["ferrugem", "cercosporiose", "mancha-aureolada"],
+                    price: 68.90,
+                    carencia: 30,
+                    mode: "Sistêmico",
+                    year: "2022",
+                    classification: "Estabelecido"
+                }
+            ],
+            // NOVOS PRODUTOS 2024/2025 - HORTICULTURA
+            tomate: [
+                {
+                    name: "Mibelya® 🆕",
+                    activeIngredient: "Revysol (Mefentrifluconazol)",
+                    dosage: "0.15-0.25 L/ha",
+                    diseases: ["pinta-preta", "antracnose", "oídio", "requeima"],
+                    price: 245.00,
+                    carencia: 3,
+                    mode: "Sistêmico",
+                    year: "2024",
+                    classification: "Novo Lançamento"
+                },
+                {
+                    name: "Opera®",
+                    activeIngredient: "Piraclostrobina + Epoxiconazol",
+                    dosage: "0.6-0.8 L/ha",
+                    diseases: ["pinta-preta", "antracnose", "septoriose"],
+                    price: 92.80,
+                    carencia: 7,
+                    mode: "Sistêmico + Contato",
+                    year: "2023",
+                    classification: "Estabelecido"
+                }
+            ],
+            batata: [
+                {
+                    name: "Mibelya® 🆕",
+                    activeIngredient: "Revysol (Mefentrifluconazol)",
+                    dosage: "0.2-0.3 L/ha",
+                    diseases: ["pinta-preta", "requeima", "sarna-prateada"],
+                    price: 245.00,
+                    carencia: 7,
+                    mode: "Sistêmico",
+                    year: "2024",
+                    classification: "Novo Lançamento"
+                }
+            ],
+            maca: [
+                {
+                    name: "Mibelya® 🆕",
+                    activeIngredient: "Revysol (Mefentrifluconazol)",
+                    dosage: "0.15-0.2 L/ha",
+                    diseases: ["sarna", "oídio", "podridão-amarga"],
+                    price: 245.00,
+                    carencia: 28,
+                    mode: "Sistêmico",
+                    year: "2024",
+                    classification: "Novo Lançamento"
+                }
+            ],
+            citros: [
+                {
+                    name: "Melyra® 🆕",
+                    activeIngredient: "Revysol (Mefentrifluconazol) + Azoxistrobina",
+                    dosage: "0.3-0.4 L/ha",
+                    diseases: ["podridao-floral", "verrugose", "melanose", "antracnose"],
+                    price: 198.50,
+                    carencia: 14,
+                    mode: "Sistêmico",
+                    year: "2024",
+                    classification: "Novo Lançamento"
+                },
+                {
+                    name: "Tutor®",
+                    activeIngredient: "Tebuconazol",
+                    dosage: "0.75-1.0 L/ha",
+                    diseases: ["verrugose", "melanose", "antracnose"],
+                    price: 78.40,
+                    carencia: 30,
+                    mode: "Sistêmico",
+                    year: "2022",
+                    classification: "Estabelecido"
+                },
+                {
+                    name: "Comet®",
+                    activeIngredient: "Piraclostrobina",
+                    dosage: "0.4-0.5 L/ha",
+                    diseases: ["verrugose", "melanose", "podridao-floral"],
+                    price: 68.90,
+                    carencia: 35,
+                    mode: "Sistêmico",
+                    year: "2022",
+                    classification: "Estabelecido"
+                }
+            ]
+        };
+
+        const diseasesDatabase = {
+            soja: [
+                { id: "ferrugem", name: "Ferrugem Asiática", severity: "alta" },
+                { id: "antracnose", name: "Antracnose", severity: "media" },
+                { id: "cercosporiose", name: "Cercosporiose", severity: "media" },
+                { id: "mancha-alvo", name: "Mancha Alvo", severity: "media" },
+                { id: "mancha-parda", name: "Mancha Parda", severity: "media" },
+                { id: "oídio", name: "Oídio", severity: "baixa" },
+                { id: "preventiva", name: "Aplicação Preventiva", severity: "preventiva" }
+            ],
+            milho: [
+                { id: "ferrugem", name: "Ferrugem Comum", severity: "alta" },
+                { id: "cercosporiose", name: "Cercosporiose", severity: "media" },
+                { id: "antracnose", name: "Antracnose", severity: "media" },
+                { id: "mancha-branca", name: "Mancha Branca", severity: "media" },
+                { id: "helmintosporiose", name: "Helmintosporiose", severity: "media" },
+                { id: "preventiva", name: "Aplicação Preventiva", severity: "preventiva" }
+            ],
+            algodao: [
+                { id: "ramularia", name: "Ramulária", severity: "alta" },
+                { id: "mancha-angular", name: "Mancha Angular", severity: "media" },
+                { id: "antracnose", name: "Antracnose", severity: "media" },
+                { id: "cercosporiose", name: "Cercosporiose", severity: "baixa" },
+                { id: "preventiva", name: "Aplicação Preventiva", severity: "preventiva" }
+            ],
+            feijao: [
+                { id: "antracnose", name: "Antracnose", severity: "alta" },
+                { id: "ferrugem", name: "Ferrugem", severity: "alta" },
+                { id: "mancha-angular", name: "Mancha Angular", severity: "media" },
+                { id: "mofo-branco", name: "Mofo Branco", severity: "alta" },
+                { id: "preventiva", name: "Aplicação Preventiva", severity: "preventiva" }
+            ],
+            trigo: [
+                { id: "ferrugem", name: "Ferrugem da Folha", severity: "alta" },
+                { id: "giberela", name: "Giberela", severity: "alta" },
+                { id: "oídio", name: "Oídio", severity: "media" },
+                { id: "septoriose", name: "Septoriose", severity: "media" },
+                { id: "preventiva", name: "Aplicação Preventiva", severity: "preventiva" }
+            ],
+            cafe: [
+                { id: "ferrugem", name: "Ferrugem do Cafeeiro", severity: "alta" },
+                { id: "cercosporiose", name: "Cercosporiose", severity: "media" },
+                { id: "antracnose", name: "Antracnose", severity: "media" },
+                { id: "mancha-aureolada", name: "Mancha Aureolada", severity: "baixa" },
+                { id: "preventiva", name: "Aplicação Preventiva", severity: "preventiva" }
+            ],
+            tomate: [
+                { id: "pinta-preta", name: "Pinta Preta (Alternaria)", severity: "alta" },
+                { id: "antracnose", name: "Antracnose", severity: "alta" },
+                { id: "oídio", name: "Oídio", severity: "media" },
+                { id: "requeima", name: "Requeima", severity: "alta" },
+                { id: "septoriose", name: "Septoriose", severity: "media" },
+                { id: "preventiva", name: "Aplicação Preventiva", severity: "preventiva" }
+            ],
+            batata: [
+                { id: "pinta-preta", name: "Pinta Preta (Alternaria)", severity: "alta" },
+                { id: "requeima", name: "Requeima (Phytophthora)", severity: "alta" },
+                { id: "sarna-prateada", name: "Sarna Prateada", severity: "media" },
+                { id: "preventiva", name: "Aplicação Preventiva", severity: "preventiva" }
+            ],
+            maca: [
+                { id: "sarna", name: "Sarna da Maçã", severity: "alta" },
+                { id: "oídio", name: "Oídio", severity: "media" },
+                { id: "podridão-amarga", name: "Podridão Amarga", severity: "media" },
+                { id: "preventiva", name: "Aplicação Preventiva", severity: "preventiva" }
+            ],
+            citros: [
+                { id: "podridao-floral", name: "Podridão Floral dos Citros", severity: "alta" },
+                { id: "verrugose", name: "Verrugose", severity: "alta" },
+                { id: "melanose", name: "Melanose", severity: "media" },
+                { id: "antracnose", name: "Antracnose", severity: "media" },
+                { id: "preventiva", name: "Aplicação Preventiva", severity: "preventiva" }
+            ]
+        };
+
+        let currentStep = 1;
+        let selectedCulture = '';
+        let selectedDiseases = [];
+        let recommendations = [];
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTimestamp();
+            setInterval(updateTimestamp, 60000);
+            
+            // Event listeners para as culturas
+            document.querySelectorAll('.culture-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    selectCulture(this.dataset.culture);
+                });
+            });
+
+            // Calculator listeners
+            document.getElementById('calc-dose').addEventListener('input', updateCalculations);
+        });
+
+        function updateTimestamp() {
+            document.getElementById('lastUpdate').textContent = 
+                new Date().toLocaleString('pt-BR', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+        }
+
+        function selectCulture(culture) {
+            selectedCulture = culture;
+            
+            // Atualizar visual
+            document.querySelectorAll('.culture-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            document.querySelector(`[data-culture="${culture}"]`).classList.add('selected');
+            
+            // Mostrar informações
+            const cultureInfo = document.getElementById('culture-info');
+            const cultureName = document.getElementById('selected-culture-name');
+            
+            const cultureNames = {
+                soja: 'Soja (Glycine max)',
+                milho: 'Milho (Zea mays)', 
+                algodao: 'Algodão (Gossypium)',
+                feijao: 'Feijão (Phaseolus vulgaris)',
+                trigo: 'Trigo (Triticum aestivum)',
+                cafe: 'Café (Coffea arabica)',
+                tomate: 'Tomate (Solanum lycopersicum)',
+                batata: 'Batata (Solanum tuberosum)',
+                maca: 'Maçã (Malus domestica)',
+                citros: 'Citros (Citrus spp.)'
+            };
+            
+            cultureName.textContent = cultureNames[culture];
+            cultureInfo.classList.remove('hidden');
+            
+            document.getElementById('btn-step-1').disabled = false;
+        }
+
+        function nextStep(step) {
+            // Validações específicas por etapa
+            if (!validateStep(currentStep)) return;
+            
+            // Ocultar etapa atual
+            document.getElementById(`step-${currentStep}`).classList.add('hidden');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.add('completed');
+            
+            // Mostrar nova etapa
+            currentStep = step;
+            document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+            
+            // Ações específicas por etapa
+            if (step === 3) {
+                loadDiseases();
+            } else if (step === 4) {
+                // Já será tratado pela função generateRecommendations
+            }
+        }
+
+        function prevStep(step) {
+            document.getElementById(`step-${currentStep}`).classList.add('hidden');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('active');
+            
+            currentStep = step;
+            document.getElementById(`step-${currentStep}`).classList.remove('hidden');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.add('active');
+            document.querySelector(`[data-step="${currentStep}"]`).classList.remove('completed');
+        }
+
+        function validateStep(step) {
+            switch(step) {
+                case 1:
+                    return selectedCulture !== '';
+                case 2:
+                    const required = ['estado', 'estagio', 'temperatura', 'umidade', 'chuva', 'area'];
+                    return required.every(field => document.getElementById(field).value);
+                case 3:
+                    return selectedDiseases.length > 0;
+                default:
+                    return true;
+            }
+        }
+
+        function loadDiseases() {
+            const container = document.getElementById('diseases-container');
+            const diseases = diseasesDatabase[selectedCulture] || diseasesDatabase.soja;
+            
+            container.innerHTML = diseases.map(disease => `
+                <div style="margin-bottom: 1rem;">
+                    <label style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border: 2px solid #e0e0e0; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">
+                        <input type="checkbox" value="${disease.id}" onchange="toggleDisease('${disease.id}')" style="transform: scale(1.2);">
+                        <div>
+                            <div style="font-weight: 600; color: var(--basf-blue);">${disease.name}</div>
+                            <div style="font-size: 0.9rem; color: #666;">
+                                Severidade: <span style="color: ${disease.severity === 'alta' ? 'var(--basf-red)' : disease.severity === 'media' ? 'var(--basf-orange)' : 'var(--basf-green)'};">${disease.severity.toUpperCase()}</span>
+                            </div>
+                        </div>
+                    </label>
+                </div>
+            `).join('');
+        }
+
+        function toggleDisease(diseaseId) {
+            const index = selectedDiseases.indexOf(diseaseId);
+            if (index === -1) {
+                selectedDiseases.push(diseaseId);
+            } else {
+                selectedDiseases.splice(index, 1);
+            }
+        }
+
+        function generateRecommendations() {
+            if (selectedDiseases.length === 0) {
+                alert('Selecione pelo menos uma doença ou "Aplicação Preventiva"');
+                return;
+            }
+
+            nextStep(4);
+            
+            // Simular carregamento
+            setTimeout(() => {
+                const fungicides = fungicidesDatabase[selectedCulture] || fungicidesDatabase.soja;
+                recommendations = fungicides.filter(f => 
+                    f.diseases.some(d => selectedDiseases.includes(d)) || 
+                    selectedDiseases.includes('preventiva')
+                );
+
+                displayRecommendations();
+                setupCalculator();
+                
+                document.getElementById('loading-recommendations').classList.add('hidden');
+                document.getElementById('recommendations-content').classList.remove('hidden');
+            }, 2000);
+        }
+
+        function displayRecommendations() {
+            const container = document.getElementById('recommendations-list');
+            
+            container.innerHTML = recommendations.map(fungicide => `
+                <div class="fungicide-recommendation" style="border-left: 4px solid ${fungicide.classification === 'Novo Lançamento' ? 'var(--basf-green)' : 'var(--basf-blue)'}; position: relative;">
+                    ${fungicide.classification === 'Novo Lançamento' ? '<div style="position: absolute; top: 1rem; right: 1rem; background: var(--basf-green); color: white; padding: 0.25rem 0.75rem; border-radius: 12px; font-size: 0.8rem; font-weight: bold;">🆕 NOVO 2024</div>' : ''}
+                    <div class="fungicide-name">${fungicide.name}</div>
+                    <div style="color: #666; margin-bottom: 1rem;">${fungicide.activeIngredient}</div>
+                    
+                    <div class="fungicide-details">
+                        <div class="detail-item">
+                            <span>Dosagem:</span>
+                            <strong>${fungicide.dosage}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Carência:</span>
+                            <strong>${fungicide.carencia} dias</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Modo de ação:</span>
+                            <strong>${fungicide.mode}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Classificação:</span>
+                            <strong style="color: ${fungicide.classification === 'Novo Lançamento' ? 'var(--basf-green)' : fungicide.classification === 'Premium' ? 'var(--basf-orange)' : 'var(--basf-blue)'}">${fungicide.classification}</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Preço estimado:</span>
+                            <strong>R$ ${fungicide.price.toFixed(2)}/L</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Ano de lançamento:</span>
+                            <strong>${fungicide.year}</strong>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 1rem; padding: 1rem; background-color: #f8f9fa; border-radius: 4px;">
+                        <strong>Efetivo contra:</strong> ${fungicide.diseases.map(d => {
+                            const disease = (diseasesDatabase[selectedCulture] || diseasesDatabase.soja).find(disease => disease.id === d);
+                            return disease ? disease.name : d;
+                        }).join(', ')}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function setupCalculator() {
+            const area = document.getElementById('area').value;
+            document.getElementById('calc-area').value = area;
+            
+            if (recommendations.length > 0) {
+                const avgDose = recommendations[0].dosage.split('-')[0];
+                document.getElementById('calc-dose').value = parseFloat(avgDose);
+                updateCalculations();
+            }
+        }
+
+        function updateCalculations() {
+            const area = parseFloat(document.getElementById('calc-area').value) || 0;
+            const dose = parseFloat(document.getElementById('calc-dose').value) || 0;
+            
+            const totalLiters = area * dose;
+            const avgPrice = recommendations.length > 0 ? recommendations[0].price : 75;
+            const totalCost = totalLiters * avgPrice;
+            
+            document.getElementById('calc-total').textContent = `${totalLiters.toFixed(1)} L`;
+            document.getElementById('calc-cost').textContent = `R$ ${totalCost.toFixed(2)}`;
+        }
+
+        function showTab(tabName) {
+            // Remover active de todos os botões e conteúdos
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Ativar o selecionado
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+            document.getElementById(`tab-${tabName}`).classList.add('active');
+            
+            // Gerar conteúdo específico
+            if (tabName === 'resumo') {
+                generateProtocolSummary();
+            } else if (tabName === 'cronograma') {
+                generateApplicationTimeline();
+            } else if (tabName === 'relatorio') {
+                generateDetailedReport();
+            }
+        }
+
+        function generateProtocolSummary() {
+            const container = document.getElementById('protocol-summary');
+            const cultureName = {
+                soja: 'Soja', milho: 'Milho', algodao: 'Algodão'
+            }[selectedCulture];
+            
+            container.innerHTML = `
+                <div class="alert alert-success">
+                    <h4>✅ Protocolo Gerado com Sucesso!</h4>
+                    <p>Baseado nas condições informadas, aqui está seu protocolo personalizado:</p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;">
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--basf-blue);">
+                        <h4 style="color: var(--basf-blue); margin-bottom: 1rem;">🌱 Informações da Lavoura</h4>
+                        <p><strong>Cultura:</strong> ${cultureName}</p>
+                        <p><strong>Área:</strong> ${document.getElementById('area').value} ha</p>
+                        <p><strong>Estágio:</strong> ${document.getElementById('estagio').value}</p>
+                        <p><strong>Localização:</strong> ${document.getElementById('estado').value}</p>
+                    </div>
+                    
+                    <div style="background: white; padding: 1.5rem; border-radius: 8px; border-left: 4px solid var(--basf-green);">
+                        <h4 style="color: var(--basf-green); margin-bottom: 1rem;">🛡️ Produtos Recomendados</h4>
+                        ${recommendations.map(r => `<p>• ${r.name} ${r.classification === 'Novo Lançamento' ? '🆕' : ''}</p>`).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateApplicationTimeline() {
+            const container = document.getElementById('application-timeline');
+            const today = new Date();
+            
+            container.innerHTML = `
+                <div class="timeline-item">
+                    <div class="timeline-date">${formatDate(today)}</div>
+                    <div>
+                        <strong>1ª Aplicação</strong><br>
+                        ${recommendations[0]?.name || 'Produto recomendado'} - ${recommendations[0]?.dosage || '0.5-0.7 L/ha'}
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">${formatDate(addDays(today, 14))}</div>
+                    <div>
+                        <strong>2ª Aplicação (se necessário)</strong><br>
+                        Reavaliar condições da lavoura
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-date">${formatDate(addDays(today, 28))}</div>
+                    <div>
+                        <strong>3ª Aplicação</strong><br>
+                        Aplicação de reforço conforme necessidade
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateDetailedReport() {
+            const container = document.getElementById('detailed-report');
+            
+            container.innerHTML = `
+                <div style="background: white; padding: 2rem; border-radius: 8px;">
+                    <h4 style="margin-bottom: 1rem;">📊 Análise Completa</h4>
+                    
+                    <div class="alert alert-info">
+                        <strong>Condições Favoráveis Identificadas:</strong><br>
+                        • Temperatura: ${document.getElementById('temperatura').value}°C - Ideal para desenvolvimento fúngico<br>
+                        • Umidade: ${document.getElementById('umidade').value}% - Requer atenção preventiva<br>
+                        • Precipitação: ${document.getElementById('chuva').value} - Fator de risco considerado
+                    </div>
+                    
+                    <h5 style="margin: 1.5rem 0 1rem 0;">🎯 Estratégia Recomendada</h5>
+                    <ul style="margin-left: 2rem; line-height: 1.8;">
+                        <li>Aplicação preventiva prioritária</li>
+                        <li>Monitoramento semanal da lavoura</li>
+                        <li>Rotação de ingredientes ativos</li>
+                        <li>Condições climáticas favoráveis para aplicação</li>
+                    </ul>
+                    
+                    <h5 style="margin: 1.5rem 0 1rem 0;">💰 Análise Econômica</h5>
+                    <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px;">
+                        <p>Custo total estimado: <strong id="report-cost">R$ 0</strong></p>
+                        <p>Custo por hectare: <strong id="report-cost-ha">R$ 0</strong></p>
+                        <p>ROI esperado: <strong style="color: var(--basf-green);">+15-25%</strong></p>
+                    </div>
+                </div>
+            `;
+            
+            // Calcular custos para o relatório
+            const area = parseFloat(document.getElementById('area').value) || 0;
+            const dose = parseFloat(document.getElementById('calc-dose').value) || 0;
+            const avgPrice = recommendations.length > 0 ? recommendations[0].price : 75;
+            const totalCost = area * dose * avgPrice;
+            
+            document.getElementById('report-cost').textContent = `R$ ${totalCost.toFixed(2)}`;
+            document.getElementById('report-cost-ha').textContent = `R$ ${(totalCost/area).toFixed(2)}`;
+        }
+
+        function formatDate(date) {
+            return date.toLocaleDateString('pt-BR');
+        }
+
+        function addDays(date, days) {
+            const result = new Date(date);
+            result.setDate(result.getDate() + days);
+            return result;
+        }
+
+        function downloadProtocol() {
+            alert('🎉 Protocolo salvo com sucesso! Em breve estará disponível para download em PDF.');
+        }
+
+        function resetWizard() {
+            if (confirm('Deseja realmente iniciar um novo protocolo? Todas as informações atuais serão perdidas.')) {
+                location.reload();
+            }
+        }
+    </script>
+</body>
+</html>

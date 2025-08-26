@@ -1,0 +1,1009 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>💰 Diagnóstico Digital | Descubra Quanto Você Está Perdendo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0f23 0%, #1a1a3e 25%, #2d1b69 50%, #4c1d95 75%, #5b21b6 100%);
+            min-height: 100vh;
+            color: white;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Efeitos de fundo surreais */
+        .cosmic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.3;
+            background: 
+                radial-gradient(circle at 25% 25%, #7c3aed 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, #06b6d4 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, #f59e0b 0%, transparent 50%);
+            animation: cosmicPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes cosmicPulse {
+            0% { transform: scale(1) rotate(0deg); opacity: 0.3; }
+            100% { transform: scale(1.1) rotate(5deg); opacity: 0.1; }
+        }
+
+        .floating-elements {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-element {
+            position: absolute;
+            background: linear-gradient(45deg, rgba(124, 58, 237, 0.1), rgba(6, 182, 212, 0.1));
+            border-radius: 50%;
+            animation: float 15s linear infinite;
+        }
+
+        .floating-element:nth-child(1) { width: 80px; height: 80px; left: 10%; animation-delay: 0s; }
+        .floating-element:nth-child(2) { width: 120px; height: 120px; left: 80%; animation-delay: 5s; }
+        .floating-element:nth-child(3) { width: 60px; height: 60px; left: 50%; animation-delay: 10s; }
+        .floating-element:nth-child(4) { width: 100px; height: 100px; left: 20%; animation-delay: 15s; }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10%, 90% { opacity: 1; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .quiz-header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 60px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(124, 58, 237, 0.8), transparent);
+        }
+
+        .quiz-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b, #ef4444, #dc2626);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 4s ease infinite;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(251, 191, 36, 0.3);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .quiz-subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 30px;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .warning-badge {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            animation: urgentPulse 2s infinite;
+            box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes urgentPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(220, 38, 38, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(220, 38, 38, 0.6); }
+        }
+
+        .progress-container {
+            margin-bottom: 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .progress-text {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .score-display {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: 700;
+            box-shadow: 0 5px 15px rgba(5, 150, 105, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0891b2, #0e7490);
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: progressShimmer 2s infinite;
+        }
+
+        @keyframes progressShimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .question-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 50px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.2),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: translateY(50px);
+            opacity: 0;
+            animation: slideUp 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #7c3aed, transparent);
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            background: linear-gradient(135deg, #7c3aed, #5b21b6);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.4rem;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.4);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .question-category {
+            background: rgba(124, 58, 237, 0.2);
+            color: #c4b5fd;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(124, 58, 237, 0.3);
+        }
+
+        .question-text {
+            font-size: 1.6rem;
+            color: white;
+            margin-bottom: 35px;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option {
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            border-color: rgba(124, 58, 237, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .option:hover::before {
+            left: 100%;
+        }
+
+        .option.selected {
+            background: linear-gradient(135deg, rgba(124, 58, 237, 0.3), rgba(91, 33, 182, 0.3));
+            border-color: #7c3aed;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(124, 58, 237, 0.3);
+        }
+
+        .text-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            font-size: 1.1rem;
+            color: white;
+            font-family: inherit;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .text-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #7c3aed;
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .impact-info {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(217, 119, 6, 0.2));
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            font-weight: 600;
+            color: #fbbf24;
+            border-left: 4px solid #f59e0b;
+            backdrop-filter: blur(10px);
+        }
+
+        .next-button {
+            background: linear-gradient(135deg, #059669, #047857);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+            box-shadow: 0 10px 30px rgba(5, 150, 105, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .next-button.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .next-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(5, 150, 105, 0.4);
+            background: linear-gradient(135deg, #065f46, #047857);
+        }
+
+        .next-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 30px;
+            padding: 60px;
+            text-align: center;
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            transform: scale(0.9);
+            opacity: 0;
+            animation: resultAppear 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes resultAppear {
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .result-icon {
+            font-size: 5rem;
+            margin-bottom: 25px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .result-title {
+            font-size: 2.8rem;
+            margin-bottom: 25px;
+            font-weight: 900;
+            line-height: 1.2;
+        }
+
+        .result-description {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .score-breakdown {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 30px;
+            margin: 30px 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .score-final {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .cta-button {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 25px 50px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 20px 40px rgba(220, 38, 38, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            animation: ctaPulse 3s infinite;
+        }
+
+        @keyframes ctaPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(220, 38, 38, 0.4);
+        }
+
+        .cta-details {
+            margin-top: 30px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .cta-detail {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .error-message {
+            background: rgba(220, 38, 38, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.3);
+            color: #fca5a5;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .quiz-header {
+                padding: 40px 25px;
+            }
+            
+            .question-card {
+                padding: 30px 25px;
+            }
+            
+            .result-container {
+                padding: 40px 25px;
+            }
+            
+            .question-text {
+                font-size: 1.3rem;
+            }
+            
+            .option {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .quiz-title {
+                font-size: 1.8rem;
+            }
+            
+            .quiz-subtitle {
+                font-size: 1.1rem;
+            }
+            
+            .question-text {
+                font-size: 1.2rem;
+            }
+            
+            .option {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="cosmic-bg"></div>
+    <div class="floating-elements">
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+        <div class="floating-element"></div>
+    </div>
+
+    <div class="container">
+        <div class="quiz-header">
+            <h1 class="quiz-title">💰 DIAGNÓSTICO DIGITAL</h1>
+            <p class="quiz-subtitle">Descubra exatamente quanto dinheiro seu negócio está perdendo<br>com estratégias ultrapassadas</p>
+            
+            <div class="warning-badge">
+                ⚠️ Cada resposta revela oportunidades perdidas de faturamento
+            </div>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-header">
+                <div class="progress-text" id="progressText">Pergunta 1 de 12</div>
+                <div class="score-display" id="scoreDisplay">Score: 0</div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+        </div>
+
+        <div id="quizContainer">
+            <!-- Perguntas serão inseridas aqui -->
+        </div>
+
+        <div id="resultContainer" class="hidden">
+            <!-- Resultado será inserido aqui -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                type: "multiple",
+                category: "AUTOMAÇÃO",
+                question: "Seu WhatsApp funciona como uma máquina de vendas 24/7?",
+                options: [
+                    { text: "🤖 Sim, tenho chatbot com IA que vende sozinho", score: 15 },
+                    { text: "💬 Tenho respostas automáticas básicas", score: 8 },
+                    { text: "⏰ Respondo só no horário comercial", score: 3 },
+                    { text: "📱 Respondo quando vejo a mensagem", score: 0 }
+                ],
+                impact: "💰 IMPACTO: Negócios com automação inteligente vendem 391% mais que manuais"
+            },
+            {
+                type: "multiple",
+                category: "FOLLOW-UP",
+                question: "Como você trata leads que não compraram na primeira conversa?",
+                options: [
+                    { text: "🎯 Sequência automática personalizada por perfil", score: 15 },
+                    { text: "📋 Follow-up manual organizadinho", score: 8 },
+                    { text: "🤷 Mando mensagem de vez em quando", score: 3 },
+                    { text: "❌ Quem não compra na hora, já era", score: 0 }
+                ],
+                impact: "💰 IMPACTO: 78% das vendas acontecem entre o 5º e 12º contato"
+            },
+            {
+                type: "text",
+                category: "DIAGNÓSTICO",
+                question: "Qual o MAIOR problema do seu negócio hoje? (Seja específico - essa resposta vai determinar sua estratégia)",
+                placeholder: "Ex: Poucos clientes novos, clientes não voltam, concorrência feroz, não entendo de tecnologia, gasto muito e vendo pouco...",
+                impact: "🎯 Sua resposta personaliza nossa análise gratuita"
+            },
+            {
+                type: "multiple",
+                category: "REDES SOCIAIS",
+                question: "Qual sua situação atual nas redes sociais?",
+                options: [
+                    { text: "🚀 Posto todo dia com estratégia e resultados", score: 15 },
+                    { text: "📅 3-4 posts por semana quando dá tempo", score: 10 },
+                    { text: "📸 Posto algumas fotos do produto/serviço", score: 5 },
+                    { text: "😅 Quase nunca posto, não sei o que falar", score: 0 }
+                ],
+                impact: "💰 IMPACTO: Negócios consistentes nas redes faturam 300% mais"
+            },
+            {
+                type: "multiple",
+                category: "CONTEÚDO",
+                question: "Como você cria suas imagens e vídeos?",
+                options: [
+                    { text: "🤖 IA cria tudo em segundos, profissional", score: 15 },
+                    { text: "🎨 Canva ou ferramentas online", score: 8 },
+                    { text: "📱 Foto do celular com filtro", score: 3 },
+                    { text: "🤳 Foto rápida sem edição", score: 0 }
+                ],
+                impact: "💰 IMPACTO: Conteúdo profissional gera 8x mais engajamento"
+            },
+            {
+                type: "text",
+                category: "INVESTIMENTO",
+                question: "Quanto você investe em marketing digital POR MÊS? (Seja honesto, não julgamos!)",
+                placeholder: "Ex: R$ 0, R$ 200, R$ 500, R$ 1.000, R$ 2.000+, 'não sei exatamente', 'só boost no post'...",
+                impact: "💰 Comparamos com ROI de clientes similares"
+            },
+            {
+                type: "multiple",
+                category: "TRÁFEGO PAGO",
+                question: "Sua experiência com anúncios pagos (Instagram/Facebook/Google):",
+                options: [
+                    { text: "🎯 Rodo campanhas com ROI positivo consistente", score: 15 },
+                    { text: "📊 Faço mas o retorno é incerto", score: 8 },
+                    { text: "😞 Já tentei várias vezes mas não deu certo", score: 5 },
+                    { text: "🚫 Nunca fiz, só orgânico mesmo", score: 0 },
+                    { text: "🤷 Não sei nem por onde começar", score: 0 }
+                ],
+                impact: "💰 IMPACTO: Tráfego pago otimizado gera ROI mínimo de 4:1"
+            },
+            {
+                type: "multiple",
+                category: "REMARKETING",
+                question: "Você 'persegue' quem visitou seu perfil/site com anúncios?",
+                options: [
+                    { text: "🕵️ Sim, tenho campanhas de remarketing ativas", score: 15 },
+                    { text: "🤔 Sei que existe mas não sei fazer", score: 5 },
+                    { text: "❓ Não sei o que é isso", score: 0 }
+                ],
+                impact: "💰 IMPACTO: Remarketing converte 76% mais que público frio"
+            },
+            {
+                type: "text",
+                category: "FATURAMENTO",
+                question: "Qual seu faturamento mensal aproximado? (Confidencial, só para personalizar sua análise)",
+                placeholder: "Ex: R$ 5.000, R$ 15.000, R$ 30.000, R$ 100.000, 'varia muito', 'prefiro não dizer'...",
+                impact: "💰 Calculamos potencial de crescimento baseado no seu nível"
+            },
+            {
+                type: "multiple",
+                category: "CONCORRÊNCIA",
+                question: "Você monitora o que seus concorrentes fazem?",
+                options: [
+                    { text: "🕵️ Acompanho tudo: preços, estratégias, novidades", score: 15 },
+                    { text: "👀 Olho de vez em quando o que eles fazem", score: 8 },
+                    { text: "🙈 Prefiro focar só no meu negócio", score: 0 }
+                ],
+                impact: "💰 IMPACTO: Quem monitora concorrência cresce 60% mais rápido"
+            },
+            {
+                type: "multiple",
+                category: "TECNOLOGIA",
+                question: "Seu nível de conforto com tecnologia e novidades:",
+                options: [
+                    { text: "🚀 Adoro tecnologia, sempre testando novidades", score: 15 },
+                    { text: "⚖️ Uso o básico, meio receoso com mudanças", score: 8 },
+                    { text: "😰 Tecnologia me dá medo, prefiro o tradicional", score: 3 }
+                ],
+                impact: "💰 IMPACTO: Negócios tech-friendly crescem 5x mais rápido"
+            },
+            {
+                type: "text",
+                category: "EXPECTATIVA",
+                question: "Se pudesse mudar UMA COISA no seu marketing hoje, o que seria?",
+                placeholder: "Ex: Mais clientes, menos dependência de indicação, automatizar vendas, entender o digital, parar de gastar sem retorno...",
+                impact: "🎯 Priorizamos essa dor na sua estratégia personalizada"
+            }
+        ];
+
+        let currentQuestion = 0;
+        let totalScore = 0;
+        let answers = {};
+        let isAnswered = false;
+
+        function updateProgress() {
+            const progress = (currentQuestion / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `Pergunta ${currentQuestion + 1} de ${questions.length}`;
+        }
+
+        function updateScore(score) {
+            if (typeof score === 'number' && !isNaN(score)) {
+                totalScore += score;
+                document.getElementById('scoreDisplay').textContent = `Score: ${totalScore}`;
+            }
+        }
+
+        function showQuestion() {
+            if (currentQuestion >= questions.length) {
+                showResult();
+                return;
+            }
+
+            const question = questions[currentQuestion];
+            const container = document.getElementById('quizContainer');
+            isAnswered = false;
+            
+            let questionHTML = `
+                <div class="question-card question-type-${question.type}">
+                    <div class="question-header">
+                        <div class="question-number">${currentQuestion + 1}</div>
+                        <div class="question-category">${question.category}</div>
+                    </div>
+                    <div class="question-text">${question.question}</div>
+            `;
+
+            if (question.type === 'multiple') {
+                questionHTML += `
+                    <div class="options">
+                        ${question.options.map((option, index) => `
+                            <div class="option" onclick="selectOption(${index}, ${option.score})">
+                                ${option.text}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (question.type === 'text') {
+                questionHTML += `
+                    <textarea class="text-input" placeholder="${question.placeholder}" oninput="handleTextInput(this.value)" maxlength="500"></textarea>
+                `;
+            }
+
+            questionHTML += `
+                    <div class="impact-info">${question.impact}</div>
+                    <button class="next-button" id="nextButton" onclick="nextQuestion()" disabled>
+                        Próxima Pergunta 
+                        <span>→</span>
+                    </button>
+                </div>
+            `;
+
+            container.innerHTML = questionHTML;
+            updateProgress();
+        }
+
+        function selectOption(optionIndex, score) {
+            if (isAnswered) return;
+            
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => option.classList.remove('selected'));
+            options[optionIndex].classList.add('selected');
+            
+            // Salvar resposta
+            answers[currentQuestion] = {
+                type: 'multiple',
+                answer: questions[currentQuestion].options[optionIndex].text,
+                score: score
+            };
+            
+            updateScore(score);
+            isAnswered = true;
+            showNextButton();
+        }
+
+        function handleTextInput(value) {
+            const trimmedValue = value.trim();
+            
+            if (trimmedValue.length >= 10) {
+                answers[currentQuestion] = {
+                    type: 'text',
+                    answer: trimmedValue,
+                    score: 5 // Pontuação padrão para respostas textuais
+                };
+                
+                if (!isAnswered) {
+                    updateScore(5);
+                    isAnswered = true;
+                }
+                
+                showNextButton();
+            } else {
+                hideNextButton();
+            }
+        }
+
+        function showNextButton() {
+            const nextButton = document.getElementById('nextButton');
+            if (nextButton) {
+                nextButton.disabled = false;
+                nextButton.classList.add('show');
+            }
+        }
+
+        function hideNextButton() {
+            const nextButton = document.getElementById('nextButton');
+            if (nextButton) {
+                nextButton.disabled = true;
+                nextButton.classList.remove('show');
+            }
+        }
+
+        function nextQuestion() {
+            if (!isAnswered) return;
+            
+            currentQuestion++;
+            showQuestion();
+        }
+
+        function showResult() {
+            const container = document.getElementById('quizContainer');
+            container.classList.add('hidden');
+            
+            const resultContainer = document.getElementById('resultContainer');
+            resultContainer.classList.remove('hidden');
+
+            let resultData = getResultData(totalScore);
+            
+            // Criar mensagem WhatsApp personalizada
+            let whatsappMessage = `Oi! Acabei de fazer o diagnóstico digital e preciso de ajuda urgente!
+
+🎯 MEU SCORE: ${totalScore}/180 pontos
+📊 CLASSIFICAÇÃO: ${resultData.title}
+
+💬 PRINCIPAIS RESPOSTAS:`;
+
+            // Adicionar respostas mais importantes
+            Object.keys(answers).forEach(key => {
+                if (answers[key].type === 'text' && answers[key].answer) {
+                    const questionTitle = questions[key].question.split('?')[0] || questions[key].question.substring(0, 50);
+                    whatsappMessage += `\n• ${questionTitle}?\n  Resposta: ${answers[key].answer.substring(0, 100)}${answers[key].answer.length > 100 ? '...' : ''}`;
+                }
+            });
+
+            whatsappMessage += `\n\n🚀 Quero minha análise gratuita personalizada agora!`;
+
+            const encodedMessage = encodeURIComponent(whatsappMessage);
+
+            resultContainer.innerHTML = `
+                <div class="result-container">
+                    <div class="result-icon">${resultData.icon}</div>
+                    <div class="result-title" style="color: ${resultData.color}">${resultData.title}</div>
+                    <div class="result-description">${resultData.description}</div>
+                    
+                    <div class="score-breakdown">
+                        <div class="score-final">${totalScore}/180 PONTOS</div>
+                        <div style="color: rgba(255, 255, 255, 0.7);">
+                            ${resultData.subtitle}
+                        </div>
+                    </div>
+                    
+                    <a href="https://wa.me/5565999999999?text=${encodedMessage}" class="cta-button">
+                        🚀 QUERO MINHA ANÁLISE GRATUITA AGORA!
+                    </a>
+                    
+                    <div class="cta-details">
+                        <div class="cta-detail">
+                            <div style="font-size: 1.5rem; margin-bottom: 10px;">⏰</div>
+                            <div style="font-weight: 600;">Resposta em 15min</div>
+                            <div style="color: rgba(255, 255, 255, 0.7);">Mesmo em horário noturno</div>
+                        </div>
+                        <div class="cta-detail">
+                            <div style="font-size: 1.5rem; margin-bottom: 10px;">🎁</div>
+                            <div style="font-weight: 600;">100% Gratuito</div>
+                            <div style="color: rgba(255, 255, 255, 0.7);">Sem compromisso</div>
+                        </div>
+                        <div class="cta-detail">
+                            <div style="font-size: 1.5rem; margin-bottom: 10px;">🎯</div>
+                            <div style="font-weight: 600;">Análise Personalizada</div>
+                            <div style="color: rgba(255, 255, 255, 0.7);">Baseada nas suas respostas</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-top: 30px; padding: 20px; background: rgba(220, 38, 38, 0.1); border-radius: 15px; border: 1px solid rgba(220, 38, 38, 0.3);">
+                        <div style="color: #fca5a5; font-weight: 600; margin-bottom: 10px;">⚠️ LIMITAÇÃO REAL:</div>
+                        <div style="color: rgba(255, 255, 255, 0.8);">
+                            Atendemos apenas 10 novos clientes por mês para garantir resultado personalizado.<br>
+                            <strong>Próximas vagas só em OUTUBRO 2025.</strong>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getResultData(score) {
+            if (score >= 150) {
+                return {
+                    icon: "🏆",
+                    title: "LÍDER DIGITAL ABSOLUTO",
+                    subtitle: "Você está no TOP 2% dos negócios do Brasil",
+                    color: "#10b981",
+                    description: "IMPRESSIONANTE! Você domina o marketing digital melhor que 98% dos empresários. Mesmo assim, identificamos 3-5 otimizações que podem dobrar seus resultados atuais."
+                };
+            } else if (score >= 120) {
+                return {
+                    icon: "📈",
+                    title: "AVANÇADO COM POTENCIAL",
+                    subtitle: "Você está acima da média, mas há muito espaço",
+                    color: "#f59e0b",
+                    description: "Parabéns! Você está bem à frente da concorrência, mas nossa análise identificou lacunas estratégicas que estão custando milhares em vendas perdidas."
+                };
+            } else if (score >= 80) {
+                return {
+                    icon: "🚀",
+                    title: "INTERMEDIÁRIO EM EVOLUÇÃO",
+                    subtitle: "Você tem base, falta estratégia",
+                    color: "#3b82f6",
+                    description: "Você entende o básico do digital, mas está perdendo 60-80% do potencial por falta de automação e estratégia avançada. Implementação correta pode triplicar resultados."
+                };
+            } else if (score >= 40) {
+                return {
+                    icon: "⚠️",
+                    title: "INICIANTE COM URGÊNCIA",
+                    subtitle: "Muito potencial sendo desperdiçado",
+                    color: "#f97316",
+                    description: "Você está perdendo MILHARES todo mês! Seus concorrentes já dominam o que você ainda não sabe. Ação imediata pode recuperar terreno perdido em 90 dias."
+                };
+            } else {
+                return {
+                    icon: "🚨",
+                    title: "EMERGÊNCIA DIGITAL CRÍTICA",
+                    subtitle: "Situação preocupante, mas recuperável",
+                    color: "#dc2626",
+                    description: "ALERTA MÁXIMO! Você está anos atrás da concorrência. Cada dia perdido = R$ 500+ em vendas. Intervenção urgente necessária para evitar obsolescência total."
+                };
+            }
+        }
+
+        // Iniciar o quiz
+        document.addEventListener('DOMContentLoaded', function() {
+            showQuestion();
+        });
+
+        // Prevenir refresh acidental
+        window.addEventListener('beforeunload', function(e) {
+            if (currentQuestion > 0 && currentQuestion < questions.length) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+=== RELATÓRIO DE ANÁLISE DE QUESTÕES ===
+
+Total de questões: 10
+
+ESTATÍSTICAS POR TIPO:
+  Lógica Inversa: 3 questões (30.0%)
+  Literal/Positiva: 2 questões (20.0%)
+  Completar: 2 questões (20.0%)
+  Assertiva/Julgamento: 2 questões (20.0%)
+  Neutra: 1 questões (10.0%)
+
+==================================================
+ANÁLISE DETALHADA POR QUESTÃO:
+
+Questão 1:
+  Tipo: Lógica Inversa
+  Confiança: 60.0%
+  Texto: Assinale a alternativa que não é verdadeira sobre a Constituição Federal....
+  Padrões encontrados: ['\\bnão\\s+é\\b', '\\bque\\s+não\\b']
+
+Questão 2:
+  Tipo: Literal/Positiva
+  Confiança: 30.0%
+  Texto: Marque a opção correta sobre direitos fundamentais....
+  Padrões encontrados: ['\\bcorreta?\\b']
+
+Questão 3:
+  Tipo: Completar
+  Confiança: 80.0%
+  Texto: Complete a lacuna: A Polícia Federal tem como função ______....
+  Padrões encontrados: ['\\bcomplete\\b', '____+']
+
+Questão 4:
+  Tipo: Assertiva/Julgamento
+  Confiança: 80.0%
+  Texto: Julgue os itens a seguir como certo ou errado....
+  Padrões encontrados: ['\\bjulgue\\s+os\\s+itens\\b', '\\bcerto\\s+ou\\s+errado\\b']
+
+Questão 5:
+  Tipo: Lógica Inversa
+  Confiança: 30.0%
+  Texto: Todas as alternativas são corretas, exceto uma:...
+  Padrões encontrados: ['\\bexceto\\b']
+
+Questão 6:
+  Tipo: Lógica Inversa
+  Confiança: 30.0%
+  Texto: Qual das opções abaixo está incorreta?...
+  Padrões encontrados: ['\\bincorreta?\\b']
+
+Questão 7:
+  Tipo: Literal/Positiva
+  Confiança: 70.0%
+  Texto: De acordo com a legislação penal, assinale a correta:...
+  Padrões encontrados: ['\\bassinale\\s+a\\s+correta\\b', '\\bcorreta?\\b', '\\bde\\s+acordo\\s+com\\b']
+
+Questão 8:
+  Tipo: Assertiva/Julgamento
+  Confiança: 40.0%
+  Texto: Analise as afirmações sobre processo penal:...
+  Padrões encontrados: ['\\banalise\\s+as\\s+afirmações\\b']
+
+Questão 9:
+  Tipo: Completar
+  Confiança: 40.0%
+  Texto: A sequência correta é:...
+  Padrões encontrados: ['\\bsequência\\b']
+
+Questão 10:
+  Tipo: Neutra
+  Confiança: 10.0%
+  Texto: Considerando a doutrina majoritária, é verdadeiro afirmar que:...
+
