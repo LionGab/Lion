@@ -583,6 +583,9 @@
                         <button class="btn btn-secondary" onclick="consultExplorarGPT()">
                             🔍 EXPLORAR GPT
                         </button>
+                        <button class="btn btn-danger" onclick="emergencyMode()">
+                            🚨 Emergência
+                        </button>
                     </div>
                 </div>
 
@@ -902,13 +905,7 @@
             );
             
             const messages = await messagesResponse.json();
-            let response = messages.data[0].content[0].text.value;
-            
-            // Remover referências de fonte [números:números source]
-            response = response.replace(/\[\d+:\d+\s*source\]/g, '');
-            response = response.replace(/\[\d+\]/g, '');
-            
-            return response.trim();
+            return messages.data[0].content[0].text.value;
         }
 
         async function consultExplorarGPT() {
@@ -939,120 +936,25 @@
 
         function analyzeOffline(input) {
             const lower = input.toLowerCase();
-            let response = '🛡️ **Arsenal Offline - Análise Tática**\n\n';
+            let response = '📊 **Análise Offline**\n\n';
             
-            // Sistema simplificado e funcional
-            let tacticDetected = false;
-            
-            // Gaslighting
-            if (lower.includes('gaslighting') || lower.includes('duvidar') || lower.includes('louco') || 
-                lower.includes('imaginando') || lower.includes('não disse') || lower.includes('não lembro')) {
-                response += '🌪️ **GASLIGHTING DETECTADO**\n\n';
-                response += '⚠️ **Nível de Risco:** ALTO\n\n';
-                response += '✅ **Ação Imediata:**\n"Minha percepção é válida. Vou verificar os fatos."\n\n';
-                response += '📝 **Estratégia:**\n• Documente tudo por escrito\n• Busque testemunhas\n• Confie em sua percepção\n• Grave conversas (se legal)\n\n';
-                response += '💬 **Scripts Prontos:**\n1. "Vou verificar isso e volto para você."\n2. "Minha memória está clara sobre isso."\n3. "Tenho anotado aqui diferente."\n';
-                tacticDetected = true;
+            // Detecção simples
+            if (lower.includes('gaslighting') || lower.includes('duvidar')) {
+                response += '🔍 **Tática Detectada:** Gaslighting\n';
+                response += '⚠️ **Nível:** Alto\n';
+                response += '✅ **Ação Imediata:** "Minha percepção é válida. Vou verificar os fatos."\n';
+                response += '📝 **Estratégia:** Documente tudo, busque testemunhas, confie em sua percepção.\n';
+            } else if (lower.includes('pressão') || lower.includes('urgente')) {
+                response += '🔍 **Tática Detectada:** Pressão para decisão\n';
+                response += '⚠️ **Nível:** Médio\n';
+                response += '✅ **Ação Imediata:** "Preciso de 24h para uma decisão responsável."\n';
+                response += '📝 **Estratégia:** Nunca decida sob pressão. Tempo é seu aliado.\n';
+            } else {
+                response += '📝 **Análise Geral:**\n';
+                response += 'Mantenha calma, documente situações suspeitas, estabeleça limites claros.\n';
             }
-            
-            // Pressão/Urgência
-            else if (lower.includes('pressão') || lower.includes('urgente') || lower.includes('agora') || 
-                     lower.includes('imediatamente') || lower.includes('sem tempo') || lower.includes('decide')) {
-                response += '⚡ **PRESSÃO PARA DECISÃO**\n\n';
-                response += '⚠️ **Nível de Risco:** MÉDIO\n\n';
-                response += '✅ **Ação Imediata:**\n"Preciso de 24h para uma decisão responsável."\n\n';
-                response += '📝 **Estratégia:**\n• Nunca decida sob pressão\n• Tempo é seu aliado\n• Crie espaço para pensar\n• Busque segunda opinião\n\n';
-                response += '💬 **Scripts Prontos:**\n1. "Decisões importantes precisam de reflexão."\n2. "Vou analisar e te respondo amanhã."\n3. "Não tomo decisões sob pressão."\n';
-                tacticDetected = true;
-            }
-            
-            // Manipulação
-            else if (lower.includes('manipulação') || lower.includes('chantagem') || lower.includes('ameaça') || 
-                     lower.includes('culpa') || lower.includes('vergonha')) {
-                response += '🎭 **MANIPULAÇÃO DETECTADA**\n\n';
-                response += '⚠️ **Nível de Risco:** ALTO\n\n';
-                response += '✅ **Ação Imediata:**\n"Não aceito ser manipulado. Vamos conversar com respeito."\n\n';
-                response += '📝 **Estratégia:**\n• Identifique o padrão\n• Estabeleça limites firmes\n• Busque apoio externo\n• Documente comportamentos\n\n';
-                response += '💬 **Scripts Prontos:**\n1. "Isso não é aceitável."\n2. "Vamos focar nos fatos, não em emoções."\n3. "Não vou discutir nesse tom."\n';
-                tacticDetected = true;
-            }
-            
-            // Narcisismo
-            else if (lower.includes('narcisista') || lower.includes('egoísta') || lower.includes('arrogante') || 
-                     lower.includes('superior') || lower.includes('especial')) {
-                response += '👑 **COMPORTAMENTO NARCISISTA**\n\n';
-                response += '⚠️ **Nível de Risco:** ALTO\n\n';
-                response += '✅ **Ação Imediata:**\n"Entendo sua perspectiva. Vamos ouvir outros pontos de vista."\n\n';
-                response += '📝 **Estratégia:**\n• Não confronte diretamente\n• Use técnica de espelhamento\n• Redirecione para fatos\n• Mantenha distância emocional\n\n';
-                response += '💬 **Scripts Prontos:**\n1. "Interessante. Como chegou a essa conclusão?"\n2. "Vamos ver o que os dados mostram."\n3. "Preciso de mais informações."\n';
-                tacticDetected = true;
-            }
-            
-            // Trabalho
-            else if (lower.includes('chefe') || lower.includes('trabalho') || lower.includes('reunião') || 
-                     lower.includes('projeto') || lower.includes('deadline') || lower.includes('equipe')) {
-                response += '💼 **SITUAÇÃO PROFISSIONAL**\n\n';
-                response += '⚠️ **Nível de Risco:** MÉDIO\n\n';
-                response += '✅ **Ação Imediata:**\n"Vou analisar isso e dar um retorno estruturado."\n\n';
-                response += '📝 **Estratégia:**\n• Mantenha profissionalismo\n• Documente tudo\n• Busque clareza nas expectativas\n• Use comunicação por escrito\n\n';
-                response += '💬 **Scripts Prontos:**\n1. "Preciso entender melhor os objetivos."\n2. "Vamos alinhar as expectativas."\n3. "Vou confirmar isso por email."\n';
-                tacticDetected = true;
-            }
-            
-            // Relacionamento
-            else if (lower.includes('namorado') || lower.includes('namorada') || lower.includes('marido') || 
-                     lower.includes('esposa') || lower.includes('relacionamento') || lower.includes('amor')) {
-                response += '💕 **QUESTÃO DE RELACIONAMENTO**\n\n';
-                response += '⚠️ **Nível de Risco:** VARIÁVEL\n\n';
-                response += '✅ **Ação Imediata:**\n"Precisamos conversar com calma sobre isso."\n\n';
-                response += '📝 **Estratégia:**\n• Comunicação assertiva\n• Estabeleça limites saudáveis\n• Busque diálogo honesto\n• Considere terapia de casal\n\n';
-                response += '💬 **Scripts Prontos:**\n1. "Me sinto desconfortável quando..."\n2. "Preciso que você entenda minha perspectiva."\n3. "Vamos resolver isso juntos."\n';
-                tacticDetected = true;
-            }
-            
-            // Análise geral se nenhuma tática específica foi detectada
-            if (!tacticDetected) {
-                response += '📝 **ANÁLISE GERAL**\n\n';
-                
-                if (lower.includes('ajuda') || lower.includes('help')) {
-                    response += '🆘 **Suporte Identificado**\nVocê está buscando orientação. Continue descrevendo a situação com mais detalhes específicos.\n\n';
-                } else if (lower.includes('problema') || lower.includes('dificuldade')) {
-                    response += '⚠️ **Situação Problemática**\nIdentifique os envolvidos e o contexto específico para análise mais precisa.\n\n';
-                }
-                
-                response += '📋 **Protocolo Padrão de Defesa:**\n';
-                response += '1. 🕯️ Mantenha a calma e respire fundo\n';
-                response += '2. 📝 Documente a situação por escrito\n';
-                response += '3. 🛡️ Estabeleça limites claros\n';
-                response += '4. 👥 Busque uma segunda opinião\n';
-                response += '5. 📞 Prepare scripts de resposta\n';
-                response += '6. 🚪 Tenha um plano de saída se necessário\n\n';
-                response += '💡 **Dica:** Seja mais específico sobre a situação para análise personalizada.\n';
-            }
-            
-            // Gamificação offline
-            tacticsCount++;
-            localStorage.setItem('tacticsCount', tacticsCount);
-            updateStats();
-            
-            // Adicionar timestamp para variação
-            const now = new Date();
-            response += `\n⏰ Análise realizada em ${now.toLocaleTimeString()}`;
             
             return response;
-        }
-
-        function savePattern(input, tacticType) {
-            let patterns = JSON.parse(localStorage.getItem('learnedPatterns') || '{}');
-            if (!patterns[tacticType]) patterns[tacticType] = [];
-            
-            patterns[tacticType].push({
-                input: input.substring(0, 50), // Primeiros 50 chars
-                timestamp: Date.now(),
-                count: (patterns[tacticType].find(p => p.input === input.substring(0, 50))?.count || 0) + 1
-            });
-            
-            localStorage.setItem('learnedPatterns', JSON.stringify(patterns));
         }
 
         function displayResponse(content) {
