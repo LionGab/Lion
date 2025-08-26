@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinkedIn Preview Card</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            width: 1200px;
+            height: 630px;
+            background: linear-gradient(135deg, #003DA5 0%, #005BBF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .background-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(124, 179, 66, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.05) 0%, transparent 50%);
+        }
+        
+        .content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            z-index: 1;
+            max-width: 1100px;
+            padding: 0 50px;
+        }
+        
+        .text-content {
+            flex: 1;
+        }
+        
+        .title {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            line-height: 1.1;
+            color: white;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            color: #7CB342;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .stat-number {
+            font-size: 28px;
+            font-weight: 800;
+            color: #7CB342;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+        
+        .profile-section {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.95);
+            color: #333;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .profile-name {
+            font-size: 32px;
+            font-weight: 800;
+            color: #003DA5;
+            margin-bottom: 10px;
+        }
+        
+        .profile-title {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .current-metrics {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #003DA5;
+        }
+        
+        .metric-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .basf-logo {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 800;
+            color: #003DA5;
+            font-size: 24px;
+        }
+        
+        .club-lion {
+            position: absolute;
+            bottom: 30px;
+            left: 50px;
+            font-size: 16px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-pattern"></div>
+    <div class="basf-logo">BASF</div>
+    
+    <div class="content">
+        <div class="text-content">
+            <div class="title">Estratégia LinkedIn<br>Matheus Barros</div>
+            <div class="subtitle">De 647 para 2.500 seguidores em 30 dias</div>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span class="stat-number">12</span>
+                    <span class="stat-label">Posts Estratégicos</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">5-8</span>
+                    <span class="stat-label">Leads/Mês</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">30</span>
+                    <span class="stat-label">Dias Grátis</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="profile-section">
+            <div class="profile-name">Matheus Barros</div>
+            <div class="profile-title">Consultor BASF - Campo Verde, MT</div>
+            
+            <div class="current-metrics">
+                <div class="metric">
+                    <div class="metric-value">647</div>
+                    <div class="metric-label">Seguidores</div>
+                </div>
+                <div class="metric">
+                    <div class="metric-value">469</div>
+                    <div class="metric-label">Conexões</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="club-lion">Club Lion - LinkedIn Strategy</div>
+</body>
+</html>
