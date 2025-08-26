@@ -1,0 +1,63 @@
+<svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0077B5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#004b7a;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff;stop-opacity:0.95" />
+      <stop offset="100%" style="stop-color:#f8f9ff;stop-opacity:0.95" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bgGradient)"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="100" cy="100" r="60" fill="rgba(255,255,255,0.1)"/>
+  <circle cx="1100" cy="530" r="80" fill="rgba(255,215,0,0.15)"/>
+  <rect x="0" y="200" width="200" height="2" fill="rgba(255,215,0,0.3)"/>
+  <rect x="1000" y="300" width="200" height="2" fill="rgba(255,215,0,0.3)"/>
+  
+  <!-- Main content card -->
+  <rect x="150" y="80" width="900" height="470" rx="20" fill="url(#cardGradient)" stroke="rgba(255,215,0,0.3)" stroke-width="2"/>
+  
+  <!-- LinkedIn icon area -->
+  <rect x="200" y="130" width="60" height="60" rx="8" fill="#0077B5"/>
+  <text x="230" y="168" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="24" font-weight="bold">in</text>
+  
+  <!-- Title -->
+  <text x="300" y="155" fill="#0077B5" font-family="Arial, sans-serif" font-size="32" font-weight="bold">Calculadora ROI LinkedIn</text>
+  <text x="300" y="185" fill="#333" font-family="Arial, sans-serif" font-size="18">Para CEOs que querem maximizar resultados</text>
+  
+  <!-- Key benefits -->
+  <text x="200" y="240" fill="#333" font-family="Arial, sans-serif" font-size="20" font-weight="bold">✓ Calcule seu potencial de faturamento</text>
+  <text x="200" y="275" fill="#333" font-family="Arial, sans-serif" font-size="20" font-weight="bold">✓ Veja quanto está perdendo sem estratégia</text>
+  <text x="200" y="310" fill="#333" font-family="Arial, sans-serif" font-size="20" font-weight="bold">✓ Gráfico de crescimento 12 meses</text>
+  <text x="200" y="345" fill="#333" font-family="Arial, sans-serif" font-size="20" font-weight="bold">✓ Análise personalizada instantânea</text>
+  
+  <!-- Chart mockup -->
+  <rect x="650" y="240" width="300" height="180" rx="10" fill="rgba(0,119,181,0.1)" stroke="#0077B5" stroke-width="1"/>
+  <text x="800" y="260" text-anchor="middle" fill="#666" font-family="Arial, sans-serif" font-size="14">Projeção de Crescimento</text>
+  
+  <!-- Chart bars -->
+  <rect x="670" y="380" width="20" height="20" fill="#0077B5"/>
+  <rect x="700" y="370" width="20" height="30" fill="#0077B5"/>
+  <rect x="730" y="350" width="20" height="50" fill="#FFD700"/>
+  <rect x="760" y="340" width="20" height="60" fill="#FFD700"/>
+  <rect x="790" y="320" width="20" height="80" fill="#FFD700"/>
+  <rect x="820" y="300" width="20" height="100" fill="#FFD700"/>
+  <rect x="850" y="280" width="20" height="120" fill="#FFD700"/>
+  <rect x="880" y="270" width="20" height="130" fill="#FFD700"/>
+  
+  <!-- Call to action -->
+  <rect x="200" y="400" width="400" height="60" rx="30" fill="#FFD700" stroke="#FFA500" stroke-width="2"/>
+  <text x="400" y="435" text-anchor="middle" fill="#333" font-family="Arial, sans-serif" font-size="22" font-weight="bold">🚀 CALCULAR MEU ROI AGORA</text>
+  
+  <!-- Footer -->
+  <text x="200" y="500" fill="#666" font-family="Arial, sans-serif" font-size="16">clubelion.com.br • Transformando CEOs em autoridades no LinkedIn</text>
+  
+  <!-- Money symbols decoration -->
+  <text x="950" y="150" fill="rgba(255,215,0,0.3)" font-family="Arial, sans-serif" font-size="60">💰</text>
+  <text x="980" y="200" fill="rgba(0,119,181,0.2)" font-family="Arial, sans-serif" font-size="40">📈</text>
+</svg>
