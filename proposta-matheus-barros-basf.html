@@ -725,6 +725,55 @@
             letter-spacing: 0.5px;
         }
         
+        .placeholder-screenshot {
+            width: 100%;
+            max-width: 100%;
+            min-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+            margin: 15px 0;
+            border: 1px solid #e1e5e9;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .placeholder-screenshot:hover {
+            transform: scale(1.01);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .placeholder-content {
+            text-align: center;
+            padding: 20px;
+            color: #495057;
+        }
+        
+        .placeholder-content h4 {
+            margin: 10px 0;
+            color: #003DA5;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .placeholder-content p {
+            margin: 8px 0;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        
+        .screenshot-note {
+            background: rgba(0, 119, 181, 0.1);
+            color: #0077b5;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-top: 15px;
+            border-left: 3px solid #0077b5;
+        }
+        
         /* Tablet Styles - 768px and up */
         @media (min-width: 768px) {
             .container {
@@ -954,7 +1003,17 @@
                 
                 <div class="screenshot-container">
                     <div class="screenshot-label">Perfil LinkedIn Atual</div>
-                    <img src="https://i.imgur.com/K3WZNzo.png" alt="Perfil atual do Matheus no LinkedIn" class="linkedin-screenshot">
+                    <div class="placeholder-screenshot">
+                        <div class="placeholder-content">
+                            <i class="fab fa-linkedin" style="font-size: 48px; color: #0077b5; margin-bottom: 15px;"></i>
+                            <h4>Perfil atual do Matheus no LinkedIn</h4>
+                            <p>647 seguidores • Consultor BASF Campo Verde-MT</p>
+                            <div class="screenshot-note">
+                                📸 Screenshot do perfil LinkedIn atual<br>
+                                Mostrando métricas base e área de atuação
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <ul class="problem-list">
@@ -1086,7 +1145,17 @@
             
             <div class="screenshot-container">
                 <div class="screenshot-label">Atividade Atual no LinkedIn</div>
-                <img src="https://i.imgur.com/WEcXBGm.png" alt="Atividade atual do Matheus no LinkedIn" class="linkedin-screenshot">
+                <div class="placeholder-screenshot">
+                    <div class="placeholder-content">
+                        <i class="fas fa-chart-line" style="font-size: 48px; color: #0077b5; margin-bottom: 15px;"></i>
+                        <h4>Atividade atual do Matheus no LinkedIn</h4>
+                        <p>Posts esporádicos • Baixo engajamento</p>
+                        <div class="screenshot-note">
+                            📊 Screenshot das métricas de atividade<br>
+                            Análise de frequência e engajamento
+                        </div>
+                    </div>
+                </div>
             </div>
             
             <div class="strategy-overview">
@@ -1346,7 +1415,17 @@
             
             <div class="screenshot-container">
                 <div class="screenshot-label">Formação e Certificações Atuais</div>
-                <img src="https://i.imgur.com/7Wuj95K.png" alt="Credenciais profissionais do Matheus" class="linkedin-screenshot">
+                <div class="placeholder-screenshot">
+                    <div class="placeholder-content">
+                        <i class="fas fa-certificate" style="font-size: 48px; color: #0077b5; margin-bottom: 15px;"></i>
+                        <h4>Credenciais profissionais do Matheus</h4>
+                        <p>BASF • Campo Verde-MT • Consultor Técnico</p>
+                        <div class="screenshot-note">
+                            🎓 Screenshot das formações e certificações<br>
+                            Validação da autoridade técnica
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
