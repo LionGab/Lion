@@ -1,0 +1,26 @@
+# Ferramentas LinkedIn
+/roi-calculator /roi-calculator-optimized.html 200
+/ab-testing /ab-testing-tracker-optimized.html 200
+/linkedin-profile /linkedin-profile-mockup-optimized.html 200
+/naming-dashboard /naming-dashboard-optimized.html 200
+/decision-matrix /decision-matrix-optimized.html 200
+
+# Aliases
+/roi /roi-calculator-optimized.html 200
+/calculator /roi-calculator-optimized.html 200
+/ab-test /ab-testing-tracker-optimized.html 200
+/profile /linkedin-profile-mockup-optimized.html 200
+/naming /naming-dashboard-optimized.html 200
+/decisao /decision-matrix-optimized.html 200
+
+# Links externos
+/whatsapp https://wa.me/5511999999999?text=Oi!%20Quero%20saber%20mais%20sobre%20o%20Sprint 302
+/agendar https://calendly.com/gabriel-sprint 302
+
+# Clube Lion seções
+/diagnostico /#diagnostico 301
+/sprint /#diagnostico 301
+/faq /#faq 301
+
+# Fallback
+/* /index.html 200
