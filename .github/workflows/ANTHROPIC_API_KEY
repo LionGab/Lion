@@ -1,0 +1,2 @@
+# ✅ CORRECT - Uses GitHub secrets
+anthropic_api_key: ${{ secrets.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 }}
