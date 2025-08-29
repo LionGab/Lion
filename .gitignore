@@ -1,53 +1,23 @@
-# Sistema Windows
-Thumbs.db
-Desktop.ini
-.DS_Store
+# Apenas os arquivos do Clube Lion na main
+# Ignorar tudo exceto os arquivos necessários
+*
 
-# Arquivos de usuário
-AppData/
-Documents/
-Downloads/
-Pictures/
-Videos/
-Music/
-OneDrive/
-.ssh/
-.config/
-.cache/
-.claude/
-.gemini/
-
-# Arquivos temporários
-*.tmp
-*.temp
-*.log
-NTUSER.DAT*
-ntuser.dat*
-
-# Diretórios de sistema
-Ambiente*
-Configurações*
-Cookies/
-Menu*
-Dados*
-Recent/
-SendTo/
-
-# Projetos não relacionados
-backend/
-sistema-disciplinar*/
-neural-fabric/
-claude-code-heavy/
-reposit-riodolion/
-dashboard-disciplinar/
-closer-ai-next/
-aula-svi/
-
-# Executáveis
-*.exe
-*.msi
-
-# Outros
-node_modules/
-.env
-*.zip
+# Permitir apenas arquivos do Clube Lion
+!index.html
+!clube-lion-styles.css
+!clube-lion-script.js
+!clube-lion-script.min.js
+!*calculator*.html
+!*testing*.html
+!*mockup*.html
+!*dashboard*.html
+!*matrix*.html
+!_redirects
+!_headers
+!netlify.toml
+!styles.css
+!script.js
+!headline-rotator.js
+!calendly-config.json
+!.gitignore
+!README*.md
