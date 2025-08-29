@@ -1,20 +1,53 @@
-# Outputs
-outputs/
-*.log
-
-# Worktrees
-worktrees/
-
-# OS
-.DS_Store
+# Sistema Windows
 Thumbs.db
+Desktop.ini
+.DS_Store
 
-# Editor
-.vscode/
-.idea/
-*.swp
-*.swo
+# Arquivos de usuário
+AppData/
+Documents/
+Downloads/
+Pictures/
+Videos/
+Music/
+OneDrive/
+.ssh/
+.config/
+.cache/
+.claude/
+.gemini/
 
-# Temporary
+# Arquivos temporários
 *.tmp
-*.bak
+*.temp
+*.log
+NTUSER.DAT*
+ntuser.dat*
+
+# Diretórios de sistema
+Ambiente*
+Configurações*
+Cookies/
+Menu*
+Dados*
+Recent/
+SendTo/
+
+# Projetos não relacionados
+backend/
+sistema-disciplinar*/
+neural-fabric/
+claude-code-heavy/
+reposit-riodolion/
+dashboard-disciplinar/
+closer-ai-next/
+aula-svi/
+
+# Executáveis
+*.exe
+*.msi
+
+# Outros
+node_modules/
+.env
+*.zip
