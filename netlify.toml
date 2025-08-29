@@ -1,6 +1,6 @@
 [build]
   # Diretório raiz do projeto no repositório
-  base = "Documents/Lion - Docs"
+  base = "."
   
   # Diretório de publicação (onde estão os arquivos finais)
   publish = "."
@@ -80,9 +80,3 @@
 # Plugin para otimização de imagens (se houver)
 [[plugins]]
   package = "netlify-plugin-image-optim"
-
-# Plugin para minificação adicional
-[[plugins]]
-  package = "netlify-plugin-minify-html"
-  [plugins.inputs]
-    contexts = ['production']
