@@ -1,7 +1,11 @@
 # Redirects para Lion Tools
 
-# Página principal - Clube Lion  
+# Página principal - Clube Lion Negócios
 / /documents/lion%20-%20docs/index.html 200
+
+# Programa de transformação (conteúdo anterior)
+/programa /documents/lion%20-%20docs/clube-lion-negocio.html 200
+/transformacao /documents/lion%20-%20docs/clube-lion-negocio.html 200
 
 # Ferramentas LinkedIn otimizadas
 /roi-calculator /documents/lion%20-%20docs/roi-calculator-optimized.html 200
