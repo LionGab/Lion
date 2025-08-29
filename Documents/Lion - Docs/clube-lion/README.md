@@ -93,12 +93,31 @@ href="https://calendly.com/gabriel-sprint"
 - **Escala**: Clamp responsivo
 - **Line-height**: 1.6 para legibilidade
 
-## 🚀 Implementação
+## 🚀 Deploy no Netlify
 
-1. **Desenvolvimento**: Use `script.js` para debug
-2. **Produção**: Troque para `clube-lion-script.min.js`
+### Configuração Automática
+O projeto inclui configurações otimizadas para Netlify:
+- `netlify.toml` - Configurações de build e headers
+- `_redirects` - Redirects para seções e links externos
+- `_headers` - Headers de performance e segurança
+
+### Deploy Steps
+1. **Conecte o repositório**: https://github.com/LionGab/Lion
+2. **Base directory**: `Documents/Lion - Docs/clube-lion`
+3. **Publish directory**: `.` (mesmo diretório)
+4. **Build command**: `echo 'Static site'` (site estático)
+
+### URLs Personalizadas
+- `/diagnostico` → redireciona para `#diagnostico`
+- `/whatsapp` → redireciona para WhatsApp
+- `/agendar` → redireciona para Calendly
+
+## 🛠️ Implementação
+
+1. **Desenvolvimento**: Descomente `script.js` no HTML
+2. **Produção**: Usa `clube-lion-script.min.js` (ativo por padrão)
 3. **Teste**: Valide todos os CTAs e tracking
-4. **Deploy**: Configure CDN e cache headers
+4. **Deploy**: Netlify com cache headers otimizados
 
 ## ✅ Checklist de Deploy
 
