@@ -1,0 +1,636 @@
+
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Augusto - Uma Amizade Abençoada</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;600;700&display=swap');
+
+```
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        font-family: 'Crimson Text', serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+        color: #fff;
+      
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        position: relative;
+    }
+
+    .stars {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .star {
+        position: absolute;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        animation: twinkle 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+        0% { opacity: 0.3; transform: scale(0.8); }
+        100% { opacity: 1; transform: scale(1.2); }
+    }
+
+    .content {
+        position: relative;
+        z-index: 10;
+        text-align: center;
+        padding: 40px 20px;
+    }
+
+    .title {
+        font-family: 'Playfair Display', serif;
+        font-size: 3.5rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        animation: fadeInUp 1s ease-out;
+    }
+
+    .subtitle {
+        font-size: 1.4rem;
+        margin-bottom: 40px;
+        opacity: 0.9;
+        font-style: italic;
+        animation: fadeInUp 1s ease-out 0.5s both;
+    }
+
+    .slideshow-container {
+        margin: 40px 0;
+        animation: fadeInUp 1s ease-out 1s both;
+    }
+
+    .main-slideshow {
+        position: relative;
+        width: 100%;
+        max-width: 600px;
+        height: 400px;
+        margin: 0 auto;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 15px 50px rgba(0,0,0,0.4);
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(10px);
+        border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .slide {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        transition: opacity 1s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .slide.active {
+        opacity: 1;
+    }
+
+    .slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .slide-caption {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0,0,0,0.8));
+        color: white;
+        padding: 30px 20px 15px;
+        font-size: 1.1rem;
+        text-align: center;
+        font-style: italic;
+    }
+
+    .slideshow-controls {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .control-btn {
+        background: rgba(255,255,255,0.2);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255,255,255,0.3);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+    }
+
+    .control-btn:hover {
+        background: rgba(255,255,255,0.3);
+        transform: translateY(-2px);
+    }
+
+    .slide-counter {
+        text-align: center;
+        margin: 10px 0;
+        opacity: 0.8;
+        font-size: 1rem;
+    }
+
+    .mini-gallery {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin: 30px 0;
+        flex-wrap: wrap;
+        animation: fadeInUp 1s ease-out 1.2s both;
+    }
+
+    .mini-photo {
+        width: 60px;
+        height: 60px;
+        border-radius: 10px;
+        background-size: cover;
+        background-position: center;
+        border: 2px solid rgba(255,255,255,0.3);
+        transition: transform 0.3s ease;
+        cursor: pointer;
+    }
+
+    .mini-photo:hover {
+        transform: scale(1.1);
+        border-color: rgba(255,255,255,0.8);
+    }
+
+    .message-section {
+        background: rgba(255,255,255,0.1);
+        backdrop-filter: blur(20px);
+        border-radius: 20px;
+        padding: 40px 30px;
+        margin: 40px 0;
+        box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        border: 1px solid rgba(255,255,255,0.2);
+        animation: fadeInUp 1s ease-out 1.5s both;
+    }
+
+    .verse {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.3rem;
+        font-style: italic;
+        margin-bottom: 30px;
+        line-height: 1.6;
+        opacity: 0.95;
+    }
+
+    .verse-reference {
+        font-size: 1rem;
+        opacity: 0.8;
+        margin-bottom: 30px;
+    }
+
+    .personal-message {
+        font-size: 1.2rem;
+        line-height: 1.7;
+        margin-bottom: 30px;
+        text-align: left;
+    }
+
+    .signature {
+        text-align: right;
+        font-style: italic;
+        opacity: 0.9;
+        font-size: 1.1rem;
+    }
+
+    .audio-section {
+        margin: 30px 0;
+        text-align: center;
+        animation: fadeInUp 1s ease-out 2s both;
+    }
+
+    .music-info {
+        margin-bottom: 20px;
+    }
+
+    .music-info p {
+        margin: 5px 0;
+    }
+
+    #backgroundMusic {
+        width: 100%;
+        max-width: 400px;
+        border-radius: 25px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.2);
+        backdrop-filter: blur(10px);
+    }
+
+    .play-instruction {
+        margin-top: 15px;
+        padding: 10px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 15px;
+        font-size: 0.9rem;
+        opacity: 0.9;
+        animation: pulse 2s infinite;
+    }
+
+    .hearts {
+        position: fixed;
+        top: -50px;
+        animation: fall 8s linear infinite;
+        pointer-events: none;
+        z-index: 5;
+        opacity: 0.7;
+    }
+
+    @keyframes fall {
+        0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .blessing {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 2rem;
+        opacity: 0.3;
+        animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); opacity: 0.3; }
+        50% { transform: scale(1.1); opacity: 0.6; }
+    }
+
+    @media (max-width: 768px) {
+        .title {
+            font-size: 2.5rem;
+        }
+        
+        .main-slideshow {
+            height: 300px;
+            max-width: 90%;
+        }
+        
+        .message-section {
+            padding: 30px 20px;
+        }
+
+        .slideshow-controls {
+            gap: 10px;
+        }
+
+        .control-btn {
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .slide-caption {
+            font-size: 1rem;
+            padding: 20px 15px 10px;
+        }
+
+        .mini-photo {
+            width: 45px;
+            height: 45px;
+        }
+
+        .mini-gallery {
+            gap: 8px;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="blessing">✝️</div>
+
+```
+<div class="hearts" id="hearts"></div>
+
+<div class="container">
+    <div class="content">
+        <h1 class="title">Feliz Aniversário, Augusto!</h1>
+        <p class="subtitle">Uma amizade que é bênção de Deus</p>
+        
+        <div class="slideshow-container">
+            <div class="main-slideshow">
+                <div class="slide active">
+                    <img src="https://i.imgur.com/eWvOp62.jpg" alt="Memória 1">
+                    <div class="slide-caption">Momentos que o coração guarda para sempre ❤️</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/Rj8Yzdf.jpg" alt="Memória 2">
+                    <div class="slide-caption">Amizade que cresce a cada dia 🙏</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/oqevUi8.jpg" alt="Memória 3">
+                    <div class="slide-caption">Juntos nas aventuras da vida 🌟</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/vOucq1c.jpg" alt="Memória 4">
+                    <div class="slide-caption">Sorrisos que iluminam os dias ☀️</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/r0METQv.jpg" alt="Memória 5">
+                    <div class="slide-caption">Companheirismo verdadeiro 💙</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/Mal7B58.jpg" alt="Memória 6">
+                    <div class="slide-caption">Memórias que são tesouros 💎</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/OFHfWDa.jpg" alt="Memória 7">
+                    <div class="slide-caption">Unidos pela fé e amizade ✝️</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/dUVz6wu.jpg" alt="Memória 8">
+                    <div class="slide-caption">Construindo histórias juntos 🏗️</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/o7gv3ch.jpg" alt="Memória 9">
+                    <div class="slide-caption">Irmãos pela graça de Deus 🤝</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/OOI0189.jpg" alt="Memória 10">
+                    <div class="slide-caption">Momentos de pura alegria 😊</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/1k55vOk.jpg" alt="Memória 11">
+                    <div class="slide-caption">Parceiros em todas as estações 🍃</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/i1YmoDK.jpg" alt="Memória 12">
+                    <div class="slide-caption">Amizade que fortalece a alma 💪</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/nmySPUt.jpg" alt="Memória 13">
+                    <div class="slide-caption">Apoio incondicional sempre 🛡️</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/XnE4VIn.jpg" alt="Memória 14">
+                    <div class="slide-caption">Caminhada lado a lado 👫</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/Bv62mIp.jpg" alt="Memória 15">
+                    <div class="slide-caption">Laços eternos de irmandade 🔗</div>
+                </div>
+                <div class="slide">
+                    <img src="https://i.imgur.com/A4UnqhZ.jpg" alt="Memória 16">
+                    <div class="slide-caption">Gratidão por cada momento vivido 🙏</div>
+                </div>
+            </div>
+            
+            <div class="slideshow-controls">
+                <button onclick="changeSlide(-1)" class="control-btn">⟨ Anterior</button>
+                <button onclick="toggleAutoplay()" class="control-btn" id="playBtn">⏸️ Pausar</button>
+                <button onclick="changeSlide(1)" class="control-btn">Próxima ⟩</button>
+            </div>
+            
+            <div class="slide-counter">
+                <span id="currentSlide">1</span> / <span id="totalSlides">16</span>
+            </div>
+        </div>
+        
+        <div class="mini-gallery">
+            <div class="mini-photo" style="background-image: url('https://i.imgur.com/eWvOp62.jpg')"></div>
+            <div class="mini-photo" style="background-image: url('https://i.imgur.com/Rj8Yzdf.jpg')"></div>
+            <div class="mini-photo" style="background-image: url('https://i.imgur.com/oqevUi8.jpg')"></div>
+            <div class="mini-photo" style="background-image: url('https://i.imgur.com/vOucq1c.jpg')"></div>
+            <div class="mini-photo" style="background-image: url('https://i.imgur.com/r0METQv.jpg')"></div>
+            <div class="mini-photo" style="background-image: url('https://i.imgur.com/Mal7B58.jpg')"></div>
+        </div>
+        
+        <div class="audio-section">
+            <div class="music-info">
+                <p>🎵 <strong>"João 20"</strong> - Vitor Santana</p>
+                <p style="opacity: 0.8; font-size: 0.9rem;">Uma música especial para uma amizade especial</p>
+            </div>
+
+<audio id="backgroundMusic" preload="auto">
+    <source src="Augusto te amo.mp3" type="audio/mpeg">
+                Seu navegador não suporta áudio HTML5.
+            </audio>
+            <div class="play-instruction">
+                <p>👆 Clique em qualquer lugar da página para iniciar a música</p>
+            </div>
+        </div>
+        
+        <div class="message-section">
+            <div class="verse">
+                "Melhor é serem dois do que um, porque têm melhor paga do seu trabalho. Porque se um cair, o outro levanta o seu companheiro..."
+            </div>
+            <div class="verse-reference">— Eclesiastes 4:9-10</div>
+            
+            <div class="personal-message">
+                <p><strong>Augusto,</strong></p>
+                <br>
+                <p>Em todos os momentos mais difíceis da minha vida, quando parecia que não havia saída, Deus sempre colocou você ao meu lado. Sua presença constante, suas palavras de encorajamento e sua fé inabalável foram instrumentos que o Senhor usou para me sustentar.</p>
+                <br>
+                <p>Não é coincidência que nossa amizade seja tão sólida. Acredito que Deus nos uniu não apenas para compartilharmos bons momentos, mas para sermos apoio um para o outro nas tempestades da vida. Você tem sido esse amigo fiel que a Bíblia fala, sempre presente, sempre disposto a ajudar.</p>
+                <br>
+                <p>Que neste novo ano de vida, Deus continue te abençoando abundantemente, te dando saúde, paz e realizações. Que nossa amizade continue sendo esse cordão de três dobras que não se quebra facilmente - eu, você e Deus no centro de tudo.</p>
+                <br>
+                <p>Obrigado por ser quem você é. Obrigado por estar sempre presente. Você é uma bênção na minha vida! 🙏</p>
+            </div>
+            
+            <div class="signature">
+                Com carinho e gratidão, <br>
+                <strong>Seu amigo para sempre ❤️</strong>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Variáveis do slideshow
+    let currentSlideIndex = 0;
+    let slides = [];
+    let autoplayInterval;
+    let isAutoplay = true;
+
+    // Criar estrelas
+    function createStars() {
+        const starsContainer = document.querySelector('.stars');
+        const numberOfStars = 100;
+        
+        for (let i = 0; i < numberOfStars; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.width = Math.random() * 3 + 1 + 'px';
+            star.style.height = star.style.width;
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+    }
+
+    // Criar corações caindo
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.className = 'hearts';
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + '%';
+        heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+        heart.style.animationDelay = '0s';
+        heart.style.animationDuration = Math.random() * 3 + 6 + 's';
+        heart.style.position = 'fixed';
+        heart.style.top = '-50px';
+        heart.style.pointerEvents = 'none';
+        heart.style.zIndex = '5';
+        heart.style.opacity = '0.7';
+        heart.style.animation = 'fall ' + (Math.random() * 3 + 6) + 's linear forwards';
+        
+        document.body.appendChild(heart);
+        
+        setTimeout(() => {
+            if (heart.parentNode) {
+                heart.remove();
+            }
+        }, 9000);
+    }
+
+    // Funções do slideshow
+    function initializeSlideshow() {
+        slides = document.querySelectorAll('.slide');
+        if (slides.length === 0) return;
+        
+        showSlide(0);
+        updateCounter();
+        
+        if (isAutoplay) {
+            startAutoplay();
+        }
+    }
+
+    function showSlide(index) {
+        slides.forEach(slide => slide.classList.remove('active'));
+        slides[index].classList.add('active');
+        currentSlideIndex = index;
+        updateCounter();
+    }
+
+    function changeSlide(direction) {
+        let newIndex = currentSlideIndex + direction;
+        
+        if (newIndex >= slides.length) {
+            newIndex = 0;
+        } else if (newIndex < 0) {
+            newIndex = slides.length - 1;
+        }
+        
+        showSlide(newIndex);
+    }
+
+    function startAutoplay() {
+        autoplayInterval = setInterval(() => {
+            changeSlide(1);
+        }, 4000); // Muda foto a cada 4 segundos
+    }
+
+    function stopAutoplay() {
+        if (autoplayInterval) {
+            clearInterval(autoplayInterval);
+            autoplayInterval = null;
+        }
+    }
+
+    function toggleAutoplay() {
+        const playBtn = document.getElementById('playBtn');
+        
+        if (isAutoplay) {
+            stopAutoplay();
+            isAutoplay = false;
+            playBtn.textContent = '▶️ Play';
+        } else {
+            startAutoplay();
+            isAutoplay = true;
+            playBtn.textContent = '⏸️ Pausar';
+        }
+    }
+
+    function updateCounter() {
+        const currentSlideElement = document.getElementById('currentSlide');
+        const totalSlidesElement = document.getElementById('totalSlides');
+        
+        if (currentSlideElement) {
+            currentSlideElement.textContent = currentSlideIndex + 1;
+        }
+        if (totalSlidesElement) {
+            totalSlidesElement.textContent = slides.length;
+        }
+    }
+
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', function() {
+        createStars();
+        initializeSlideshow();
+        
+        // Criar corações a cada 3 segundos
+        setInterval(createHeart, 3000);
+        
+        // Adicionar evento de clique para criar corações extras
+        document.addEventListener('click', function(e) {
+            // Não criar coração se clicou nos controles
+            if (!e.target.classList.contains('control-btn')) {
+                createHeart();
+            }
+        });
+
+        // Pausar autoplay quando hover no slideshow
+        const slideshow = document.querySelector('.main-slideshow');
+        if (slideshow) {
+            slideshow.addEventListener('mouseenter', () => {
+                if (isAutoplay) stopAutoplay();
+            });
+            
+            slideshow.addEventListener('mouseleave', () => {
+                if (isAutoplay) startAutoplay();
+            });
+        }
+    });
+</script>
+```
+
+</body>
+</html>
